@@ -1,0 +1,628 @@
+//API SKETCH DOCUMENTATION for STANDBASIS V2
+
+//This document still has some things that are left out for now, but the basic relatinship has been taken care of...
+
+// Sample API_Token You can use to Test: e6yheu372j2u383ik4i494k412ap10oslfkio21mxc
+
+// An API_TOKEN protects all api routes from unnecessary access from outside calls, and has some certain constraints to what you can/cannot do.
+
+// Once you create a User (who can be a teacher/Admin/Supervisor), an API_TOKEN is automatically assigned to him. The developer alone needs to see it, to make an application call whenever he/she wants.
+
+// Remember to replace "http://localhost:8000" as u see in this document, with the real URL of the API host: https://standbasisv2.herokuapp.com/
+
+///STANDBASIS ADMIN FUNCTIONS FOR BASIC FUNCTIONS
+
+// The values/data you see sent along, are the fields that are NOT NULL, the rest of the fields in each table, are optional
+
+//Working--- Add a new School -- Those values you see are the basic data (NOT NULL, else you will get an error)
+POST http://localhost:8000/schools HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Bright Future 3",
+    "_type": "Primary",
+    "town": "Ekwere TOWN",
+    "lga": "Ekwere LGA",
+    "state": "Akwa Ibom state",
+    "owner": "Secondary",
+    "polregion": "SS",
+    "operator": "Private",
+    "residence": "Boarding",
+    "address": "My address name is Not good...",
+    "api_token": "UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
+}
+
+###
+
+
+//Working --- get all schools
+GET  http://localhost:8000/schools?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5 HTTP/1.1
+
+###
+
+//Working --- get a particular school
+GET  http://localhost:8000/schools/1?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5 HTTP/1.1
+
+###
+
+// Working -- Update any School via the ID
+PUT http://localhost:8000/schools/1
+content-type: application/json
+
+{
+    "sri": "1",
+    "api_token": "UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
+}
+
+/**
+    "name": "Bright Future 3",
+    "_type": "Primary",
+    "town": "Ekwere TOWN",
+    "lga": "Ekwere LGA",
+    "state": "Akwa Ibom state",
+    "owner": "Secondary",
+    "polregion": "NW",
+    "operator": "Private",
+    "residence": "Boarding",
+    "address": "My address name is Not good again...",
+    "email": "ert210@gmail.com",
+**/
+###
+
+// Working --- Delete a School Via The ID
+DELETE http://localhost:8000/schools/3?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5
+
+//------------------------------------------------------TEACHER----------------------------------------------
+
+//Working--- Add a new tEACHER -- Those values you see are the basic data (NOT NULL, else you will get an error)
+###
+
+POST http://localhost:8000/teachers HTTP/1.1
+content-type: application/json
+
+{
+    "fname": "My first name",
+    "lname": "My last name",
+    "gender": "M",
+    "agerange": "15-40",
+    "bias": "Secondary",
+    "polregion": "SS",
+    "coursetype": "Professional",
+    "qualification": "WASSCE",
+    "_status": "1",
+    "_type": "0",
+    "school_id": "1",
+    "api_token": "UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
+}
+
+###
+
+//Working --- get all teachers
+GET  http://localhost:8000/teachers?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5 HTTP/1.1
+
+###
+
+//Working --- get a particular data
+GET  http://localhost:8000/teachers/1?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5 HTTP/1.1
+
+###
+
+// Working -- Update any data via the ID
+PUT http://localhost:8000/teachers/3
+content-type: application/json
+
+{
+    "fname": "My first name",
+    "lname": "My last name",
+    "gender": "M",
+    "agerange": "15-40",
+    "bias": "Secondary",
+    "polregion": "SS",
+    "coursetype": "Professional",
+    "qualification": "WASSCE",
+    "_status": "1",
+    "_type": "0",
+    "school_id": "1",
+    "api_token": "UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
+}
+
+###
+
+// Working --- Delete a data Via The ID
+DELETE http://localhost:8000/teachers/3?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5
+
+//----------------------------------------------------------CLass Stream--------------------
+###
+
+//Working--- Add a new Class stream -- Those values you see are the basic data (NOT NULL, else you will get an error)
+
+POST http://localhost:8000/class_streams HTTP/1.1
+content-type: application/json
+
+{
+    "title": "JSS 1",
+    "category": "7",
+    "school_id": "1",
+    "ext": ".",
+    "api_token": "UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
+}
+
+###
+
+//Working --- get all data
+GET  http://localhost:8000/class_streams?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5 HTTP/1.1
+
+###
+
+//Working --- get a particular data
+GET  http://localhost:8000/class_streams/1?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5 HTTP/1.1
+
+###
+
+// Working -- Update any data via the ID
+PUT http://localhost:8000/class_streams/3
+content-type: application/json
+
+{
+    "title": "JSS 1",
+    "category": "1",
+    "school_id": "1",
+    "api_token": "UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
+}
+
+###
+
+// Working --- Delete a data Via The ID
+DELETE http://localhost:8000/class_streams/3?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5
+
+//----------------------------------------------------------Pupil--------------------
+### 
+//Working--- Add a new Pupil -- Those values you see are the basic data (NOT NULL, else you will get an error)
+
+
+POST http://localhost:8000/pupils HTTP/1.1
+content-type: application/json
+
+{
+    "fname": "Student",
+    "lname": "No. 3",
+    "gender": "M",
+    "entry": "2019-09-01",
+    "status": "1",
+    "school_id": "1",
+    "api_token": "UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
+}
+
+###
+
+//Working --- get all data
+GET  http://localhost:8000/pupils?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5 HTTP/1.1
+
+###
+
+//Working --- get a particular data
+GET  http://localhost:8000/pupils/1?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5 HTTP/1.1
+
+###
+
+// Working -- Update any data via the ID
+PUT http://localhost:8000/pupils/3
+content-type: application/json
+
+{
+     "fname": "My fname",
+    "lname": "My lname",
+    "gender": "M",
+    "entry": "2019",
+    "status": "1",
+    "school_id": "1",
+    "api_token": "UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
+}
+
+###
+
+// Working --- Delete a data Via The ID
+DELETE http://localhost:8000/pupils/3?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5
+###
+//----------------------------------------------------------Enrolment--------------------
+
+//Working--- Add a new Enrolment -- Those values you see are the basic data (NOT NULL, else you will get an error)
+
+POST http://localhost:8000/enrollments HTTP/1.1
+content-type: application/json
+
+{
+    "pupil_id": "3",
+    "term_id": "1",
+    "class_id": "1",
+    "enrol_date": "2019-11-20",
+    "api_token": "UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
+}
+
+###
+
+//Working --- get all data
+GET  http://localhost:8000/enrollments?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5 HTTP/1.1
+
+###
+
+//Working --- get a particular data
+GET  http://localhost:8000/enrollments/1?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5 HTTP/1.1
+
+###
+
+// Working -- Update any data via the ID
+PUT http://localhost:8000/enrollments/3
+content-type: application/json
+
+{
+    "pupil_id": "1",
+    "term_id": "1",
+    "class_id": "1",
+    "enrol_date": "2019-11-20",
+    "api_token": "UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
+}
+
+###
+
+// Working --- Delete a data Via The ID
+DELETE http://localhost:8000/enrollments/3?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5
+
+//----------------------------------------------------------Timetable--------------------
+###
+
+//Working--- Add a new Timetable -- Those values you see are the basic data (NOT NULL, else you will get an error)
+
+
+POST http://localhost:8000/timetables HTTP/1.1
+content-type: application/json
+
+{
+    "school_id": "1",
+    "_time": "13:00:00",
+    "_day": "1",
+    "affected": "none",
+    "waiver": "0",
+    "api_token": "UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
+}
+
+###
+
+//Working --- get all data
+GET  http://localhost:8000/timetables?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5 HTTP/1.1
+
+###
+
+//Working --- get a particular data
+GET  http://localhost:8000/timetables/1?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5 HTTP/1.1
+
+###
+
+// Working -- Update any data via the ID
+PUT http://localhost:8000/timetables/3
+content-type: application/json
+
+{
+    "school_id": "3",
+    "_time": "3:00 PM",
+    "_day": "2",
+    "affected": "4,7,8,9",
+    "waiver": "0",
+    "api_token": "UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
+}
+
+###
+
+// Working --- Delete a data Via The ID
+DELETE http://localhost:8000/timetables/3?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5
+
+//----------------------------------------------------------TimetableSch--------------------
+###
+
+// Working--- Add a new Timetable School data -- (This table helps you map the Timetable ID to the SUbject Class) 
+// Those values you see are the basic data (NOT NULL, else you will get an error)
+
+
+POST http://localhost:8000/timetable_sches HTTP/1.1
+content-type: application/json
+
+{
+    "sub_class": "1",
+    "time_id": "1",
+    "comment": "This is a SUbject English, Teacher Test 1 @ 5pm on Sunday in Standbasis Schools",
+    "api_token": "UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
+}
+
+###
+
+//Working --- get all data
+GET  http://localhost:8000/timetable_sches?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5 HTTP/1.1
+
+###
+
+//Working --- get a particular data
+GET  http://localhost:8000/timetable_sches/1?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5 HTTP/1.1
+
+###
+
+// Working -- Update any data via the ID
+PUT http://localhost:8000/timetable_sches/3
+content-type: application/json
+
+{
+    "sub_class": "3",
+    "time_id": "4",
+    "comment": "This is a comment about Subject class , Timetable",
+    "api_token": "UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
+}
+
+###
+
+// Working --- Delete a data Via The ID
+DELETE http://localhost:8000/timetable_sches/3?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5
+
+//----------------------------------------------------------Term--------------------
+###
+
+//Working--- Add a new Term School data -- Those values you see are the basic data (NOT NULL, else you will get an error)
+
+
+POST http://localhost:8000/terms HTTP/1.1
+content-type: application/json
+
+{
+    "term": "1",
+    "session": "2018/2019",
+    "resumedate": "2019-09-09",
+    "status": "1",
+    "school_id": "1",
+    "holiday": "2019-09-26 , 2019-09-27",
+    "api_token": "UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
+}
+
+###
+
+//Working --- get all data
+GET  http://localhost:8000/terms?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5 HTTP/1.1
+
+###
+
+//Working --- get a particular data
+GET  http://localhost:8000/terms/1?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5 HTTP/1.1
+
+###
+
+// Working -- Update any data via the ID
+PUT http://localhost:8000/terms/1
+content-type: application/json
+
+{
+    "_status": "1",
+    "api_token": "UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
+}
+
+###
+
+// Working --- Delete a data Via The ID
+DELETE http://localhost:8000/terms/3?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5
+
+//----------------------------------------------------------Subject--------------------
+###
+
+//Working--- Add a new Subject School data -- Those values you see are the basic data (NOT NULL, else you will get an error)
+
+POST http://localhost:8000/subjects HTTP/1.1
+content-type: application/json
+
+{
+    "name": "English Language",
+    "category": "Junior",
+    "api_token": "UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
+}
+
+###
+
+//Working --- get all data
+GET  http://localhost:8000/subjects?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5 HTTP/1.1
+
+###
+
+//Working --- get a particular data
+GET  http://localhost:8000/subjects/1?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5 HTTP/1.1
+
+###
+
+// Working -- Update any data via the ID
+PUT http://localhost:8000/subjects/1
+content-type: application/json
+
+{   
+    "name": "English Language",
+    "category": "Junior",
+    "api_token": "UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
+}
+
+###
+
+// Working --- Delete a data Via The ID
+DELETE http://localhost:8000/subjects/3?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5
+
+//----------------------------------------------------------SUbject Class--------------------
+
+//Working--- Add a new Subject Class data -- Those values you see are the basic data (NOT NULL, else you will get an error)
+###
+
+POST http://localhost:8000/subjectclasses HTTP/1.1
+content-type: application/json
+
+{
+    "tea_id": "2",
+    "class_id": "1",
+    "sub_id": "1",
+    "title": "Teacher Test 1 JSS1 English",
+    "api_token": "UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
+}
+
+###
+
+//Working --- get all data
+GET  http://localhost:8000/subjectclasses?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5 HTTP/1.1
+
+###
+
+//Working --- get a particular data
+GET  http://localhost:8000/subjectclasses/1?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5 HTTP/1.1
+
+###
+
+// Working -- Update any data via the ID
+PUT http://localhost:8000/subjectclasses/3
+content-type: application/json
+
+{   
+    "teacher_id": "5",
+    "class_id": "4",
+    "subject_id": "3",
+    "title": "Teacher 1 JSS1 English",
+    "delegated": "1",
+    "api_token": "UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
+}
+
+###
+
+// Working --- Delete a data Via The ID
+DELETE http://localhost:8000/subjectclasses/3?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5
+###
+
+// Custom subject class methods
+POST http://localhost:8000/subjectclasses_findTeaSub/2/type/normal
+content-type: application/json
+
+{   
+    "api_token": "UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
+}
+//----------------------------------------------------------Score--------------------
+
+//Working --- get all data
+GET  http://localhost:8000/scores?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5 HTTP/1.1
+
+###
+
+//Working --- get a particular data
+GET  http://localhost:8000/scores/1?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5 HTTP/1.1
+
+###
+
+//----------------------------------------------------------User CRUD--------------------
+
+POST http://localhost:8000/users HTTP/1.1
+content-type: application/json
+
+{
+    "username": "test10",
+    "password": "edikan",
+    "name": "John Becky",
+    "_type": "9",
+    "_status": "1",
+    "teacher_id": "2",
+    "api_token": "UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
+}
+
+###
+
+//Working --- get all data
+GET  http://localhost:8000/users?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5 HTTP/1.1
+
+###
+
+//Working --- get a particular data
+GET  http://localhost:8000/users/1?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5 HTTP/1.1
+
+###
+
+// Working -- Update any data via the ID
+PUT http://localhost:8000/users/3
+content-type: application/json
+
+{   
+     "username": "joiy",
+    "password": "fmdfdfgdgg",
+    "name": "John Becky",
+    "_type": "0",
+    "_status": "1",
+    "teacher_id": "1",
+    "api_token": "UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
+}
+
+###
+
+// Working --- Delete a data Via The ID
+DELETE http://localhost:8000/users/3?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5
+
+### 
+
+// Working -- Update any data via the ID
+POST http://localhost:8000/users_login
+content-type: application/json
+
+{   
+    "username": "test10",
+    "password": "test100##"
+}
+
+###
+//----------------------------------------------------------Attendances--------------------
+
+//Working --- get all data
+GET  http://localhost:8000/attendances?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5 HTTP/1.1
+
+###
+
+//Working --- get a particular data
+GET  http://localhost:8000/attendances/1?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5 HTTP/1.1
+
+### 
+
+//Working --- Get Attendance Time for Class of a Teacher using User token
+POST  http://localhost:8000/attendances_getTimeofAtt/qefoRtCAlerr1tFzDrUTnTknxYhCX0gpKWJKsF9m7dtZdK4Fk5iG9gxxRdbC/class/1 HTTP/1.1
+content-type: application/json
+
+{
+    "api_token": "UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
+}
+
+###
+
+//Working --- Get Attendance Subject Classes Only using Teacher ID
+POST  http://localhost:8000/attendances_getSubClass/2 HTTP/1.1
+content-type: application/json
+
+{
+    "api_token": "UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
+}
+
+###
+
+//Working --- Get Attendance Subject Classes Only with Time using Teacher ID
+POST  http://localhost:8000/attendances_getSubClassWithTime/2 HTTP/1.1
+content-type: application/json
+
+{
+    "api_token": "UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
+}
+
+###
+
+POST  http://localhost:8000/attendances_submitAtt HTTP/1.1
+content-type: application/json
+
+{
+    "subclass":"1",
+    "timeid":"2",
+    "termid":"1",
+    "pupilsdata": "[{\"PupilID\":1,\"PupilName\":\"Test 1\",\"Present\":1,\"Comment\":\"Not available\"},{\"PupilID\":2,\"PupilName\":\"Test 2\",\"Present\":1,\"Comment\":\"Not available\"},{\"PupilID\":3,\"PupilName\":\"Test 3\",\"Present\":1,\"Comment\": \"Not available\"}]",
+    "api_token": "UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
+}
+
+// 
+//-----------Still adding api's to the functions ---the list will continue

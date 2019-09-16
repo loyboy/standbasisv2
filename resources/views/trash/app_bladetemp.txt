@@ -1,0 +1,1035 @@
+<nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+            <div class="container">
+                <a class="navbar-brand" href="{{ url('/') }}">
+                    {{ config('app.name', 'Laravel') }}
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <!-- Left Side Of Navbar -->
+                    <ul class="navbar-nav mr-auto">
+
+                    </ul>
+
+                    <!-- Right Side Of Navbar -->
+                    <ul class="navbar-nav ml-auto">
+                        <!-- Authentication Links -->
+                        @guest
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                            </li>
+                            @if (Route::has('register'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                </li>
+                            @endif
+                        @else
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
+                                </div>
+                            </li>
+                        @endguest
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+
+        //////////
+        <div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">Dashboard</div>
+
+                <div class="card-body">
+                    @if (session('status'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('status') }}
+                        </div>
+                    @endif
+
+                    You are logged in!
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+//////
+
+ <div class="gx-container">
+            <div id="menu" class="side-nav gx-sidebar">
+                <div class="navbar-expand-lg">
+
+                    <div class="sidebar-header">
+                        <a class="site-logo" href="#">
+                            <img src="http://via.placeholder.com/140x24" alt="Mouldifi" title="Mouldifi"/> 
+                        </a>
+                    </div>
+
+                    <div id="main-menu" class="main-menu navbar-collapse collapse">
+                        <ul class="nav-menu">
+                            <li class="nav-header">Main</li>
+                            <li class="menu">
+                            <a href="#">
+                                <i class="zmdi zmdi-view-dashboard zmdi-hc-fw"></i>
+                                <span class="nav-text">Dashboard</span>
+                            </a>
+                            <ul class="sub-menu">
+                                <li><a href="index.html"><span class="nav-text">Default</span></a></li>
+                                <li><a href="ecommerce.html"><span class="nav-text">eCommerce</span></a></li>
+                                <li><a href="news.html"><span class="nav-text">News</span></a></li>
+                                <li><a href="intranet.html"><span class="nav-text">Intranet</span></a></li>
+                            </ul>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="gx-main-container"> 
+            
+            <!-- Main Header -->
+            <header class="main-header">
+                <div class="gx-toolbar">
+                <div class="sidebar-mobile-menu">
+                    <a class="gx-menu-icon menu-toggle" href="#menu">
+                        <span class="menu-icon icon-grey"></span>
+                    </a>
+                </div>
+
+                <div class="search-bar right-side-icon bg-transparent d-none d-sm-block">
+                    <div class="form-group">
+                        <input class="form-control border-0" placeholder="Search in app..." value="" type="search">
+                        <button class="search-icon"><i class="zmdi zmdi-search zmdi-hc-lg"></i></button>
+                    </div>
+                </div>
+
+                <ul class="quick-menu header-notifications ml-auto">
+                    <li class="dropdown language-menu">
+                        <a href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true"
+                           class="d-inline-block flag-icon" aria-expanded="true">
+                            <i class="flag flag-32 flag-us"></i>
+                        </a>
+
+                        <div role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
+                            <div class="messages-list">
+                                <ul class="list-unstyled">
+                                    <li class="media">
+                                        <i class="flag flag-32 flag-us"></i>
+                                        <a href="javascript:void(0)" class="media-body align-self-center">
+                                            English
+                                        </a>
+                                    </li>
+                                    <li class="media">
+                                        <i class="flag flag-32 flag-cn"></i>
+                                        <a href="javascript:void(0)" class="media-body align-self-center">
+                                            Chinese
+                                        </a>
+                                    </li>
+                                    <li class="media">
+                                        <i class="flag flag-32 flag-es"></i>
+                                        <a href="javascript:void(0)" class="media-body align-self-center">
+                                            Spanish
+                                        </a>
+                                    </li>
+                                    <li class="media">
+                                        <i class="flag flag-32 flag-fr"></i>
+                                        <a href="javascript:void(0)" class="media-body align-self-center">
+                                            French
+                                        </a>
+                                    </li>
+                                    <li class="media">
+                                        <i class="flag flag-32 flag-it"></i>
+                                        <a href="javascript:void(0)" class="media-body align-self-center">
+                                            Italian
+                                        </a>
+                                    </li>
+                                    <li class="media">
+                                        <i class="flag flag-32 flag-sa"></i>
+                                        <a href="javascript:void(0)" class="media-body align-self-center">
+                                            Arabic
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="nav-searchbox dropdown d-inline-block d-sm-none">
+                        <a href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" class="d-inline-block icon-btn" aria-expanded="false">
+                            <i class="zmdi zmdi-search zmdi-hc-fw"></i>
+                        </a>
+                        <div aria-hidden="true" class="p-0 dropdown-menu dropdown-menu-right search-bar right-side-icon search-dropdown">
+                            <div class="form-group">
+                                <input class="form-control border-0" placeholder="" value="" type="search">
+                                <button class="search-icon"><i class="zmdi zmdi-search zmdi-hc-lg"></i></button>
+                            </div>
+                        </div>
+
+                    </li>
+
+                    <li class="dropdown">
+                        <a href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" class="d-inline-block" aria-expanded="true">
+                            <i class="zmdi zmdi-notifications-active icons-alert animated infinite wobble"></i>
+                        </a>
+
+                        <div role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
+                            <div class="gx-card-header d-flex align-items-center">
+                                <div class="mr-auto">
+                                    <h3 class="card-heading">Notifications</h3>
+                                </div>
+                            </div>
+
+                            <div class="dropdown-menu-perfectscrollbar">
+                                <div class="messages-list">
+                                    <ul class="list-unstyled">
+                                        <li class="media">
+                                            <img alt="stella-johnson" src="http://via.placeholder.com/150x150"
+                                                 class="size-40 mr-2 user-avatar">
+                                            <div class="media-body align-self-center">
+                                                <p class="sub-heading mb-0">Stella Johnson has recently posted an
+                                                    album</p>
+                                                <a href="javascript:void(0)" class="gx-btn gx-flat-btn gx-btn-xs mb-0">
+                                                    <i class="zmdi zmdi-thumb-up text-blue zmdi-hc-fw"></i>
+                                                </a>
+                                                <span class="meta-date"><small>4:10 PM</small></span>
+                                            </div>
+                                        </li>
+
+                                        <li class="media">
+                                            <img alt="domnic-harris" src="http://via.placeholder.com/150x150"
+                                                 class="size-40 mr-2 user-avatar">
+                                            <div class="media-body align-self-center">
+                                                <p class="sub-heading mb-0">Alex Brown has shared Martin Guptil's
+                                                    post</p>
+                                                <a href="javascript:void(0)" class="gx-btn gx-flat-btn gx-btn-xs mb-0">
+                                                    <i class="zmdi zmdi-comment-text text-grey zmdi-hc-fw"></i>
+                                                </a>
+                                                <span class="meta-date"><small>5:18 PM</small></span>
+                                            </div>
+                                        </li>
+
+                                        <li class="media">
+                                            <img alt="domnic-brown" src="http://via.placeholder.com/150x150"
+                                                 class="size-40 mr-2 user-avatar">
+                                            <div class="media-body align-self-center">
+                                                <p class="sub-heading mb-0">Domnic Brown has sent you a group invitation
+                                                    for Global Health</p>
+                                                <a href="javascript:void(0)" class="gx-btn gx-flat-btn gx-btn-xs mb-0">
+                                                    <i class="zmdi zmdi-card-giftcard text-info zmdi-hc-fw"></i>
+                                                </a>
+                                                <span class="meta-date"><small>5:36 PM</small></span>
+                                            </div>
+                                        </li>
+
+                                        <li class="media">
+                                            <img alt="john-smith" src="http://via.placeholder.com/150x150"
+                                                 class="size-40 mr-2 user-avatar">
+                                            <div class="media-body align-self-center">
+                                                <p class="sub-heading mb-0">John Smith has birthday today</p>
+                                                <a href="javascript:void(0)" class="gx-btn gx-flat-btn gx-btn-xs mb-0">
+                                                    <i class="zmdi zmdi-cake text-warning zmdi-hc-fw"></i>
+                                                </a>
+                                                <span class="meta-date"><small>5:54 PM</small></span>
+                                            </div>
+                                        </li>
+
+                                        <li class="media">
+                                            <img alt="jimmy-jo" src="http://via.placeholder.com/150x150"
+                                                 class="size-40 mr-2 user-avatar">
+                                            <div class="media-body align-self-center">
+                                                <p class="sub-heading mb-0">Chris has updated his profile picture</p>
+                                                <a href="javascript:void(0)" class="gx-btn gx-flat-btn gx-btn-xs mb-0">
+                                                    <i class="zmdi zmdi-account-box-o text-grey zmdi-hc-fw"></i>
+                                                </a>
+                                                <span class="meta-date"><small>5:25 PM</small></span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="dropdown">
+                        <a href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" class="d-inline-block" aria-expanded="true">
+                            <i class="zmdi zmdi-comment-alt-text icons-alert zmdi-hc-fw"></i>
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-right" data-placement="bottom-end" data-x-out-of-boundaries="">
+                            <div class="gx-card-header d-flex align-items-center">
+                                <div class="mr-auto">
+                                    <h3 class="card-heading">Messages</h3>
+                                </div>
+                            </div>
+
+                            <div class="dropdown-menu-perfectscrollbar1">
+                                <div class="messages-list">
+                                    <ul class="list-unstyled">
+                                        <li class="media">
+                                            <div class="user-thumb">
+                                                <img alt="Domnic Brown" src="http://via.placeholder.com/150x150"
+                                                     class="rounded-circle size-40 user-avatar">
+                                                <span class="badge badge-danger rounded-circle">5</span>
+                                            </div>
+
+                                            <div class="media-body">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <h5 class="text-capitalize user-name mb-0">
+                                                        <a href="javascript:void(0)">Domnic Brown</a>
+                                                    </h5>
+                                                    <span class="meta-date"><small>6:19 PM</small></span>
+                                                </div>
+                                                <p class="sub-heading">There are many variations of passages of...</p>
+
+                                                <a href="javascript:void(0)" class="gx-btn gx-flat-btn gx-btn-xs text-muted">
+                                                    <i class="zmdi zmdi-mail-reply"></i>
+                                                    <span>Reply</span>
+                                                </a>
+
+                                                <a href="javascript:void(0)" class="gx-btn gx-flat-btn gx-btn-xs text-muted">
+                                                    <i class="zmdi zmdi-eye"></i>
+                                                    <span>Read</span>
+                                                </a>
+                                            </div>
+                                        </li>
+
+                                        <li class="media">
+                                            <div class="user-thumb">
+                                                <img alt="John Smith" src="http://via.placeholder.com/150x150"
+                                                     class="rounded-circle size-40 user-avatar">
+                                                <span class="badge badge-danger rounded-circle"></span>
+                                            </div>
+
+                                            <div class="media-body">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <h5 class="text-capitalize user-name mb-0">
+                                                        <a href="javascript:void(0)">John Smith</a>
+                                                    </h5>
+                                                    <span class="meta-date"><small>4:18 PM</small></span>
+                                                </div>
+                                                <p class="sub-heading">Lorem Ipsum is simply dummy text of the...</p>
+                                                <a href="javascript:void(0)" class="gx-btn gx-flat-btn gx-btn-xs text-muted">
+                                                    <i class="zmdi zmdi-mail-reply"></i>
+                                                    <span>Reply</span>
+                                                </a>
+
+                                                <a href="javascript:void(0)" class="gx-btn gx-flat-btn gx-btn-xs text-muted">
+                                                    <i class="zmdi zmdi-eye"></i>
+                                                    <span>Read</span>
+                                                </a>
+                                            </div>
+                                        </li>
+
+                                        <li class="media">
+                                            <div class="user-thumb">
+                                                <img alt="John Smith" src="http://via.placeholder.com/150x150"
+                                                     class="size-40 rounded-circle user-avatar">
+                                                <span class="badge badge-danger rounded-circle">8</span>
+                                            </div>
+
+                                            <div class="media-body">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <h5 class="text-capitalize user-name mb-0">
+                                                        <a href="javascript:void(0)">John Smith</a>
+                                                    </h5>
+                                                    <span class="meta-date"><small>7:10 PM</small></span>
+                                                </div>
+                                                <p class="sub-heading">The point of using Lorem Ipsum is that it
+                                                    has...</p>
+
+                                                <a href="javascript:void(0)" class="gx-btn gx-flat-btn gx-btn-xs text-muted">
+                                                    <i class="zmdi zmdi-mail-reply"></i>
+                                                    <span>Reply</span>
+                                                </a>
+
+                                                <a href="javascript:void(0)" class="gx-btn gx-flat-btn gx-btn-xs text-muted">
+                                                    <i class="zmdi zmdi-eye"></i>
+                                                    <span>Read</span>
+                                                </a>
+                                            </div>
+                                        </li>
+
+                                        <li class="media">
+                                            <div class="user-thumb">
+                                                <img alt="alex dolgove" src="http://via.placeholder.com/150x150"
+                                                     class="size-40 rounded-circle user-avatar">
+                                                <span class="badge badge-danger rounded-circle"></span>
+                                            </div>
+
+                                            <div class="media-body">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <h5 class="text-capitalize user-name mb-0">
+                                                        <a href="javascript:void(0)">alex dolgove</a>
+                                                    </h5>
+                                                    <span class="meta-date"><small>5:10 PM</small></span>
+                                                </div>
+                                                <p class="sub-heading">It is a long established fact that a reader
+                                                    will...</p>
+
+                                                <a href="javascript:void(0)" class="gx-btn gx-flat-btn gx-btn-xs text-muted">
+                                                    <i class="zmdi zmdi-mail-reply"></i>
+                                                    <span>Reply</span>
+                                                </a>
+
+                                                <a href="javascript:void(0)" class="gx-btn gx-flat-btn gx-btn-xs text-muted">
+                                                    <i class="zmdi zmdi-eye"></i>
+                                                    <span>Read</span>
+                                                </a>
+                                            </div>
+
+                                        </li>
+
+                                        <li class="media">
+                                            <div class="user-thumb">
+                                                <img alt="Domnic Harris" src="http://via.placeholder.com/150x150"
+                                                     class="size-40 rounded-circle user-avatar">
+
+                                                <span class="badge badge-danger rounded-circle">3</span>
+                                            </div>
+                                            <div class="media-body">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <h5 class="text-capitalize user-name mb-0">
+                                                        <a href="javascript:void(0)">Domnic Harris</a>
+                                                    </h5>
+                                                    <span class="meta-date"><small>7:35 PM</small></span>
+                                                </div>
+                                                <p class="sub-heading">All the Lorem Ipsum generators on the...</p>
+
+                                                <a href="javascript:void(0)" class="gx-btn gx-flat-btn gx-btn-xs text-muted">
+                                                    <i class="zmdi zmdi-mail-reply"></i>
+                                                    <span>Reply</span>
+                                                </a>
+
+                                                <a href="javascript:void(0)" class="gx-btn gx-flat-btn gx-btn-xs text-muted">
+                                                    <i class="zmdi zmdi-eye"></i>
+                                                    <span>Read</span>
+                                                </a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="dropdown user-nav">
+                        <a class="dropdown-toggle no-arrow d-inline-block" href="#" role="button" id="userInfo"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img class="user-avatar size-40" src="http://via.placeholder.com/150x150" alt="...">
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userInfo">
+                            <div class="user-profile">
+                                <img class="user-avatar border-0 size-40" src="http://via.placeholder.com/150x150"
+                                     alt="User">
+                                <div class="user-detail ml-2">
+                                    <h4 class="user-name mb-0">Chris Harris</h4>
+                                    <small>Administrator</small>
+                                </div>
+                            </div>
+                            <a class="dropdown-item" href="javascript:void(0)">
+                                <i class="zmdi zmdi-face zmdi-hc-fw mr-1"></i>
+                                Account
+                            </a>
+                            <a class="dropdown-item" href="javascript:void(0)">
+                                <i class="zmdi zmdi-settings zmdi-hc-fw mr-1"></i>
+                                Setting
+                            </a>
+                            <a class="dropdown-item" href="javascript:void(0)">
+                                <i class="zmdi zmdi-sign-in zmdi-hc-fw mr-1"></i>
+                                Logout
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            </header>
+        <!-- /main header -->    
+
+                @yield('content')
+
+            <!-- Footer -->
+            <footer class="gx-footer">
+                <div class="d-flex flex-row justify-content-between">
+                    <p> Copyright Company Name © 2018</p>
+                    <a href="#" class="btn-link" target="_blank">BUY NOW</a>
+                </div>
+            </footer>
+            <!-- /footer -->
+
+            </div>
+        </div>
+
+        ////////////////
+
+         <!-- Page Sidebar -->
+    <div id="menu" class="side-nav gx-sidebar">
+        <div class="navbar-expand-lg">
+
+            <!-- Sidebar header  -->
+            <div class="sidebar-header">
+                <a class="site-logo" href="index.html">
+                    <img src="http://via.placeholder.com/140x24" alt="Standbasis" title="Standbasis">
+                </a>
+            </div>
+            <!-- /sidebar header -->
+
+            <!-- Main navigation -->
+            <div id="main-menu" class="main-menu navbar-collapse collapse">
+                <ul class="nav-menu">
+                    <li class="nav-header">Main</li>
+                    <li class="menu">
+                        <a href="javascript:void(0)">
+                            <i class="zmdi zmdi-view-dashboard zmdi-hc-fw"></i>
+                            <span class="nav-text">Dashboard</span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li><a href="index.html"><span class="nav-text">Default</span></a></li>
+                            <li><a href="ecommerce.html"><span class="nav-text">eCommerce</span></a></li>
+                            <li><a href="news.html"><span class="nav-text">News</span></a></li>
+                            <li><a href="intranet.html"><span class="nav-text">Intranet</span></a></li>
+                        </ul>
+                    </li>
+                    <li class="menu">
+                        <a href="javascript:void(0)">
+                            <i class="zmdi zmdi-folder zmdi-hc-fw"></i>
+                            <span class="nav-text">Components</span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li><a href="alerts.html"><span class="nav-text">Alerts</span></a></li>
+                            <li><a href="appbar.html"><span class="nav-text text-transform-none">App Bar</span></a></li>
+                            <li><a href="avatars.html"><span class="nav-text">Avatars</span></a></li>
+                            <li><a href="badge.html"><span class="nav-text">Badge</span></a></li>
+                            <li><a href="bottom-navigation.html"><span class="nav-text">Bottom Navigation</span></a></li>
+                            <li><a href="breadcrumbs.html"><span class="nav-text">Breadcrumbs</span></a></li>
+                            <li><a href="buttons.html"><span class="nav-text">Buttons</span></a></li>
+                            <li><a href="button-group.html"><span class="nav-text">Button Group</span></a></li>
+                            <li><a href="dropdown-menus.html"><span class="nav-text">Dropdown</span></a></li>
+                            <li><a href="cards.html"><span class="nav-text">Cards</span></a></li>
+                            <li><a href="carousel.html"><span class="nav-text">Carousel</span></a></li>
+                            <li><a href="dialogs.html"><span class="nav-text">Dialogs</span></a></li>
+                            <li><a href="pagination.html"><span class="nav-text">Pagination</span></a></li>
+                            <li><a href="popovers.html"><span class="nav-text">Popovers</span></a></li>
+                            <li><a href="progress.html"><span class="nav-text">Progress</span></a></li>
+                            <li><a href="tabs.html"><span class="nav-text">Tabs</span></a></li>
+                            <li><a href="tooltips.html"><span class="nav-text">Tooltips</span></a></li>
+                            <li><a href="typography.html"><span class="nav-text">Typography</span></a></li>
+                        </ul>
+                    </li>
+                    <li class="menu no-arrow">
+                        <a href="widget.html">
+                            <i class="zmdi zmdi-widgets zmdi-hc-fw"></i>
+                            <span class="nav-text">Widgets</span>
+                        </a>
+                    </li>
+                    <li class="menu no-arrow">
+                        <a href="metrics.html">
+                            <i class="zmdi zmdi-trending-up zmdi-hc-fw"></i>
+                            <span class="nav-text">Metrics</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+            <!-- /main navigation -->
+        </div>
+    </div>
+    <!-- /page sidebar -->
+
+    ////////////////////
+
+    <header class="main-header">
+            <div class="gx-toolbar" style="left: 0px;">
+                <div class="sidebar-mobile-menu">
+                    <a class="gx-menu-icon menu-toggle" href="#menu">
+                        <span class="menu-icon icon-grey"></span>
+                    </a>
+                </div>
+
+                <div class="search-bar right-side-icon bg-transparent d-none d-sm-block">
+                    <div class="form-group">
+                        <input class="form-control border-0" placeholder="Search in app..." value="" type="search">
+                        <button class="search-icon"><i class="zmdi zmdi-search zmdi-hc-lg"></i></button>
+                    </div>
+                </div>
+
+                <ul class="quick-menu header-notifications ml-auto">
+                    <li class="dropdown language-menu">
+                        <a href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true"
+                           class="d-inline-block flag-icon" aria-expanded="true">
+                            <i class="flag flag-32 flag-us"></i>
+                        </a>
+
+                        <div role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
+                            <div class="messages-list">
+                                <ul class="list-unstyled">
+                                    <li class="media">
+                                        <i class="flag flag-32 flag-us"></i>
+                                        <a href="javascript:void(0)" class="media-body align-self-center">
+                                            English
+                                        </a>
+                                    </li>
+                                    <li class="media">
+                                        <i class="flag flag-32 flag-cn"></i>
+                                        <a href="javascript:void(0)" class="media-body align-self-center">
+                                            Chinese
+                                        </a>
+                                    </li>
+                                    <li class="media">
+                                        <i class="flag flag-32 flag-es"></i>
+                                        <a href="javascript:void(0)" class="media-body align-self-center">
+                                            Spanish
+                                        </a>
+                                    </li>
+                                    <li class="media">
+                                        <i class="flag flag-32 flag-fr"></i>
+                                        <a href="javascript:void(0)" class="media-body align-self-center">
+                                            French
+                                        </a>
+                                    </li>
+                                    <li class="media">
+                                        <i class="flag flag-32 flag-it"></i>
+                                        <a href="javascript:void(0)" class="media-body align-self-center">
+                                            Italian
+                                        </a>
+                                    </li>
+                                    <li class="media">
+                                        <i class="flag flag-32 flag-sa"></i>
+                                        <a href="javascript:void(0)" class="media-body align-self-center">
+                                            Arabic
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="nav-searchbox dropdown d-inline-block d-sm-none">
+                        <a href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" class="d-inline-block icon-btn" aria-expanded="false">
+                            <i class="zmdi zmdi-search zmdi-hc-fw"></i>
+                        </a>
+                        <div aria-hidden="true" class="p-0 dropdown-menu dropdown-menu-right search-bar right-side-icon search-dropdown">
+                            <div class="form-group">
+                                <input class="form-control border-0" placeholder="" value="" type="search">
+                                <button class="search-icon"><i class="zmdi zmdi-search zmdi-hc-lg"></i></button>
+                            </div>
+                        </div>
+
+                    </li>
+
+                    <li class="dropdown">
+                        <a href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" class="d-inline-block" aria-expanded="true">
+                            <i class="zmdi zmdi-notifications-active icons-alert animated infinite wobble"></i>
+                        </a>
+
+                        <div role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
+                            <div class="gx-card-header d-flex align-items-center">
+                                <div class="mr-auto">
+                                    <h3 class="card-heading">Notifications</h3>
+                                </div>
+                            </div>
+
+                            <div class="dropdown-menu-perfectscrollbar">
+                                <div class="messages-list">
+                                    <ul class="list-unstyled">
+                                        <li class="media">
+                                            <img alt="stella-johnson" src="http://via.placeholder.com/150x150"
+                                                 class="size-40 mr-2 user-avatar">
+                                            <div class="media-body align-self-center">
+                                                <p class="sub-heading mb-0">Stella Johnson has recently posted an
+                                                    album</p>
+                                                <a href="javascript:void(0)" class="gx-btn gx-flat-btn gx-btn-xs mb-0">
+                                                    <i class="zmdi zmdi-thumb-up text-blue zmdi-hc-fw"></i>
+                                                </a>
+                                                <span class="meta-date"><small>4:10 PM</small></span>
+                                            </div>
+                                        </li>
+
+                                        <li class="media">
+                                            <img alt="domnic-harris" src="http://via.placeholder.com/150x150"
+                                                 class="size-40 mr-2 user-avatar">
+                                            <div class="media-body align-self-center">
+                                                <p class="sub-heading mb-0">Alex Brown has shared Martin Guptil's
+                                                    post</p>
+                                                <a href="javascript:void(0)" class="gx-btn gx-flat-btn gx-btn-xs mb-0">
+                                                    <i class="zmdi zmdi-comment-text text-grey zmdi-hc-fw"></i>
+                                                </a>
+                                                <span class="meta-date"><small>5:18 PM</small></span>
+                                            </div>
+                                        </li>
+
+                                        <li class="media">
+                                            <img alt="domnic-brown" src="http://via.placeholder.com/150x150"
+                                                 class="size-40 mr-2 user-avatar">
+                                            <div class="media-body align-self-center">
+                                                <p class="sub-heading mb-0">Domnic Brown has sent you a group invitation
+                                                    for Global Health</p>
+                                                <a href="javascript:void(0)" class="gx-btn gx-flat-btn gx-btn-xs mb-0">
+                                                    <i class="zmdi zmdi-card-giftcard text-info zmdi-hc-fw"></i>
+                                                </a>
+                                                <span class="meta-date"><small>5:36 PM</small></span>
+                                            </div>
+                                        </li>
+
+                                        <li class="media">
+                                            <img alt="john-smith" src="http://via.placeholder.com/150x150"
+                                                 class="size-40 mr-2 user-avatar">
+                                            <div class="media-body align-self-center">
+                                                <p class="sub-heading mb-0">John Smith has birthday today</p>
+                                                <a href="javascript:void(0)" class="gx-btn gx-flat-btn gx-btn-xs mb-0">
+                                                    <i class="zmdi zmdi-cake text-warning zmdi-hc-fw"></i>
+                                                </a>
+                                                <span class="meta-date"><small>5:54 PM</small></span>
+                                            </div>
+                                        </li>
+
+                                        <li class="media">
+                                            <img alt="jimmy-jo" src="http://via.placeholder.com/150x150"
+                                                 class="size-40 mr-2 user-avatar">
+                                            <div class="media-body align-self-center">
+                                                <p class="sub-heading mb-0">Chris has updated his profile picture</p>
+                                                <a href="javascript:void(0)" class="gx-btn gx-flat-btn gx-btn-xs mb-0">
+                                                    <i class="zmdi zmdi-account-box-o text-grey zmdi-hc-fw"></i>
+                                                </a>
+                                                <span class="meta-date"><small>5:25 PM</small></span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="dropdown">
+                        <a href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" class="d-inline-block" aria-expanded="true">
+                            <i class="zmdi zmdi-comment-alt-text icons-alert zmdi-hc-fw"></i>
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-right" data-placement="bottom-end" data-x-out-of-boundaries="">
+                            <div class="gx-card-header d-flex align-items-center">
+                                <div class="mr-auto">
+                                    <h3 class="card-heading">Messages</h3>
+                                </div>
+                            </div>
+
+                            <div class="dropdown-menu-perfectscrollbar1">
+                                <div class="messages-list">
+                                    <ul class="list-unstyled">
+                                        <li class="media">
+                                            <div class="user-thumb">
+                                                <img alt="Domnic Brown" src="http://via.placeholder.com/150x150"
+                                                     class="rounded-circle size-40 user-avatar">
+                                                <span class="badge badge-danger rounded-circle">5</span>
+                                            </div>
+
+                                            <div class="media-body">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <h5 class="text-capitalize user-name mb-0">
+                                                        <a href="javascript:void(0)">Domnic Brown</a>
+                                                    </h5>
+                                                    <span class="meta-date"><small>6:19 PM</small></span>
+                                                </div>
+                                                <p class="sub-heading">There are many variations of passages of...</p>
+
+                                                <a href="javascript:void(0)" class="gx-btn gx-flat-btn gx-btn-xs text-muted">
+                                                    <i class="zmdi zmdi-mail-reply"></i>
+                                                    <span>Reply</span>
+                                                </a>
+
+                                                <a href="javascript:void(0)" class="gx-btn gx-flat-btn gx-btn-xs text-muted">
+                                                    <i class="zmdi zmdi-eye"></i>
+                                                    <span>Read</span>
+                                                </a>
+                                            </div>
+                                        </li>
+
+                                        <li class="media">
+                                            <div class="user-thumb">
+                                                <img alt="John Smith" src="http://via.placeholder.com/150x150"
+                                                     class="rounded-circle size-40 user-avatar">
+                                                <span class="badge badge-danger rounded-circle"></span>
+                                            </div>
+
+                                            <div class="media-body">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <h5 class="text-capitalize user-name mb-0">
+                                                        <a href="javascript:void(0)">John Smith</a>
+                                                    </h5>
+                                                    <span class="meta-date"><small>4:18 PM</small></span>
+                                                </div>
+                                                <p class="sub-heading">Lorem Ipsum is simply dummy text of the...</p>
+                                                <a href="javascript:void(0)" class="gx-btn gx-flat-btn gx-btn-xs text-muted">
+                                                    <i class="zmdi zmdi-mail-reply"></i>
+                                                    <span>Reply</span>
+                                                </a>
+
+                                                <a href="javascript:void(0)" class="gx-btn gx-flat-btn gx-btn-xs text-muted">
+                                                    <i class="zmdi zmdi-eye"></i>
+                                                    <span>Read</span>
+                                                </a>
+                                            </div>
+                                        </li>
+
+                                        <li class="media">
+                                            <div class="user-thumb">
+                                                <img alt="John Smith" src="http://via.placeholder.com/150x150"
+                                                     class="size-40 rounded-circle user-avatar">
+                                                <span class="badge badge-danger rounded-circle">8</span>
+                                            </div>
+
+                                            <div class="media-body">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <h5 class="text-capitalize user-name mb-0">
+                                                        <a href="javascript:void(0)">John Smith</a>
+                                                    </h5>
+                                                    <span class="meta-date"><small>7:10 PM</small></span>
+                                                </div>
+                                                <p class="sub-heading">The point of using Lorem Ipsum is that it
+                                                    has...</p>
+
+                                                <a href="javascript:void(0)" class="gx-btn gx-flat-btn gx-btn-xs text-muted">
+                                                    <i class="zmdi zmdi-mail-reply"></i>
+                                                    <span>Reply</span>
+                                                </a>
+
+                                                <a href="javascript:void(0)" class="gx-btn gx-flat-btn gx-btn-xs text-muted">
+                                                    <i class="zmdi zmdi-eye"></i>
+                                                    <span>Read</span>
+                                                </a>
+                                            </div>
+                                        </li>
+
+                                        <li class="media">
+                                            <div class="user-thumb">
+                                                <img alt="alex dolgove" src="http://via.placeholder.com/150x150"
+                                                     class="size-40 rounded-circle user-avatar">
+                                                <span class="badge badge-danger rounded-circle"></span>
+                                            </div>
+
+                                            <div class="media-body">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <h5 class="text-capitalize user-name mb-0">
+                                                        <a href="javascript:void(0)">alex dolgove</a>
+                                                    </h5>
+                                                    <span class="meta-date"><small>5:10 PM</small></span>
+                                                </div>
+                                                <p class="sub-heading">It is a long established fact that a reader
+                                                    will...</p>
+
+                                                <a href="javascript:void(0)" class="gx-btn gx-flat-btn gx-btn-xs text-muted">
+                                                    <i class="zmdi zmdi-mail-reply"></i>
+                                                    <span>Reply</span>
+                                                </a>
+
+                                                <a href="javascript:void(0)" class="gx-btn gx-flat-btn gx-btn-xs text-muted">
+                                                    <i class="zmdi zmdi-eye"></i>
+                                                    <span>Read</span>
+                                                </a>
+                                            </div>
+
+                                        </li>
+
+                                        <li class="media">
+                                            <div class="user-thumb">
+                                                <img alt="Domnic Harris" src="http://via.placeholder.com/150x150"
+                                                     class="size-40 rounded-circle user-avatar">
+
+                                                <span class="badge badge-danger rounded-circle">3</span>
+                                            </div>
+                                            <div class="media-body">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <h5 class="text-capitalize user-name mb-0">
+                                                        <a href="javascript:void(0)">Domnic Harris</a>
+                                                    </h5>
+                                                    <span class="meta-date"><small>7:35 PM</small></span>
+                                                </div>
+                                                <p class="sub-heading">All the Lorem Ipsum generators on the...</p>
+
+                                                <a href="javascript:void(0)" class="gx-btn gx-flat-btn gx-btn-xs text-muted">
+                                                    <i class="zmdi zmdi-mail-reply"></i>
+                                                    <span>Reply</span>
+                                                </a>
+
+                                                <a href="javascript:void(0)" class="gx-btn gx-flat-btn gx-btn-xs text-muted">
+                                                    <i class="zmdi zmdi-eye"></i>
+                                                    <span>Read</span>
+                                                </a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="dropdown user-nav">
+                        <a class="dropdown-toggle no-arrow d-inline-block" href="#" role="button" id="userInfo"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img class="user-avatar size-40" src="http://via.placeholder.com/150x150" alt="...">
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userInfo">
+                            <div class="user-profile">
+                                <img class="user-avatar border-0 size-40" src="http://via.placeholder.com/150x150"
+                                     alt="User">
+                                <div class="user-detail ml-2">
+                                    <h4 class="user-name mb-0">Chris Harris</h4>
+                                    <small>Administrator</small>
+                                </div>
+                            </div>
+                            <a class="dropdown-item" href="javascript:void(0)">
+                                <i class="zmdi zmdi-face zmdi-hc-fw mr-1"></i>
+                                Account
+                            </a>
+                            <a class="dropdown-item" href="javascript:void(0)">
+                                <i class="zmdi zmdi-settings zmdi-hc-fw mr-1"></i>
+                                Setting
+                            </a>
+                            <a class="dropdown-item" href="javascript:void(0)">
+                                <i class="zmdi zmdi-sign-in zmdi-hc-fw mr-1"></i>
+                                Logout
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </header>
+
+        //////////////////////////////
+
+      <div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">{{ __('Login') }}</div>
+
+                <div class="card-body">
+                    <form method="POST" action="{{ route('login') }}">
+                        @csrf
+
+                        <div class="form-group row">
+                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+
+                                @error('email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+
+                                @error('password')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-6 offset-md-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+
+                                    <label class="form-check-label" for="remember">
+                                        {{ __('Remember Me') }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-0">
+                            <div class="col-md-8 offset-md-4">
+                                <button type="submit" class="btn btn-primary">
+                                    {{ __('Login') }}
+                                </button>
+
+                                @if (Route::has('password.request'))
+                                    <a class="btn btn-link" href="{{ route('password.request') }}">
+                                        {{ __('Forgot Your Password?') }}
+                                    </a>
+                                @endif
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+////////////////////////
+
+
+  <div class="row">
+                        <div class="col-xl-4 col-sm-6 col-12">
+                            <div class="bg-primary text-white card">
+                                <div class="card-header border-0">Take Attendance of A Class</div>
+                                <div class="card-body">
+                                <h5 class="card-title mb-3">Here you Can:</h5>
+                                    <h6 class="card-subtitle mb-4 text-white">Take Attendance</h6>
+                                    <h6 class="card-subtitle mb-4 text-white">Snap Attendance Picture</h6>
+                                    <h6 class="card-subtitle mb-4 text-white">Submit Attendance</h6>
+                                    
+                                        <a href="javascript:void(0)" class="btn btn-light">Click Here</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-xl-4 col-sm-6 col-12">
+                            <div class="bg-success text-white card">
+                                <div class="card-header border-0">Submit A Lessonnote</div>
+                                <div class="card-body">
+                                <h5 class="card-title mb-3">Here you Can:</h5>
+                                    <h6 class="card-subtitle mb-4 text-white">Download Lessonnote Template</h6>
+                                    <h6 class="card-subtitle mb-4 text-white">Submit Lessnnote File</h6>
+                                    <h6 class="card-subtitle mb-4 text-white">Review Lessonnote File</h6>
+                                    
+                                        <a href="javascript:void(0)" class="btn btn-light">Click Here</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4 col-sm-6 col-12">
+                            <div class="bg-danger text-white card">
+                                <div class="card-header border-0">View Measurement & Evaluation</div>
+                                <div class="card-body">
+                                <h5 class="card-title mb-3">Here you Can:</h5>
+                                    <h6 class="card-subtitle mb-4 text-white">View Attendance Flags</h6>
+                                    <h6 class="card-subtitle mb-4 text-white">View Lessonnote Flags</h6>
+                                    <h6 class="card-subtitle mb-4 text-white">Print Reports of Your Performance</h6>
+                                    
+                                        <a href="javascript:void(0)" class="btn btn-light">Click Here</a>
+                                </div>
+                            </div>
+                        </div>
+                      
+                    </div>
