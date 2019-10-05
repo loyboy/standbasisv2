@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('content')
+@section('teacher')
 <div class="gx-wrapper">
 
     <div class="animated slideInUpTiny animation-duration-3">
@@ -22,28 +22,15 @@
                                     <div class="form-group row">
                                         <label class="col-sm-4 col-lg-3 control-label">Pick a Class Subject Time Combination</label>
                                         <div class="col-sm-6 col-lg-5">
-                                            <select class="select2 form-control form-control-lg select2-hidden-accessible" data-select2-id="1" tabindex="-1" aria-hidden="true">
-                                                <option value="1" data-select2-id="3">Option 1</option>
-                                                <option value="2">Option 2</option>
-                                                <option value="3">Option 3</option>
-                                                <option value="4">Option 4</option>
-                                                <option value="5">Option 5</option>
+                                            <select class="select2 form-control form-control-lg select2-hidden-accessible" tabindex="-1" aria-hidden="true" id="input1">
+                                                <option value="" >Select Class Today</option>
+                                                
                                             </select>
-
-                                           <!-- <span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="2" style="width: 436.753px;">
-                                                <span class="selection">
-                                                    <span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-xmsl-container">
-                                                        <span class="select2-selection__rendered" id="select2-xmsl-container" role="textbox" aria-readonly="true" title="Option 1">Option 1</span>
-                                                        <span class="select2-selection__arrow" role="presentation"><b role="presentation"></b> </span> 
-                                                    </span> 
-                                                </span> 
-                                                <span class="dropdown-wrapper" aria-hidden="true"> </span>
-                                            </span> -->
                                         </div>
                                     </div>
                                     <div class="line-dashed"></div>
 
-                                    <a href="javascript:void(0)" class="gx-btn gx-btn-primary text-uppercase btn-block"> Proceed </a>
+                                    <a href="javascript:void(0)" onclick="takeAttendance()" class="gx-btn gx-btn-primary text-uppercase btn-block"> Proceed </a>
                                    
                                 </form>
                             </div>
@@ -54,4 +41,66 @@
     </div>
 
 </div>
+
+<script> 
+    let teacher = {{ Auth::user()->teacher_id }};
+    let token = '{{ Auth::user()->api_token }}';
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', '/attendances_getSubClassWithTime/'+teacher);
+    xhr.responseType = 'json';
+    let formData = new FormData();
+    formData.append("api_token", token);
+    xhr.send(formData);
+
+    xhr.onload = function() {
+        let responseObj = xhr.response;
+        var selectinput = document.querySelector('#input1');
+        var domdata = "";
+        if (responseObj.message){
+            alert(responseObj.message);
+            return;
+        }
+       
+        for ( let datarow of responseObj.data ){ 
+           selectinput.options[selectinput.options.length] = new Option( datarow.ClassName + " " + datarow.Subject + " " + datarow.DayofWeek + " " + datarow.Time, datarow.TimetableSchID );         
+        }
+      
+        //alert(responseObj.data); 
+    };
+
+    function takeAttendance(){
+        let token = '{{ Auth::user()->api_token }}';
+        
+        var selectinput = document.querySelector('#input1');
+        var val = selectinput.value;
+        if(val === ""){
+            alert('Please Select a Value from the List');
+            return;
+        }
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', '/attendances_getTimeofAtt/'+token+'/class/'+val);
+        xhr.responseType = 'json';
+        let formData = new FormData();
+        formData.append("api_token", token);
+        
+        document.getElementById('loading').style.display = 'block';
+
+        xhr.send(formData);
+
+        xhr.onload = function() {
+            let responseObj = xhr.response;
+            if (responseObj.status === "Failed"){
+                alert(responseObj.message);
+                document.getElementById('loading').style.display = 'none';
+                return;
+            } 
+            document.getElementById('loading').style.display = 'none';
+            window.location.href = "/tatttakepupil/"+val;
+
+        }
+
+    }
+
+</script>
 @endsection
+

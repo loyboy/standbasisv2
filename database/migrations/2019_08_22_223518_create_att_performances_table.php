@@ -20,6 +20,7 @@ class CreateAttPerformancesTable extends Migration
             $table->integer('qua')->default(0);
             $table->integer('flag')->default(0);
             $table->integer('policy')->default(0);
+            $table->integer('perf')->default(0);
             $table->timestamps();
 
             $table->foreign('att_id')

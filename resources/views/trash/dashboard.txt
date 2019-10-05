@@ -103,7 +103,7 @@
         </div>
     </div>
     <!-- /page sidebar -->
-
+<!--  @if (Auth::check()) -->
     <!-- Main Container -->
     <div class="gx-main-container">
 

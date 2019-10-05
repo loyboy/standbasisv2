@@ -21,6 +21,8 @@ class CreateAttActivitiesTable extends Migration
             $table->string('expected'); // timestamps
             $table->string('actual')->nullable(); // timestamps
             $table->integer('slip'); //0 - in time, 1 - late time
+            $table->string('_comment')->nullable();
+            $table->integer('_action')->nullable(); // 0- not good, 1 - approved
             $table->timestamps();
 
             $table->foreign('att_id')

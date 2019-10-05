@@ -19,7 +19,7 @@ POST http://localhost:8000/schools HTTP/1.1
 content-type: application/json
 
 {
-    "name": "Bright Future 3",
+    "name": "Bright Future 1",
     "_type": "Primary",
     "town": "Ekwere TOWN",
     "lga": "Ekwere LGA",
@@ -36,7 +36,7 @@ content-type: application/json
 
 
 //Working --- get all schools
-GET  http://localhost:8000/schools?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5 HTTP/1.1
+GET  http://127.0.0.1:8000/schools?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5 HTTP/1.1
 
 ###
 
@@ -81,8 +81,8 @@ POST http://localhost:8000/teachers HTTP/1.1
 content-type: application/json
 
 {
-    "fname": "My first name",
-    "lname": "My last name",
+    "fname": "Umoh",
+    "lname": "Sampson",
     "gender": "M",
     "agerange": "15-40",
     "bias": "Secondary",
@@ -160,12 +160,12 @@ GET  http://localhost:8000/class_streams/1?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz
 ###
 
 // Working -- Update any data via the ID
-PUT http://localhost:8000/class_streams/3
+PUT http://localhost:8000/class_streams/2
 content-type: application/json
 
 {
-    "title": "JSS 1",
-    "category": "1",
+    "title": "JSS 2",
+    "category": "8",
     "school_id": "1",
     "api_token": "UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
 }
@@ -279,8 +279,8 @@ content-type: application/json
 
 {
     "school_id": "1",
-    "_time": "13:00:00",
-    "_day": "1",
+    "_time": "13:20:00",
+    "_day": "4",
     "affected": "none",
     "waiver": "0",
     "api_token": "UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
@@ -327,9 +327,9 @@ POST http://localhost:8000/timetable_sches HTTP/1.1
 content-type: application/json
 
 {
-    "sub_class": "1",
-    "time_id": "1",
-    "comment": "This is a SUbject English, Teacher Test 1 @ 5pm on Sunday in Standbasis Schools",
+    "sub_class": "2",
+    "time_id": "2",
+    "comment": "This is a SUbject Mathematics, Teacher Test 1 @ 17:25pm on Thursday in Standbasis Schools",
     "api_token": "UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
 }
 
@@ -373,7 +373,7 @@ content-type: application/json
 {
     "term": "1",
     "session": "2018/2019",
-    "resumedate": "2019-09-09",
+    "resumedate": "2019-09-19",
     "status": "1",
     "school_id": "1",
     "holiday": "2019-09-26 , 2019-09-27",
@@ -415,7 +415,7 @@ POST http://localhost:8000/subjects HTTP/1.1
 content-type: application/json
 
 {
-    "name": "English Language",
+    "name": "Mathematics",
     "category": "Junior",
     "api_token": "UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
 }
@@ -457,9 +457,9 @@ content-type: application/json
 
 {
     "tea_id": "2",
-    "class_id": "1",
-    "sub_id": "1",
-    "title": "Teacher Test 1 JSS1 English",
+    "class_id": "2",
+    "sub_id": "2",
+    "title": "Teacher Test 2 JSS2 Mathematics",
     "api_token": "UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
 }
 
@@ -476,15 +476,14 @@ GET  http://localhost:8000/subjectclasses/1?api_token=UDy3lhYHm9CL4616M3XOgT3KfI
 ###
 
 // Working -- Update any data via the ID
-PUT http://localhost:8000/subjectclasses/3
+PUT http://localhost:8000/subjectclasses/2
 content-type: application/json
 
 {   
-    "teacher_id": "5",
-    "class_id": "4",
-    "subject_id": "3",
-    "title": "Teacher 1 JSS1 English",
-    "delegated": "1",
+    "teacher_id": "2",
+    "class_id": "2",
+    "subject_id": "2",
+    "title": "Teacher 2 JSS2 Mathematics",
     "api_token": "UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
 }
 
@@ -495,11 +494,11 @@ DELETE http://localhost:8000/subjectclasses/3?api_token=UDy3lhYHm9CL4616M3XOgT3K
 ###
 
 // Custom subject class methods
-POST http://localhost:8000/subjectclasses_findTeaSub/2/type/normal
+POST http://localhost:8000/subjectclasses_findTeaSub/12/type/normal
 content-type: application/json
 
 {   
-    "api_token": "UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
+    "api_token": "whykrngmdjbjjnpvdilahzqlzfzlrxrawpnyqkrbgbjfjzjz"
 }
 //----------------------------------------------------------Score--------------------
 
@@ -561,7 +560,7 @@ DELETE http://localhost:8000/users/3?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSW
 
 ### 
 
-// Working -- Update any data via the ID
+// Working -- Update any data via the ID test10...test100##;
 POST http://localhost:8000/users_login
 content-type: application/json
 
@@ -584,11 +583,11 @@ GET  http://localhost:8000/attendances/1?api_token=UDy3lhYHm9CL4616M3XOgT3KfIz2y
 ### 
 
 //Working --- Get Attendance Time for Class of a Teacher using User token
-POST  http://localhost:8000/attendances_getTimeofAtt/qefoRtCAlerr1tFzDrUTnTknxYhCX0gpKWJKsF9m7dtZdK4Fk5iG9gxxRdbC/class/1 HTTP/1.1
+POST  http://localhost:8000/attendances_getTimeofAtt/JPONM4eDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAx/class/1 HTTP/1.1
 content-type: application/json
 
 {
-    "api_token": "UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
+    "api_token": "SDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxsdui23f76og"
 }
 
 ###
@@ -604,7 +603,7 @@ content-type: application/json
 ###
 
 //Working --- Get Attendance Subject Classes Only with Time using Teacher ID
-POST  http://localhost:8000/attendances_getSubClassWithTime/2 HTTP/1.1
+POST  http://localhost:8000/attendances_getSubClassWithTime/12 HTTP/1.1
 content-type: application/json
 
 {
@@ -617,12 +616,111 @@ POST  http://localhost:8000/attendances_submitAtt HTTP/1.1
 content-type: application/json
 
 {
-    "subclass":"1",
-    "timeid":"2",
-    "termid":"1",
+    "subclass": "1",
+    "timeid": "1",
+    "termid": "1",
+    "_date": "2019-09-20 15:08:04",
     "pupilsdata": "[{\"PupilID\":1,\"PupilName\":\"Test 1\",\"Present\":1,\"Comment\":\"Not available\"},{\"PupilID\":2,\"PupilName\":\"Test 2\",\"Present\":1,\"Comment\":\"Not available\"},{\"PupilID\":3,\"PupilName\":\"Test 3\",\"Present\":1,\"Comment\": \"Not available\"}]",
-    "api_token": "UDy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
+    "api_token": "Dy3lhYHm9CL4616M3XOgT3KfIz2ykpSWqRPE5AgnC8NplF8BAxqowDe3jm5"
 }
 
+###
+
+//Working --- Get Attendance Time for Class of a Teacher using User token
+POST  http://localhost:8000/attendances_viewAttSub/3 HTTP/1.1
+content-type: application/json
+
+{
+    "_sub": 1,
+    "api_token": "whykrngmdjbjjnpvdilahzqlzfzlrxrawpnyqkrbgbjfjzjz"
+}
+
+###
+
+POST  http://localhost:8000/attendances_viewAttAll/39 HTTP/1.1
+content-type: application/json
+
+{
+    "_date": "2019-10-01",
+    "api_token": "whykrngmdjbjjnpvdilahzqlzfzlrxrawpnyqkrbgbjfjzjz"
+}
+
+###
+
+//Working --- Get Attendance Time for Class of a Teacher using User token
+POST  http://localhost:8000/attendances_viewAttLog/21 HTTP/1.1
+content-type: application/json
+
+{
+    "api_token": "whykrngmdjbjjnpvdilahzqlzfzlrxrawpnyqkrbgbjfjzjz"
+} //
+
+###
+
+//Working --- Get Attendance Time for Class of a Teacher using User token
+POST  http://localhost:8000/attendances_getFlags/39 HTTP/1.1
+content-type: application/json
+
+{
+    "_date": "2019-10-03",
+    "api_token": "whykrngmdjbjjnpvdilahzqlzfzlrxrawpnyqkrbgbjfjzjz"
+} 
+
+###
+
+//Working --- Get Attendance Time for Class of a Teacher using User token
+POST  http://localhost:8000/lessonnotes_getSubClass/2 HTTP/1.1
+content-type: application/json
+
+{
+    "api_token": "whykrngmdjbjjnpvdilahzqlzfzlrxrawpnyqkrbgbjfjzjz"
+}
+
+###
+
+//Working --- Get Attendance Time for Class of a Teacher using User token
+POST  http://localhost:8000/lessonnotes_viewLsn/10 HTTP/1.1
+content-type: application/json
+
+{
+    "api_token": "whykrngmdjbjjnpvdilahzqlzfzlrxrawpnyqkrbgbjfjzjz"
+} 
+
+###
+
+//Working --- Get Attendance Time for Class of a Teacher using User token
+POST  http://localhost:8000/lessonnotes_viewLsnAll/39 HTTP/1.1
+content-type: application/json
+
+{
+    "api_token": "whykrngmdjbjjnpvdilahzqlzfzlrxrawpnyqkrbgbjfjzjz"
+} 
+
+//
+###
+
+POST  http://localhost:8000/pupils_getPupilForTeacher/10 HTTP/1.1
+content-type: application/json
+
+{
+    "api_token": "whykrngmdjbjjnpvdilahzqlzfzlrxrawpnyqkrbgbjfjzjz"
+} 
+
+###
+
+POST  http://localhost:8000/pupils_getClassForTeacher/10 HTTP/1.1
+content-type: application/json
+
+{
+    "api_token": "whykrngmdjbjjnpvdilahzqlzfzlrxrawpnyqkrbgbjfjzjz"
+} 
+
+###
+POST  http://localhost:8000/terms_getDate/10 HTTP/1.1
+content-type: application/json
+
+{
+    "api_token": "whykrngmdjbjjnpvdilahzqlzfzlrxrawpnyqkrbgbjfjzjz"
+} 
 // 
 //-----------Still adding api's to the functions ---the list will continue

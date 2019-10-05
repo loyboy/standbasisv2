@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Standbasis') }}</title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -17,7 +17,7 @@
    
     <link rel="stylesheet" href="css/app.css">
     <!-- Font Material stylesheet -->
-    <link rel="stylesheet" href="theme/fonts/material-design-iconic-font/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="{{ asset('theme/fonts/material-design-iconic-font/css/material-design-iconic-font.min.css') }}">
     <!-- /font material stylesheet -->
 
     <!-- sprite-flags-master stylesheet -->
@@ -83,15 +83,20 @@
                                 </a>
                                 <h3 class="m-0">STANDBASIS</h3>
                                 
-                                <div class="collapse navbar-collapse justify-content-end">                                  
+                                <div class="collapse navbar-collapse justify-content-end"> 
+                                @if (!Auth::check())
+                                    <a href="/login" class="gx-btn gx-flat-btn gx-btn-primary gx-btn-sm  ml-2 ml-xl-3 my-sm-0 mr-0">LOGIN</a>
+                                @endif                                   
+                                @if (Auth::check() && Auth::user()->_type === 0)
+                                    <a href="/tlsnsubmit" class="gx-btn gx-flat-btn gx-btn-primary gx-btn-sm  ml-2 ml-xl-3 my-sm-0 mr-0">LESSONNOTE</a>
 
-                                    <a href="javascript:void(0)" class="gx-btn gx-flat-btn gx-btn-primary gx-btn-sm  ml-2 ml-xl-3 my-sm-0 mr-0">LOGIN</a>
+                                    <a href="/tattview" class="gx-btn gx-flat-btn gx-btn-primary gx-btn-sm  ml-2 ml-xl-3 my-sm-0 mr-0">ATTENDANCE</a>
 
-                                    <a href="javascript:void(0)" class="gx-btn gx-flat-btn gx-btn-primary gx-btn-sm  ml-2 ml-xl-3 my-sm-0 mr-0">ATTENDANCE</a>
-
+                                    <a href="/tmneview" class="gx-btn gx-flat-btn gx-btn-primary gx-btn-sm  ml-2 ml-xl-3 my-sm-0 mr-0">M&E</a>                               
+                                @endif
                                     <div class="ml-3 ml-xl-5 d-none d-md-block">
                                        <p style="padding: 0 0 0 30%;"> <img alt="Standbasis Teacher" src="http://via.placeholder.com/150x150" class="rounded-circle size-40"/> </p>
-                                        <label> <b> Mr. Edikan Umoren </b> </label>
+                                        <label> <b> Welcome, User </b> </label>
                                     </div>
 
                                 </div>

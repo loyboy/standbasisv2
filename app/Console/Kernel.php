@@ -57,7 +57,7 @@ class Kernel extends ConsoleKernel
                  
                  //teachers in the school
                   //$teachers = DB::select(" SELECT * FROM teacher t WHERE t.school_sch_id = :sch AND t._status = :st " , [ "sch" => $sch->sch_id, "st" => 1 ] );  
-                  $teachers = Teacher::where('school_id', $sch->id)->where('_status', 1)->get();
+                  $teachers = Teacher::where('school_id', $sch->id)->where('_status', 1)->where('_type', 0)->get();
 
                   $time = DB::select('SELECT term , resumedate , ( week(curdate()) - week(resumedate) + 1 ) AS weeksout FROM terms WHERE _status = 1 AND school_id = :sch;', [ "sch" => $sch->id ]);
                     
@@ -73,8 +73,7 @@ class Kernel extends ConsoleKernel
                       $afternoon = strtotime("11:45");
                       $close = strtotime("13:15");
                       $timenow = strtotime(date('H:i'));
-                      $period = "";
-                     
+                      $period = "";                    
                      
                        if ($timenow <= $morning){ $period = "M"; }
                        if ($timenow > $morning && $timenow <= $afternoon){ $period = "B"; }
@@ -82,22 +81,50 @@ class Kernel extends ConsoleKernel
                             
                 foreach ($teachers as $t){
                 
-                //categorize the school_timetable data by subject
-                $resultsteach = DB::select(" SELECT s.ID, t.TEA_ID, t.CLASS_ID, st.ID, t.ID as subclass, st.time_id FROM subjects s INNER JOIN subjectclasses t ON t.SUB_ID = s.ID INNER JOIN timetable_sches st ON t.ID = st.SUB_CLASS WHERE t.TEA_ID = :tea AND st.TIME_ID IN (SELECT ID FROM timetables st1 WHERE st1._TIME LIKE :tym AND st1._TIME LIKE :tym2 AND st1._DAY = :dayz) GROUP BY s.ID, t.TEA_ID, t.CLASS_ID, st.ID, st.TIME_ID " , [ "tea" =>  $t->id, "tym" => '%'.$splittime[0].'%' ,"tym2" => '%'.$splittime[1].'%' , "dayz" => $thedayofweek ] );
+                //categorize the school_timetable data by subject -- also check for Waived teachers
+                // If timetables.waiver === 1, then the whole school has been waived
+                // It timetable.affected has any teacher id inside, then that teacher alone is waived, 
+                // i DID a uNION HERE TO INCLUDE THE DELEGATED CLASSES GIVEn TO THE tEACHER
+                $resultsteach = DB::select(
+                "SELECT s.ID, te.ID as TEA_ID, t.CLASS_ID, st.ID, t.ID as subclass, st.time_id , t.DELEGATED, t1.waiver as waived, t1.affected as affected
+                FROM subjects s 
+                INNER JOIN subjectclasses t ON t.SUB_ID = s.ID 
+                INNER JOIN timetable_sches st ON t.ID = st.SUB_CLASS
+                INNER JOIN timetables t1 ON t1.ID = st.TIME_ID 
+                INNER JOIN teachers te ON te.ID = t.TEA_ID
+                WHERE t.TEA_ID = :tea 
+                AND st.TIME_ID 
+                IN (SELECT ID FROM timetables st1 WHERE st1._TIME LIKE :tym AND st1._TIME LIKE :tym2 AND st1._DAY = :dayz)
+               
+                " , 
+                [ "tea" =>  $t->id, "tym" => '%'.$splittime[0].'%' ,"tym2" => '%'.$splittime[1].'%' , "dayz" => $thedayofweek ] );
                 
-                echo "Teacher: ". $t->id."\r\n"; echo "Year: ". $theyear."\r\n"; echo "Teach: ". $school_time->term."\r\n"; echo "Time of the day: ".$thetimeofday."\r\n"; echo "Dayofweek: ".$thedayofweek."\r\n";
-                      
+                echo "Teacher: ". $t->id."\r\n"; echo "Year: ". $theyear."\r\n"; echo "Term: ". $school_time->term."\r\n"; echo "Time of the day: ".$thetimeofday."\r\n"; echo "Dayofweek: ".$thedayofweek."\r\n";
+                      //  GROUP BY s.ID, te.ID, t.CLASS_ID, st.ID, st.TIME_ID , t.ID
                 foreach ($resultsteach as $rt)  {
                       
                       echo "Subject now teaching is...".$rt->TEA_ID."\r\n";
-                      
+                      $done = 0; $delegated = null;
                       $checkifattexists = DB::select("SELECT * FROM attendances WHERE sub_class_id = :id AND time_id = :timex AND term = :term AND _date LIKE :dat " , ['id' => $rt->subclass, 'term' => $school_time->term , "dat" => '%'.$todaydate.'%', "timex" => $rt->time_id  ] ); 
   
                           if (empty($checkifattexists)){ 
                             $td = date("Y-m-d H:i");
+                            $search = $rt->TEA_ID.",";
+                              if(!is_null($rt->DELEGATED)){
+                                 $delegated = $rt->DELEGATED;
+                              }
+                              if (stripos($rt->affected, $search) !== false) {
+                                  $done = -1;// Let this mean the class was waived
+                              }
+                              else if ($rt->waived === 1){
+                                  $done = -1;
+                              }
+                              else{
+                                  $done = 0;
+                              }
                             // $td = date("Y-m-d H:i:s",strtotime('+1 hours'));
                            
-                            DB::table('attendances')->insert([ 'time_id' => $rt->time_id, 'sub_class_id' => $rt->subclass , '_desc' => $thedesc , "_date" => $td , "period" => $period, "term" => $term  ]);                             
+                            DB::table('attendances')->insert([ 'time_id' => $rt->time_id, 'sub_class_id' => $rt->subclass , '_desc' => $thedesc , "_date" => $td , "period" => $period, "term" => $term, "_done" => $done, "_delegated" => $delegated ]);                             
                           }                      
                       }  
                      

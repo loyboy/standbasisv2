@@ -16,13 +16,14 @@ class CreateLessonnoteManagementsTable extends Migration
         Schema::create('lessonnote_managements', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('lsn_id')->index();
-            $table->datetime('_submission')->nullable();
-            $table->datetime('_resubmission')->nullable();
-            $table->datetime('_revert')->nullable();
-            $table->datetime('_approval')->nullable();
+            $table->datetime('_submission')->nullable()->default("1970-10-10 00:00:00");
+            $table->datetime('_resubmission')->nullable()->default("1970-10-10 00:00:00");
+            $table->datetime('_revert')->nullable()->default("1970-10-10 00:00:00");
+            $table->datetime('_approval')->nullable()->default("1970-10-10 00:00:00");
             $table->integer('_cycle')->default(1);
-            $table->datetime('_launch')->nullable();
-            $table->datetime('_closure')->nullable();
+            $table->datetime('_launch')->nullable()->default("1970-10-10 00:00:00");
+            $table->datetime('_closure')->nullable()->default("1970-10-10 00:00:00");
+            $table->datetime('_exclosure')->nullable()->default("1970-10-10 00:00:00");
             $table->timestamps();
 
             $table->foreign('lsn_id')

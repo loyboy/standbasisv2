@@ -127,7 +127,7 @@ class SubjectClassController extends Controller
     {
 
         if ($type === 'normal'){
-            $subject =  Subjectclass::where("tea_id", $id)->whereNull('delegated')->get();
+            $subject =  Subjectclass::where("tea_id", $id)->where("delegated", 0)->get();
             $datablock = array();
             if (count($subject) <= 0){
                 $data['status'] = "Failed";
@@ -136,13 +136,13 @@ class SubjectClassController extends Controller
             }else{       
                      
                 foreach($subject as $sub){
-                    if (!is_null($sub->delegated)){
+                    if ($sub->delegated !== 0){
                         $data['status'] = "Failed";
                         $data['message'] = "This Subject Class has been given to another Teacher";
                         return response()->json($data);
                     }
                     $cat = array("ClassName" => $sub->classstream->title, "ClassId" => $sub->classstream->id , 
-                    "Subject" => $sub->subject->name, "SubjectId" => $sub->subject->id );
+                    "Subject" => $sub->subject->name, "SubjectId" => $sub->subject->id, "SubjectClassId" => $sub->id );
                     $datablock[] = $cat;
                 }            
                 $data['status'] = "Success";

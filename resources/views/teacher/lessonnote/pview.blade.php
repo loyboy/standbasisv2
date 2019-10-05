@@ -1,13 +1,13 @@
 @extends('layouts.dashboard')
 
-@section('teacher')
+@section('principal')
   <!--gx-wrapper-->
   <div class="gx-wrapper">
 
 <div class="animated slideInUpTiny animation-duration-3">
 
     <div class="page-heading">
-        <h2 class="title">View Lessonnote Data</h2>
+        <h2 class="title">View Lessonnote Data from Teachers</h2>
     </div>
 
     <div class="row">
@@ -23,10 +23,11 @@
                             <thead>
                             <tr>
                                 <th>S/N</th>
+                                <th>Teacher Name </th>
                                 <th>Lessonnote Name </th>
                                 <th>Current Status</th>
                                 <th> Current Perfomance </th>  
-                                <th> Action</th>                             
+                                <th> Your Action</th>                             
                                 <th>View</th>
                             </tr>
                             </thead>
@@ -49,7 +50,7 @@
 
        // let datebox = $('#attdate').val();
         let xhr = new XMLHttpRequest();
-        xhr.open('POST', '/lessonnotes_viewLsn/'+teacher);
+        xhr.open('POST', '/lessonnotes_viewLsnAll/'+teacher);
         xhr.responseType = 'json';
         let formData = new FormData();
         //formData.append("_date", datebox);
@@ -78,30 +79,37 @@
                 var cell3 = tablex.insertCell(3);
                 var cell4 = tablex.insertCell(4);
                 var cell5 = tablex.insertCell(5);
+                var cell6 = tablex.insertCell(6);
                
                 let mycell4 = "";
 
                 tablex.className = "datarow";
                 cell0.innerHTML = "<strong>"+ (i + 1) + "</strong>";
-                cell1.innerHTML = "<strong>"+ datarow.Title + "</strong>";
-                cell2.innerHTML = "<strong>"+ datarow.Status + "</strong>";                
-                cell3.innerHTML = "<strong>"+ datarow.Perf + "%" + "</strong>";
-                if (datarow.Status === "APPROVED.."){
-                    mycell4 += "<strong> <a class='btn btn-primary' onclick='changeStatus("+ datarow.id + ", 2)' >  Launch!! </a> </strong> <br>";                 
-                }
-                if (datarow.Status === "REJECTED.."){
-                    mycell4 += "<strong> <a class='btn btn-warning' onclick='changeStatus("+ datarow.id + ", 1)' >  Re-Submit!! </a> </strong> <br>";                 
-                }
-                if (datarow.Status === "ACTIVE.."){
-                    mycell4 += "<strong> <a class='btn btn-info' onclick='changeStatus("+ datarow.id + ", 3)' >  Close!! </a> </strong> <br>";                 
-                }
+                cell1.innerHTML = "<strong>"+ datarow.Teacher + "</strong>";
+                
+                cell2.innerHTML = "<strong>"+ datarow.Title + "</strong>";
+                cell3.innerHTML = "<strong>"+ datarow.Status + "</strong>";                
+                cell4.innerHTML = "<strong>"+ datarow.Perf + "%" + "</strong>";
 
                 if (datarow.Status === "SUBMITTED.."){
-                    mycell4 += "<strong> <a class='btn btn-info' >  Pending </a> </strong> <br>";                 
+                    mycell4 += "<strong> <a class='btn btn-primary white' onclick='changeStatus("+ datarow.id + ", 5)' >  Approve!! </a> </strong> <br>"; 
+                    mycell4 += "<strong> <a class='btn btn-warning white' onclick='changeStatus("+ datarow.id + ", 4)' >  Decline!! </a> </strong> <br>";                 
+                }
+                else if (datarow.Status === "RESUBMITTED.."){
+                    mycell4 += "<strong> <a class='btn btn-primary white' onclick='changeStatus("+ datarow.id + ", 5)' >  Approve!! </a> </strong> <br>"; 
+                    mycell4 += "<strong> <a class='btn btn-warning white' onclick='changeStatus("+ datarow.id + ", 4)' >  Decline!! </a> </strong> <br>";                  
                 }
 
-                cell4.innerHTML =  mycell4;
-                cell5.innerHTML = `<strong> <a class="btn btn-success" href="{{ asset('storage/LessonNote/${teacher}/Template/${datarow.Filez}') }}" >  View File </a> </strong> <br>`;                 
+                else if (datarow.Status === "REJECTED.."){
+                    mycell4 += "<strong> <a class='btn btn-secondary white' >  Reverted!! </a> </strong> <br>"; 
+                }
+
+                else if (datarow.Status === "APPROVED.."){
+                    mycell4 += "<strong> <a class='btn btn-info white' >  Approved!! </a> </strong> <br>"; 
+                }
+
+                cell5.innerHTML =  mycell4;
+                cell6.innerHTML = `<strong> <a class="btn btn-success" href="{{ asset('storage/LessonNote/${teacher}/Template/${datarow.Filez}') }}" >  View File </a> </strong> <br>`;                 
               
                 i++;
             }
@@ -128,6 +136,7 @@
                     document.getElementById('loading').style.display = 'none';
                     return;
                 }
+                alert(responseObj.message);
                 
             }
          }

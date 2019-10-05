@@ -11,6 +11,11 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    public function teacher()
+    {
+        return $this->belongsTo('App\Teacher', 'teacher_id', 'id');
+    }
+
     /**
      * The attributes that are mass assignable.
      *

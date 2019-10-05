@@ -22,6 +22,7 @@ class CreateAttendancesTable extends Migration
             $table->char('period',2); // (M)orning, (A)fternoon , (C)lose
             $table->text('image')->nullable(); // it will be a base64 image stream
             $table->integer('_done')->default(0); // 1- yes, 0 - Nope
+            $table->integer('_delegated')->nullable()->default(0);
             $table->string('_desc')->nullable();
             $table->timestamps();
 

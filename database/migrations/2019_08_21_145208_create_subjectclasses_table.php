@@ -21,8 +21,8 @@ class CreateSubjectclassesTable extends Migration
             //$table->unsignedBigInteger('time_id')->index();
             $table->string('title')->nullable();
             $table->integer('delegated')->nullable()->default(0); // Teacher to take over from this present Teacher
-            $table->integer('totalcount')->default(-1);
-            $table->integer('totalslot')->default(0);
+            $table->integer('totalcount')->nullable()->default(-1);
+            $table->integer('totalslot')->nullable()->default(0);
             $table->timestamps();
 
             $table->foreign('tea_id')

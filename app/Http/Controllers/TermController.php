@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Term;
+use App\Teacher;
 
 class TermController extends Controller
 {
@@ -121,4 +122,25 @@ class TermController extends Controller
             return response()->json($data);
         }
     }
+
+     /**
+     * Gt the current Term date of resumption
+     * @return \Illuminate\Http\Response
+     */
+    public function getTermDate($teaid)
+    {
+        try{
+        $tea = Teacher::findOrFail($teaid);
+        $term = Term::where('school_id',$tea->school_id)->where('_status',1)->first();
+        $data['status'] = "Success";
+        $data['data'] = array( "date" => $term->resumedate, "term" => $term->term );
+        return response()->json($data);
+        } catch (Exception $e) {
+            $data['status'] = "Error";
+            $data['message'] = $e->getMessage();
+            return response()->json($data);
+        }
+    }
+
+    
 }

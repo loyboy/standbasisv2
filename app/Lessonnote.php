@@ -8,15 +8,15 @@ class Lessonnote extends Model
 {
     public function teacher()
     {
-        return $this->belongsTo('App\Teacher', 'foreign_key', 'tea_id');
+        return $this->belongsTo('App\Teacher', 'tea_id', 'id');
     }
     public function subject()
     {
-        return $this->belongsTo('App\Subject', 'foreign_key', 'sub_id');
+        return $this->belongsTo('App\Subject', 'sub_id', 'id');
     }
     public function term()
     {
-        return $this->belongsTo('App\Term', 'foreign_key', 'term_id');
+        return $this->belongsTo('App\Term', 'term_id', 'id');
     }
      /*
     * The attributes that are mass assignable.

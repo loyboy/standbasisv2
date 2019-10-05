@@ -8,7 +8,7 @@ class AttActivity extends Model
 {
     public function attendance()
     {
-        return $this->belongsTo('App\Attendance', 'foreign_key', 'att_id');
+        return $this->belongsTo('App\Attendance', 'att_id', 'id');
     }
 
     /*
@@ -17,6 +17,6 @@ class AttActivity extends Model
     * @var array
     */
     protected $fillable = [
-        'att_id', 'owner', 'ownertype', 'expected', 'actual', 'slip'
+        'att_id', 'owner', 'ownertype', 'expected', 'actual', 'slip', '_comment', '_action'
     ];
 }

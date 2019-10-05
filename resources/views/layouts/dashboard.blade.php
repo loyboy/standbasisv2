@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Standbasis') }}</title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -16,42 +16,125 @@
     <!-- Styles  <link rel="stylesheet" href="css/app.css"> -->   
    
     <!-- Font Material stylesheet -->
-    <link rel="stylesheet" href="theme/fonts/material-design-iconic-font/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="{{ asset('theme/fonts/material-design-iconic-font/css/material-design-iconic-font.min.css') }}">
     <!-- /font material stylesheet -->
 
     <!-- sprite-flags-master stylesheet -->
-    <link rel="stylesheet" href="theme/fonts/sprite-flags-master/sprite-flags-32x32.css">
+   <!-- <link rel="stylesheet" href="{{ asset('theme/fonts/sprite-flags-master/sprite-flags-32x32.css') }}"> -->
     <!-- /sprite-flags-master stylesheet -->
 
+    <link rel="stylesheet" href="{{ asset('theme/fonts/fontawesome/css/font-awesome.min.css') }}">
+
     <!--Weather stylesheet -->
-    <link rel="stylesheet" href="theme/fonts/weather-icons-master/css/weather-icons.min.css">
+    <link rel="stylesheet" href="{{ asset('theme/fonts/weather-icons-master/css/weather-icons.min.css') }}">
     <!--/Weather stylesheet -->
 
     <!-- Bootstrap stylesheet -->
-    <link href="theme/css/mouldifi-bootstrap.css" rel="stylesheet">
+    <link href=" {{ asset('theme/css/mouldifi-bootstrap.css') }} " rel="stylesheet">
     <!-- /bootstrap stylesheet -->
 
     <!-- Perfect Scrollbar stylesheet -->
-    <link href="node_modules/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet">
+    <link href="{{ asset('node_modules/perfect-scrollbar/css/perfect-scrollbar.css') }} " rel="stylesheet">
     <!-- /perfect scrollbar stylesheet -->
 
     <!-- c3 Chart's css file -->
-    <link href="node_modules/c3/c3.min.css" rel="stylesheet">
+    <link href="{{ asset('node_modules/c3/c3.min.css') }}" rel="stylesheet">
     <!-- /c3 chart stylesheet -->
 
     <!-- Chartists Chart's css file -->
-    <link href="node_modules/chartist/dist/chartist.min.css" rel="stylesheet">
+    <link href="{{ asset('node_modules/chartist/dist/chartist.min.css') }}" rel="stylesheet">
     <!-- /chartists chart stylesheet -->
 
     <!-- Mouldifi-core stylesheet -->
-    <link href="theme/css/mouldifi-core.css" rel="stylesheet">
+    <link href="{{ asset('theme/css/mouldifi-core.css') }}" rel="stylesheet">
     <!-- /mouldifi-core stylesheet -->
 
     <!-- Color-Theme stylesheet -->
-    <link id="override-css-id" href="theme/css/theme-indigo.min.css" rel="stylesheet">
+    <link id="override-css-id" href="{{ asset('theme/css/theme-indigo.min.css') }}" rel="stylesheet">
     <!-- Color-Theme stylesheet -->
+
+    <style>
+        .centertext{
+            text-align: 'center';
+        }
+        #loading-image {
+          position: absolute;
+          top: 160px;
+          left: 640px;
+          z-index: 100;
+        }
+._toolbar{
+    background: #17375e repeat; 
+    width: 40px;
+    color: #fff;
+    text-align: center;
+    
+}
+._toolbar a{
+    color:  #fff;
+    font-weight: bold;
+    height:70px;
+}
+._toolbar ul li a{
+    font-weight: bold;
+}
+._toolbar_submenu{
+    background:  #f9be77;
+}
+._toolbar_submenu2{
+    background:  #17375e repeat;
+    
+}
+._toolbar_submenu3{
+    background:  #17375e repeat;
+    
+}
+._toolbar ._toolbar_submenu2 a, ._toolbar ._toolbar_submenu3 a{
+    color: #fff;
+}
+._toolbar ._toolbar_submenu2 li{
+    border-bottom: 2px solid #fff;
+}
+.menu_toolbar{
+    color:#E4A16A;
+}
+
+.st_table{
+   table-layout: fixed;
+}
+.st_table tr td{
+    width: 50px;
+}
+
+.st_table tr td.textc{
+    width: 30px;
+    height: 20px;
+    color: #fff;
+    background:  #1f497d repeat;
+}
+
+.st_table tr td.textc a{
+    color: #fff;
+}
+
+.lighter{
+    background: #17375e;
+}
+
+.widthplus{
+    width: 40%;
+}
+
+.myhide{
+    display: none;
+}
+    </style>
 </head>
     <body id="body" data-theme="amber">
+    
+    <div id="loading" style="display: none;">
+      <img id="loading-image" src="<?php echo asset("images/loading.gif");?>" alt="Loading..." />
+    </div>
 
 <!-- Page container -->
 <div class="gx-container">
@@ -61,8 +144,8 @@
         <div class="navbar-expand-lg">
             <!-- Sidebar header  -->
             <div class="sidebar-header">
-                <a class="site-logo" href="index.html">
-                    <img src="/Standbasislogo.png" alt="Standbasis" title="Standbasis" width="200" height="250">
+                <a class="site-logo" href="/">
+                    <img src="{{ asset('standbasis1.png') }}" alt="Standbasis" title="Standbasis">
                 </a>
             </div>
             <!-- /sidebar header -->
@@ -70,30 +153,76 @@
             <!-- Main navigation -->
             <div id="main-menu" class="main-menu navbar-collapse collapse">
                 <ul class="nav-menu">
-                    <li class="nav-header">Main</li>
-                    <li class="menu">
-                        <a href="javascript:void(0)">
-                            <i class="zmdi zmdi-view-dashboard zmdi-hc-fw"></i>
-                            <span class="nav-text">Attendance</span>
-                        </a>
-                        <ul class="sub-menu">
-                            <li><a href="/tatttake"><span class="nav-text">Take Attendance</span></a></li>
-                            <li><a href="/tattview"><span class="nav-text">View Attendance</span></a></li>                          
-                        </ul>
-                    </li>
-
-                    <li class="menu">
-                        <a href="javascript:void(0)">
-                            <i class="zmdi zmdi-hc-fw zmdi-view-compact"></i>
-                            <span class="nav-text">Lessonnote</span>
-                        </a>
-                        <ul class="sub-menu">
-                            <li><a href="/tlsnsubmit"><span class="nav-text"> Submit Lessonnote </span></a></li>
-                            <li><a href="/tlsnview"><span class="nav-text"> View Submitted Lessonnote </span></a></li>                          
-                        </ul>
-                    </li>
-
                     
+                   <li class="nav-header"> <a href="/"> Main </a> </li>
+                   @if (Auth::check() && ( Auth::user()->_type === 0 || Auth::user()->_type === 8 ) )
+                        <li class="menu open">
+                            <a href="javascript:void(0)">
+                                <i class="zmdi zmdi-view-dashboard zmdi-hc-fw"></i>
+                                <span class="nav-text">Attendance</span>
+                            </a>
+                            <ul class="sub-menu" display="block">
+                                <li><a href="/tatttake"><span class="nav-text">Take Attendance</span></a></li>
+                                <li><a href="/tattviews"><span class="nav-text">View Attendance</span></a></li>                          
+                            </ul>
+                        </li>
+
+                        <li class="menu open">
+                            <a href="javascript:void(0)">
+                                <i class="zmdi zmdi-hc-fw zmdi-view-compact"></i>
+                                <span class="nav-text">Lessonnote</span>
+                            </a>
+                            <ul class="sub-menu" display="block">
+                                <li><a href="/tlsnsubmit"><span class="nav-text"> Submit Lessonnote </span></a></li>
+                                <li><a href="/tlsnview"><span class="nav-text"> View Submitted Lessonnote </span></a></li>                          
+                            </ul>
+                        </li>
+
+                        <li class="menu open">
+                            <a href="javascript:void(0)">
+                                <i class="zmdi zmdi-hc-fw zmdi-view-compact"></i>
+                                <span class="nav-text">M&E</span>
+                            </a>
+                            <ul class="sub-menu" display="block">
+                                <li><a href="/tmneview"><span class="nav-text"> View M&E </span></a></li>
+                                                    
+                            </ul>
+                        </li>
+                    @endif
+                    
+                    @if (Auth::check() && Auth::user()->_type === 1)
+                        <li class="menu open">
+                            <a href="javascript:void(0)">
+                                <i class="zmdi zmdi-view-dashboard zmdi-hc-fw"></i>
+                                <span class="nav-text">Attendance</span>
+                            </a>
+                            <ul class="sub-menu" display="block">                               
+                                <li><a href="/pattviews"><span class="nav-text">View Attendances</span></a></li>                          
+                            </ul>
+                        </li>
+
+                        <li class="menu open">
+                            <a href="javascript:void(0)">
+                                <i class="zmdi zmdi-hc-fw zmdi-view-compact"></i>
+                                <span class="nav-text">Lessonnote</span>
+                            </a>
+                            <ul class="sub-menu" display="block">
+                                <li><a href="/plsnview"><span class="nav-text"> View Submitted Lessonnote </span></a></li>                          
+                            </ul>
+                        </li>
+
+                        <li class="menu open">
+                            <a href="javascript:void(0)">
+                                <i class="zmdi zmdi-hc-fw zmdi-view-compact"></i>
+                                <span class="nav-text">Flags</span>
+                            </a>
+                            <ul class="sub-menu" display="block">
+                                <li><a href="/pattflags"><span class="nav-text"> View Attendance Flags </span></a></li>
+                                <li><a href="/plsnflags"><span class="nav-text"> View Lessonnote Flags </span></a></li>
+                                                    
+                            </ul>
+                        </li>
+                    @endif
                    
                 </ul>
             </div>
@@ -425,26 +554,58 @@
                         </div>
                     </li>
 
+                    
+
                     <li class="dropdown user-nav">
+                        <a href="#" class="gx-btn gx-flat-btn gx-btn-primary gx-btn-sm  ml-2 ml-xl-3 my-sm-0 mr-0">{{ Auth::user()->name }}</a>
+
                         <a class="dropdown-toggle no-arrow d-inline-block" href="#" role="button" id="userInfo"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img class="user-avatar size-50" src="http://via.placeholder.com/150x150" alt="...">
+                                @if (Auth::user()->_type === 0)
+                                    <img class="user-avatar border-0 size-40"  src="{{ asset('images/letterT.png') }}" width="150" height="150" alt="User">
+                                @endif
+
+                                @if (Auth::user()->_type === 1)
+                                    <img class="user-avatar border-0 size-40"  src="{{ asset('images/letterT.png') }}" width="150" height="150" alt="User">
+                                @endif
+                           
                         </a>
 
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userInfo">
-                            <div class="user-profile">
-                                <img class="user-avatar border-0 size-40" src="http://via.placeholder.com/150x150"
-                                     alt="User">
-                                <div class="user-detail ml-2">
-                                    <h4 class="user-name mb-0">Edikan Umoren</h4>
-                                    <small>Teacher</small>
+                       
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userInfo">
+                                <div class="user-profile">
+                                @if (Auth::user()->_type === 0 || Auth::user()->_type === 8)
+                                    <img class="user-avatar border-0 size-40"  src="{{ asset('images/letterT.png') }}"  width="150" height="150" alt="User">
+                                @endif
+
+                                @if (Auth::user()->_type === 1)
+                                    <img class="user-avatar border-0 size-40"  src="{{ asset('images/letterT.png') }}"  width="150" height="150" alt="User">
+                                @endif
+                                        
+                                    <div class="user-detail ml-2">
+                                        <h4 class="user-name mb-0">{{ Auth::user()->name }}</h4>
+                                        @if (Auth::user()->_type === 0)
+                                            <small>Teacher</small>
+                                        @endif
+                                        @if (Auth::user()->_type === 8)
+                                            <small class="danger">Test Teacher</small>
+                                        @endif
+                                        
+                                        @if (Auth::user()->_type === 1)
+                                            <small>Principal</small>
+                                        @endif
+                                        @if (Auth::user()->_type === 2)
+                                            <small>Administrator</small>
+                                        @endif
+                                        
+                                    </div>
                                 </div>
+                                <a class="dropdown-item" href="/logoutuser">
+                                    <i class="zmdi zmdi-sign-in zmdi-hc-fw mr-1"></i>
+                                    Logout
+                                </a>
                             </div>
-                            <a class="dropdown-item" href="javascript:void(0)">
-                                <i class="zmdi zmdi-sign-in zmdi-hc-fw mr-1"></i>
-                                Logout
-                            </a>
-                        </div>
+                     
                     </li>
                 </ul>
             </div>
@@ -453,7 +614,15 @@
 
         <!-- Main Content -->
         <div class="gx-main-content">
-            @yield('content')
+                @if (Auth::check() && ( Auth::user()->_type === 0 || Auth::user()->_type === 9 || Auth::user()->_type === 8 ) )
+                    @yield('teacher')
+                @elseif (Auth::check() && Auth::user()->_type === 1 )
+                    @yield('principal')
+                @elseif (Auth::check() && Auth::user()->_type === 2)
+                    @yield('admin')
+                @else
+                    @yield('content')
+                @endif
 
             <!-- Footer -->
             <footer class="gx-footer">
@@ -557,26 +726,40 @@
     
 
     <!--Load JQuery-->
-    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="{{ asset('node_modules/jquery/dist/jquery.min.js') }}"></script>
+    @yield('myscript')
+    <script>  
+    $(document).ready(function() { 
+        $(document).ajaxStop(function(){
+                 console.log('ajax stop general');
+               $('#loading').hide();
+             });
+        $(document).ajaxStart(function(){
+                 console.log('ajax start general');
+              $('#loading').show();
+             });
+        }); 
+    </script>
     <!--Bootstrap JQuery-->
-    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('node_modules/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
     <!--Perfect Scrollbar JQuery-->
-    <script src="node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js"></script>
+    <script src="{{ asset('node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js') }}"></script>
     <!--Big Slide JQuery-->
-    <script src="node_modules/bigslide/dist/bigSlide.min.js"></script>
+    <script src="{{ asset('node_modules/bigslide/dist/bigSlide.min.js') }}"></script>
     <!--chart-->
    <!-- <script src="node_modules/d3/d3.min.js"></script>
     <script src="node_modules/c3/c3.min.js"></script>
     <script src="node_modules/chartist/dist/chartist.min.js"></script>
     <script src="node_modules/chart.js/dist/Chart.bundle.min.js"></script> -->
 
-    <script src="node_modules/datatables.net/js/jquery.dataTables.js"></script>
-    <script src="node_modules/datatables.net-bs4/js/dataTables.bootstrap4.js"></script>
+    <script src="{{ asset('node_modules/datatables.net/js/jquery.dataTables.js') }}"></script>
+    <script src="{{ asset('node_modules/datatables.net-bs4/js/dataTables.bootstrap4.js') }}"></script>
 
     <!--Custom JQuery-->
-    <script src="theme/js/functions.js"></script>
-    <script src="theme/js/custom/data-tables.js"></script>
-    <script src="theme/js/custom/chart/dashboard-chart.js"></script>
+    <script src="{{ asset('theme/js/functions.js') }}"></script>
+    <script src="{{ asset('theme/js/custom/data-tables.js') }}"></script>
+    <script src="{{ asset('theme/js/custom/chart/dashboard-chart.js') }}"></script>
 
+   
 </body>
 </html>

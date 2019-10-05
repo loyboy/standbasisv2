@@ -7,9 +7,10 @@
                     <div class="login-content">
 
                         <div class="login-header">
-                            <a class="site-logo" href="javascript:void(0)" title="Standbasis">
+                           <!-- <a class="site-logo" href="javascript:void(0)" title="Standbasis">
                                 <img src="http://via.placeholder.com/140x24" alt="Standbasis" title="standbasis">
-                            </a>
+                            </a> -->
+                           <h3> Standbasis </h3>
                         </div>
                         
                         <div class="login-form">
@@ -17,7 +18,7 @@
                             @csrf
                                 <fieldset>
                                     <div class="form-group">
-                                        <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
+                                        <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus placeholder="Enter your Username">
 
                                         @error('username')
                                            <span class="invalid-feedback" role="alert">
@@ -27,7 +28,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="Enter your Password">
 
                                         @error('password')                                            
                                             <small class="form-text text-muted">{{ $message }}.</small>
@@ -36,12 +37,12 @@
                                     </div>
                                    
 
-                                    <div class="form-group text-row-between">
+                                   <!-- <div class="form-group text-row-between">
                                         <div class="custom-control custom-checkbox mr-2">
                                             <input type="checkbox" class="custom-control-input" id="customControlInline">
                                             <label class="custom-control-label" for="customControlInline">Remember me</label>
                                         </div>                                        
-                                    </div>
+                                    </div> -->
                                    <!-- <a href="javascript:void(0)" class="gx-btn gx-btn-rounded gx-btn-primary">Sign In</a> -->
                                     <button type="submit" class="gx-btn gx-btn-rounded gx-btn-primary">
                                        Sign In
