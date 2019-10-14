@@ -107,6 +107,12 @@
             
             let attend = responseObj.data;
             var i = 0;
+            
+            if (attend.length === 0) {
+                alert("There is no value to display, because you have no data.");
+               // document.getElementById('loading').style.display = 'none';
+                return;
+            }
             //$('#mydatatable').find('tbody').empty();
 
             for ( let datarow of attend ){ 
@@ -186,6 +192,11 @@
             }
             
             let attend = responseObj.data;
+            if (attend.length === 0) {
+                alert("There is no value to display for that Date, please try another date.");
+                document.getElementById('loading').style.display = 'none';
+                return;
+            }
             var i = 0;
             $('#tbody1').empty();
             for ( let datarow of attend ){ 

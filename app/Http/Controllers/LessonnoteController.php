@@ -94,7 +94,7 @@ class LessonnoteController extends Controller
     public function getSubjectClass($teaid)
     {
         //$subclass = Subjectclass::where('tea_id', $teaid)->get();
-        $subclass = DB::select("SELECT ANY_VALUE(su.ID) as ID, ANY_VALUE(cs.title) as title, ANY_VALUE(s.name) as namez, ANY_VALUE(s.id) as subid, cs.category FROM subjectclasses su 
+        $subclass = DB::select("SELECT MIN(su.ID) as ID, MIN(cs.title) as title, MIN(s.name) as namez, MIN(s.id) as subid, cs.category FROM subjectclasses su 
         INNER JOIN class_streams cs ON su.class_id = cs.id 
         INNER JOIN subjects s ON s.id = su.sub_id
         WHERE su.tea_id = :tea

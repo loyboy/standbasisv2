@@ -90,6 +90,12 @@
             
             let attend = responseObj.data;
             var i = 0;
+
+            if (attend.length === 0) {
+                alert("There is no value to display, because you have no data.");
+               // document.getElementById('loading').style.display = 'none';
+                return;
+            }
             //$('#mydatatable').find('tbody').empty();
 
             for ( let datarow of attend ){ 
@@ -141,9 +147,7 @@
 
 @section('myscript')
 <script>
-    $(document).ready(function(){
-   
-    });
+    
     function showAttendance(idx){
          $.ajax({
             type: "POST",           

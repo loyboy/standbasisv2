@@ -17,6 +17,7 @@ use App\Enrollment;
 use App\Rowcall;
 use App\AttActivity;
 use App\AttPerformance;
+use App\Pupil;
 use Illuminate\Support\Facades\Auth;
 
 class AttendanceController extends Controller
@@ -176,7 +177,7 @@ class AttendanceController extends Controller
                         $thetime2 = strtotime($thetime2);                        
                         
                         //allow 1 hour before his time i.e 0 - 60 mins allowance
-                        if ( (($thetime - $thetime2)/60) >= 0 && ($thetime - $thetime2)/60 <= -1440 ){
+                        if ( (($thetime - $thetime2)/60) >= 0 && ($thetime - $thetime2)/60 <= 1440 ){
                             //get the current term
                            // $term = Term::where('_status',1)->where('school_id',)->first();
                            //Get teacher
@@ -684,6 +685,105 @@ class AttendanceController extends Controller
 
             return response()->json($mymsg);
 
+    }
+
+    // The stautus of the Attendance Ward
+    public function viewWardsAtt(Request $request, $parent)
+    { 
+        $mydate = "";
+
+        $termval = array(1 => "First Term", 2 => "Second Term", 3 => "Third Term");
+
+        if ( !is_null($request->get('_date')) ){
+            $mydate = $request->get('_date');
+        }
+
+        try {
+
+            $datablock = array();
+            $headerblock = array();
+          //  $pupil = Pupil::where('guardian', $parent)->get();
+            
+            $enrol = Enrollment::whereHas('pupil', function (Builder $query) use ($parent) {
+                $query->where('guardian', $parent);
+            })->get();
+            
+            if (!empty($enrol)){
+
+                if ($mydate === ""){
+                    $mydate = date("Y-m-d");
+                }
+
+                $dayofweek = date('N', strtotime($mydate));
+
+                foreach ($enrol as $p){
+                   // $rowcall = Rowcall::where('pup_id', $p->id)->get();
+                    $cls = $p->class_id;
+                    $pupil = $p->pupil_id;
+                   
+                    // first check if the term is active
+                    $pupil = Pupil::where('id', $pupil)->first();
+
+                    $timesch = TimetableSch::whereHas('timetable', function (Builder $query) use ($dayofweek) {
+                        $query->where('_day', '=', $dayofweek);
+                    })->whereHas('subclass', function (Builder $query) use ($cls) {
+                        $query->where('class_id', '=', $cls);
+                    })->get();
+
+                    if (!empty($timesch)){
+                        $statuscomment = "No Attendance Taken Yet";
+                        $remarkcomment = "Nil";
+                        foreach ($timesch as $t){  
+                            $sub = $t->sub_class;
+                            $subclass = Subjectclass::where('id', $t->sub_class)->first();
+                            
+                            $rowcall = Rowcall::whereHas('attendance', function (Builder $query) use ($sub){
+                                $query->where('_done', '=', 1)->where('sub_class_id', '=', $sub);
+                            })->whereHas('pupil', function (Builder $query) use ($pupil) {
+                                $query->where('id', '=', $pupil);
+                            })->first();
+
+                            if (!is_null($rowcall)){
+                                $statuscomment = $rowcall->_status;
+                                $remarkcomment = $rowcall->remark;
+                            }                            
+                           
+                            $datablock[] = array("Pupil" => $pupil->fname.' '.$pupil->lname ,"Subclass" => $subclass->subject->name." ".$subclass->classstream->title , 
+                            "Time" => $t->timetable->_time, "Timeid" => $t->timetable->id, "Present" => $statuscomment, "Remark" => $remarkcomment  );
+                  
+                        }
+                    }
+                }
+
+                //schoolname...parentname...Term name...Class name
+                $teacher = Teacher::findOrFail($parent);
+                $term = Term::where("school_id","=",$teacher->school_id)->first();
+                $headerblock = array("Parent" => $teacher->fname." ".$teacher->lname, "School" => $teacher->school->name, "Term" => $termval[$term->term] );
+
+                $data['status'] = "Success";
+                $data['message'] = "Your attendance data is provided....";
+                $data['data'] = array("table" => $datablock, "header" => $headerblock, "Date" => $mydate);
+                return response()->json($data);
+
+             /*   $data['status'] = "Success";
+                $data['data'] = array("Pupil" => $pupil);                
+                $data['message'] = "Your Pupils are listed in the Daat field";
+                
+                return response()->json($data);*/
+            }
+
+            else{
+                $data['status'] = "Failed";             
+                $data['message'] = "No wards have been attached to this Parent";
+                
+                return response()->json($data);
+            }
+
+            } catch (Exception $e) {
+                $data['status'] = "Failed";
+                $data['message'] = $e->getMessage();
+                return response()->json($data);
+            }
     }
 
     /**

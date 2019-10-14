@@ -627,6 +627,17 @@ content-type: application/json
 ###
 
 //Working --- Get Attendance Time for Class of a Teacher using User token
+POST  http://localhost:8000/attendances_viewAtt/1 HTTP/1.1
+content-type: application/json
+
+{
+    "api_token": "whykrngmdjbjjnpvdilahzqlzfzlrxrawpnyqkrbgbjfjzjz"
+}
+
+
+###
+
+//Working --- Get Attendance Time for Class of a Teacher using User token
 POST  http://localhost:8000/attendances_viewAttSub/3 HTTP/1.1
 content-type: application/json
 
@@ -641,7 +652,6 @@ POST  http://localhost:8000/attendances_viewAttAll/39 HTTP/1.1
 content-type: application/json
 
 {
-    "_date": "2019-10-01",
     "api_token": "whykrngmdjbjjnpvdilahzqlzfzlrxrawpnyqkrbgbjfjzjz"
 }
 
@@ -668,8 +678,18 @@ content-type: application/json
 
 ###
 
+//Working --- POST  
+POST http://localhost:8000/attendances_viewWards/1005 HTTP/1.1
+content-type: application/json
+
+{
+    "api_token": "whykrngmdjbjjnpvdilahzqlzfzlrxrawpnyqkrbgbjfjzjz"
+} 
+
+###
+
 //Working --- Get Attendance Time for Class of a Teacher using User token
-POST  http://localhost:8000/lessonnotes_getSubClass/2 HTTP/1.1
+POST  http://localhost:8000/lessonnotes_getSubClass/1 HTTP/1.1
 content-type: application/json
 
 {

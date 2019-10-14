@@ -21,6 +21,7 @@ class CreatePupilsTable extends Migration
             $table->date('entry'); // Date of admission
             $table->char('gender',1); // M or F
             $table->integer('status')->default(1); //
+            $table->integer('guardian')->nullable()->default(0); //
             $table->timestamps();
 
             $table->foreign('school_id')

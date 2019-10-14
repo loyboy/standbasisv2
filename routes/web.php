@@ -63,6 +63,12 @@ Route::get('/tmneview', function () {
     return view('teacher.mne.teacher');
 })->middleware('auth');
 
+//Parents
+Route::get('/ptwards', function () {
+    return view('teacher.attendance.ptward');
+})->middleware('auth');
+
+
 Route::get('/logoutuser', function () {
    Auth::logout();
    return redirect('/login');
@@ -87,6 +93,7 @@ Route::post('/attendances_viewAttLog/{teaid}', 'AttendanceController@viewAttenda
 Route::post('/attendances_attendAtt/{teaid}', 'AttendanceController@attendTo'); //
 Route::post('/attendances_attendAttComment/{attid}', 'AttendanceController@attendViewComment');
 Route::post('/attendances_getFlags/{teaid}', 'AttendanceController@viewAttendanceFlags');
+Route::post('/attendances_viewWards/{teaid}', 'AttendanceController@viewWardsAtt');
 
 Route::Resource('lessonnotes', 'LessonnoteController');
 /////Custom functions for lessonnote

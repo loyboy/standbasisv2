@@ -187,12 +187,12 @@
                                     <h6 class="card-subtitle mb-4 text-white">Check Attendance Activity</h6>
                                     <h6 class="card-subtitle mb-4 text-white">Print Ward's Attendance Report</h6>
                                     
-                                        <a href="javascript:void(0)" class="btn btn-light">Click Here</a>
+                                        <a href="/ptwards" class="btn btn-light">Click Here</a>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="col-xl-4 col-sm-6 col-12">
+                     <!--   <div class="col-xl-4 col-sm-6 col-12">
                             <div class="bg-success text-white card">
                                 <div class="card-header border-0">View Ward's Scores</div>
                                 <div class="card-body">
@@ -202,7 +202,7 @@
                                         <a href="javascript:void(0)" class="btn btn-light">Click Here</a>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                       
                     </div>
 

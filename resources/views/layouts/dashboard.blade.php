@@ -189,6 +189,29 @@
                             </ul>
                         </li>
                     @endif
+
+                    @if (Auth::check() && ( Auth::user()->_type === 6 ) )
+                        <li class="menu open">
+                            <a href="javascript:void(0)">
+                                <i class="zmdi zmdi-view-dashboard zmdi-hc-fw"></i>
+                                <span class="nav-text">Attendance</span>
+                            </a>
+                            <ul class="sub-menu" display="block">
+                                <li><a href="/ptwards"><span class="nav-text">My Wards Attendance</span></a></li>
+                                                 
+                            </ul>
+                        </li>
+
+                        <li class="menu open">
+                            <a href="javascript:void(0)">
+                                <i class="zmdi zmdi-hc-fw zmdi-view-compact"></i>
+                                <span class="nav-text">Scores</span>
+                            </a>
+                            <ul class="sub-menu" display="block">
+                                <li><a href=""><span class="nav-text"> My Wards Scores  </span></a></li>                  
+                            </ul>
+                        </li>
+                    @endif
                     
                     @if (Auth::check() && Auth::user()->_type === 1)
                         <li class="menu open">
@@ -566,20 +589,27 @@
                                 @endif
 
                                 @if (Auth::user()->_type === 1)
-                                    <img class="user-avatar border-0 size-40"  src="{{ asset('images/letterT.png') }}" width="150" height="150" alt="User">
+                                    <img class="user-avatar border-0 size-40"  src="{{ asset('images/letterP.jpg') }}" width="150" height="150" alt="User">
                                 @endif
                            
+                                @if (Auth::user()->_type === 6)
+                                    <img class="user-avatar border-0 size-40"  src="{{ asset('images/letterG.png') }}" width="150" height="150" alt="User">
+                                @endif
                         </a>
 
                        
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userInfo">
                                 <div class="user-profile">
-                                @if (Auth::user()->_type === 0 || Auth::user()->_type === 8)
+                                @if (Auth::user()->_type === 0 || Auth::user()->_type === 8 )
                                     <img class="user-avatar border-0 size-40"  src="{{ asset('images/letterT.png') }}"  width="150" height="150" alt="User">
                                 @endif
 
                                 @if (Auth::user()->_type === 1)
-                                    <img class="user-avatar border-0 size-40"  src="{{ asset('images/letterT.png') }}"  width="150" height="150" alt="User">
+                                    <img class="user-avatar border-0 size-40"  src="{{ asset('images/letterP.jpg') }}"  width="150" height="150" alt="User">
+                                @endif
+
+                                @if (Auth::user()->_type === 6)
+                                    <img class="user-avatar border-0 size-40"  src="{{ asset('images/letterG.png') }}"  width="150" height="150" alt="User">
                                 @endif
                                         
                                     <div class="user-detail ml-2">
@@ -589,6 +619,9 @@
                                         @endif
                                         @if (Auth::user()->_type === 8)
                                             <small class="danger">Test Teacher</small>
+                                        @endif
+                                        @if (Auth::user()->_type === 6)
+                                            <small class="danger">Parent/Guardian</small>
                                         @endif
                                         
                                         @if (Auth::user()->_type === 1)
@@ -616,6 +649,8 @@
         <div class="gx-main-content">
                 @if (Auth::check() && ( Auth::user()->_type === 0 || Auth::user()->_type === 9 || Auth::user()->_type === 8 ) )
                     @yield('teacher')
+                @elseif (Auth::check() && Auth::user()->_type === 6 )
+                    @yield('parent')
                 @elseif (Auth::check() && Auth::user()->_type === 1 )
                     @yield('principal')
                 @elseif (Auth::check() && Auth::user()->_type === 2)
