@@ -100,7 +100,7 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body"> <!-- -->
-                                                <video id="videox" width="480" height="300" autoplay style="margin-left:-20px;"></video>
+                                                <video id="videox" width="100%" height="300" autoplay style="margin-left:-20px;"></video>
                                                 <canvas width="300" height="350" id="mycanvas" style="display:none;"> </canvas>
                                                 <div class="row">
                                                     <div class="col-sm-6 "><button type="button" onclick="getcam()"  class="btn btn-block btn-primary">Switch On Camera!</button></div>
