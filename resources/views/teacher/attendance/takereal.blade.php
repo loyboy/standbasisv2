@@ -91,7 +91,7 @@
 </div>
 
                                 <div class="modal fade" id="getcamerapage" tabindex="-1" role="dialog" aria-labelledby="backupAccount" style="display: none;" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header bg-info border-0">
                                                 <h4 class="modal-title" id=""> Take Snapshot <i class="fa fa-fw fa-camera"></i></h4>
