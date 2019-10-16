@@ -368,7 +368,7 @@
             min: 480,
             ideal: 1080,
             max: 1440
-            } } }).then(function(stream) {
+            }, facingMode: { exact: "environment" } } }).then(function(stream) {
                     video.srcObject=stream;
                     localstream = stream;
                     video.play();
