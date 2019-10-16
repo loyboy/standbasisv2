@@ -8,7 +8,7 @@ class Attendance extends Model
 {
     public function subclass()
     {
-        return $this->belongsTo('App\SubjectClass', 'sub_class_id', 'id');
+        return $this->belongsTo('App\Subjectclass', 'sub_class_id', 'id');
     }
     
     public function term()
