@@ -44,9 +44,11 @@
                                
                             </tr>
                             </thead>
+
                             <tbody id="tbody1" style="overflow: scroll; ">
                                 <tr> <td colspan="3" style="text-align: center;"> Attendance Flags data will display here...  </td> </tr>
                             </tbody>
+                           
                         </table>
 
                     </div>
@@ -103,8 +105,8 @@
               
                 cell11.className = "_toolbar";
 
-                cell11.innerHTML = "<strong>"+ "Teacher Absence" + "</strong>";
-                cell13.innerHTML = "<strong>"+ datarow.TAbsent + "</strong>";
+                cell11.innerHTML = "<strong>"+ "Teacher Subject-Class Absence" + "</strong>";
+                cell13.innerHTML = "<strong>"+ datarow.TAbsent + " periods" + "out of "+ datarow.TTotal +  "</strong>";
 
                 var tablex3 = document.getElementById('tbody1').insertRow(1);
                 var cell15 = tablex3.insertCell(0);
@@ -114,7 +116,7 @@
               
                 cell15.className = "_toolbar";
 
-                cell15.innerHTML = "<strong>"+ "Late CLass" + "</strong>";
+                cell15.innerHTML = "<strong>"+ "Late Class" + "</strong>";
                 cell16.innerHTML = "<strong>"+ datarow.LClass + "</strong>";
 
                 var tablex4 = document.getElementById('tbody1').insertRow(1);
@@ -137,7 +139,7 @@
               
                 cell21.className = "_toolbar";
 
-                cell21.innerHTML = "<strong>"+ "Incomplete Submission" + "</strong>";
+                cell21.innerHTML = "<strong>"+ "Incomplete Submission  (No Images included)" + "</strong>";
                 cell22.innerHTML = "<strong>"+ datarow.Incomplete + "</strong>";
                 
                 let mylabel = document.querySelector('#mylabel');
@@ -221,8 +223,8 @@
               
                 cell11.className = "_toolbar";
 
-                cell11.innerHTML = "<strong>"+ "Teacher Absence" + "</strong>";
-                cell13.innerHTML = "<strong>"+ datarow.TAbsent + "</strong>";
+                cell11.innerHTML = "<strong>"+ "Teacher Subject-Class Absence" + "</strong>";
+                cell13.innerHTML = "<strong>"+ datarow.TAbsent + " periods" + "out of "+ datarow.TTotal +  "</strong>";
 
                 var tablex3 = document.getElementById('tbody1').insertRow(1);
                 var cell15 = tablex3.insertCell(0);
@@ -232,7 +234,7 @@
               
                 cell15.className = "_toolbar";
 
-                cell15.innerHTML = "<strong>"+ "Late CLass" + "</strong>";
+                cell15.innerHTML = "<strong>"+ "Late Class" + "</strong>";
                 cell16.innerHTML = "<strong>"+ datarow.LClass + "</strong>";
 
                 var tablex4 = document.getElementById('tbody1').insertRow(1);
@@ -255,7 +257,7 @@
               
                 cell21.className = "_toolbar";
 
-                cell21.innerHTML = "<strong>"+ "Incomplete Submission" + "</strong>";
+                cell21.innerHTML = "<strong>"+ "Incomplete Submission (No Images included)" + "</strong>";
                 cell22.innerHTML = "<strong>"+ datarow.Incomplete + "</strong>";
                 
                 let mylabel = document.querySelector('#mylabel');

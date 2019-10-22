@@ -8,7 +8,7 @@ class LessonnoteManagement extends Model
 {
     public function lessonnote()
     {
-        return $this->belongsTo('App\Lessonnote', 'foreign_key', 'lsn_id');
+        return $this->belongsTo('App\Lessonnote', 'lsn_id', 'id');
     }
      /*
     * The attributes that are mass assignable.

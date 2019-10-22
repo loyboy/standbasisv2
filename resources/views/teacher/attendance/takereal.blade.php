@@ -90,8 +90,8 @@
 
 </div>
 
-                                <div class="modal fade" id="getcamerapage" tabindex="-1" role="dialog" aria-labelledby="backupAccount" style="display: none;" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+<div class="modal fade" id="getcamerapage" tabindex="-1" role="dialog" aria-labelledby="backupAccount" style="display: none; " aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document" style="max-width: 1000px;">
                                         <div class="modal-content">
                                             <div class="modal-header bg-info border-0">
                                                 <h4 class="modal-title" id=""> Take Snapshot <i class="fa fa-fw fa-camera"></i></h4>
@@ -100,8 +100,8 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body"> <!-- -->
-                                                <video id="videox" width="100%" height="300" autoplay style="margin-left:-20px;"></video>
-                                                <canvas width="300" height="350" id="mycanvas" style="display:none;"> </canvas>
+                                                <video id="videox" width="100%" height="450" autoplay></video>
+                                                <canvas width="400" height="350" id="mycanvas" style="display:none;"> </canvas>
                                                 <div class="row">
                                                     <div class="col-sm-6 "><button type="button" onclick="getcam()"  class="btn btn-block btn-primary">Switch On Camera!</button></div>
                                                     <div class="col-sm-6"><button type="button" id="snap" onclick="takePicture()" class="btn btn-block btn-primary">Take Snapshot!</button></div>

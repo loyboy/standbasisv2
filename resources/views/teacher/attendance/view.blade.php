@@ -71,7 +71,17 @@
     let teacher = {{ Auth::user()->teacher_id }};
     let token = '{{ Auth::user()->api_token }}';
 
-    let xhr2 = new XMLHttpRequest();
+       
+</script>
+@endsection
+
+
+
+@section('myscript')
+<script>
+    $(document).ready(function(){
+        
+        let xhr2 = new XMLHttpRequest();
         xhr2.open('POST', '/subjectclasses_findTeaSub/'+teacher+'/type/normal');
         xhr2.responseType = 'json';
         let formData2 = new FormData();
@@ -136,15 +146,7 @@
                 i++;
             }
         } 
-</script>
-@endsection
-
-
-
-@section('myscript')
-<script>
-    $(document).ready(function(){
-   
+        
     });
     function showAttendance(idx){
          $.ajax({
@@ -160,6 +162,7 @@
              // $('#comments_attendance').html(stx._COMMENT);
               $('#myatt_table').html(stx._TEXT);
               $('#mytitle').html(stx._TITLE);
+              $('#p_comment').html(stx._COMMENT);
               $('#getattendance').modal({
                      backdrop: 'static',
                      keyboard: false

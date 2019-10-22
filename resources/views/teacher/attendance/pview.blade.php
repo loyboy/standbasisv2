@@ -38,7 +38,7 @@
                             </div>-->
                     </div>
 
-                    <div class="table-responsive" style=" height: 400px; overflow-y: auto; overflow-x: hidden; ">
+                    <div class="table-responsive" style="">
 
                         <table id="mydatatable" class="table table-striped table-bordered table-hover">
                             <thead>
@@ -54,7 +54,7 @@
                             </tr>
                             </thead>
                             <tbody id="tbody1" style="overflow: scroll; ">
-                                <tr> <td colspan="8" style="text-align: center;"> Attendance data will display here...  </td> </tr>
+                                
                             </tbody>
                         </table>
 
@@ -73,6 +73,16 @@
     let token = '{{ Auth::user()->api_token }}';
     let datex = {{ date('Y-m-d') }};
     
+      
+</script>
+@endsection
+
+
+@section('myscript')
+<script>
+     
+     $(document).ready(function(){ 
+        
         let xhr = new XMLHttpRequest();
         xhr.open('POST', '/attendances_viewAttAll/'+teacher);
         xhr.responseType = 'json';
@@ -97,57 +107,71 @@
                 return;
             }
             //$('#mydatatable').find('tbody').empty();
-
+            //console.log("My attendance "+ attend);
+            var table = $('#mydatatable').DataTable({
+               "columns": [
+                    { "orderable": false },
+                    { "orderable": false },
+                    { "orderable": false },
+                    null,
+                    null,
+                    null,
+                    { "orderable": false },
+                    { "orderable": false }
+                ]     
+            });
+            $('.sorting_asc').removeClass('sorting_asc');
+            
             for ( let datarow of attend ){ 
-                var tablex = document.getElementById('tbody1').insertRow(i);               
-                //tablex.;
-                var cell0 = tablex.insertCell(0);
-                var cell1 = tablex.insertCell(1);
-                var cell2 = tablex.insertCell(2);
-                var cell3 = tablex.insertCell(3);
-                var cell4 = tablex.insertCell(4);
-                var cell5 = tablex.insertCell(5);
-                var cell6 = tablex.insertCell(6);
-                var cell7 = tablex.insertCell(7);
-                
-                tablex.className = "datarow";
-                cell7.className = "attendlist";
 
-                cell0.innerHTML = "<strong>"+ (i + 1) + "</strong>";
-                cell1.innerHTML = "<strong>"+ datarow.Teacher + "</strong>";
-                cell2.innerHTML = "<strong>"+ datarow.Subclass + "</strong>";
-                cell3.innerHTML = "<strong>"+ datarow.ExpTime + "</strong>";
-                cell4.innerHTML = "<strong>"+ datarow.ActTime + "</strong>";
-                cell5.innerHTML = "<strong>"+ datarow.Perf + " %" + "</strong>";
+               
+
+               //   var tablex = document.getElementById('tbody1').insertRow(i);               
+                //tablex.;
+                var cell0 = "";
+                var cell1 = "";
+                var cell2 = "";
+                var cell3 = "";
+                var cell4 = "";
+                var cell5 = "";
+                var cell6 = "";
+                var cell7 = "";
+              
+
+                cell0 = "<td> <strong>"+ (i + 1) + "</strong> </td> ";
+                cell1 = "<td> <strong>"+ datarow.Teacher + "</strong> </td>";
+                cell2 = "<td> <strong>"+ datarow.Subclass + "</strong> </td>";
+                cell3 = "<td> <strong>"+ datarow.ExpTime + "</strong> </td>";
+                cell4 = "<td> <strong>"+ datarow.ActTime + "</strong> </td>";
+                cell5 = "<td> <strong>"+ datarow.Perf + " %" + "</strong> </td>";
                 
-                cell6.innerHTML = "<strong> <a class='btn btn-primary' onclick='showAttendance("+datarow.id+")' > View Attendance </a> </strong>";
+                cell6= "<td> <strong> <a class='btn btn-primary' onclick='showAttendance("+datarow.id+")' > View Attendance </a> </strong> </td>";
 
                 var ht1 = "";
                 if ( datarow.Action === "No action yet"){
-                    cell7.innerHTML = "<strong> <a class='btn btn-success' onclick='approveAtt("+datarow.id+")' > Approve </a> <br> <a class='btn btn-danger' onclick='disapproveAtt("+datarow.id+")' > Disapprove </a>  </strong> ";
+                    cell7 = "<td> <strong> <a class='btn btn-success' onclick='approveAtt("+datarow.id+")' > Approve </a> <br> <a class='btn btn-danger' onclick='disapproveAtt("+datarow.id+")' > Disapprove </a>  </strong> </td>";
  
                 }
 
                 else if ( datarow.Action === "Approved"){
-                    cell7.innerHTML = "<strong> <a class='btn btn-success' > Approved by You </a> </strong> ";
+                    cell7 = "<td> <strong> <a class='btn btn-success' > Approved by You </a> </strong> </td>";
  
                 }
 
                 else if ( datarow.Action === "Declined"){
-                    cell7.innerHTML = "<strong> <a class='btn btn-danger' onclick='viewComment("+datarow.id+")' > Declined by You, View Comment </a> </strong> ";
+                    cell7 = "<td> <strong> <a class='btn btn-danger' onclick='viewComment("+datarow.id+")' > Declined by You, View Comment </a> </strong> </td>";
  
                 }
+
+                var newRow = "<tr>" + cell0 + cell1 + cell2 + cell3 + cell4 + cell5 + cell6 + cell7+ "</tr>";
+                var table = $('#mydatatable').DataTable();
+                table.row.add($(newRow)).draw();
+                
                //cell3.innerHTML = "<div class='form-checkbox'> <input type='checkbox' disabled name='excused[]' id='stad" + datarow.PupilID + "' class='excusedform' value='yes'> </div>";
                 i++;
             }
         } 
-</script>
-@endsection
-
-
-@section('myscript')
-<script>
-    
+    });
     function showAttendance(idx){
          $.ajax({
             type: "POST",           

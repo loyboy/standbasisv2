@@ -364,7 +364,7 @@ class AttendanceController extends Controller
                 //owner now is the head/principal --Put this so that we track his response time
                 AttActivity::create([
                     'att_id' =>  $attendance->id,
-                    'owner' => $principal->id,
+                    'owner' => $principal->teacher_id,
                     'ownertype' => 'Principal',
                     'expected' => $expected,
                     'slip' => 0                   
@@ -425,7 +425,7 @@ class AttendanceController extends Controller
         if (!empty($att)){
             foreach ($att as $attendance){ 
                 $attperf = AttPerformance::where('att_id', $attendance->id)->first();
-                $datablock[] = array("id" => $attendance->id,"Subclass" => $attendance->subclass->subject->name. " ".$attendance->subclass->classstream->title , "ExpTime" => $attendance->timetable->_time, "ActTime" => $attendance->_date, "Perf" => $attperf->flag , "Photo" => $attendance->image );
+                $datablock[] = array("id" => $attendance->id,"Subclass" => $attendance->subclass->subject->name. " ".$attendance->subclass->classstream->title , "ExpTime" => $attendance->timetable->_time, "ActTime" => $attendance->_date, "Perf" => $attperf->flag );
             }
             $data['status'] = "Success";
             $data['message'] = "Your attendance data is provided....";
@@ -478,7 +478,7 @@ class AttendanceController extends Controller
                     $thecomment = $attavt->_comment;
                     $theaction = $attavt->_action;
                 }
-                $datablock[] = array("id" => $attendance->id,"Subclass" => $attendance->subclass->subject->name. " ".$attendance->subclass->classstream->title , "ExpTime" => $attendance->timetable->_time, "ActTime" => $attendance->_date, "Perf" => $attperf->flag, "Photo" => $attendance->image, "Teacher" => $attendance->subclass->teacher->fname." ".$attendance->subclass->teacher->lname, 
+                $datablock[] = array("id" => $attendance->id,"Subclass" => $attendance->subclass->subject->name. " ".$attendance->subclass->classstream->title , "ExpTime" => $attendance->timetable->_time, "ActTime" => $attendance->_date, "Perf" => $attperf->flag, "Teacher" => $attendance->subclass->teacher->fname." ".$attendance->subclass->teacher->lname, 
                 "Comment" => $thecomment, "Action" => $action[$theaction] );
             }
             $data['status'] = "Success";
@@ -505,10 +505,24 @@ class AttendanceController extends Controller
         $c = $request->get('comment');
         $d = $request->get('decision');
         
+        $actual = strtotime ( date('d-m-Y H:i') );
+        $expected = $att->expected;
+        
         if ( $c !== "" ){
             $att->_comment = $c;
         }
         $att->_action = $d;
+        $att->actual = $actual;
+
+        $theslip = 0;
+          
+        if ($expected <  $actual) { 
+         
+            $theslip = 1;
+        }
+
+        $att->slip = $theslip;
+
         $att->save();
 
         $data['status'] = "Success";
@@ -573,7 +587,7 @@ class AttendanceController extends Controller
                 FROM attendances s 
                 INNER JOIN att_performances t ON t.att_id = s.id
                 INNER JOIN subjectclasses c ON c.id = s.sub_class_id
-                WHERE c.tea_id IN ( SELECT id FROM teachers WHERE school_id = :sch ) AND t.policy = 0  AND s._date LIKE :dat            
+                WHERE c.tea_id IN ( SELECT id FROM teachers WHERE school_id = :sch ) AND t.policy = 0  AND s._date LIKE :dat AND s._done = 1          
                 " , 
                 [ "sch" =>  $teacher->school_id, "dat" => "%".$mydate."%" ] );
 
@@ -584,7 +598,7 @@ class AttendanceController extends Controller
                     FROM attendances s 
                     INNER JOIN att_activities t ON t.att_id = s.id
                     INNER JOIN subjectclasses c ON c.id = s.sub_class_id
-                    WHERE c.tea_id IN ( SELECT id FROM teachers WHERE school_id = :sch ) AND t.slip = 0  AND s._date LIKE :dat            
+                    WHERE c.tea_id IN ( SELECT id FROM teachers WHERE school_id = :sch ) AND t._action IS NULL  AND s._date LIKE :dat AND s._done = 1            
                     " , 
                     [ "sch" =>  $teacher->school_id, "dat" => "%".$mydate."%" ] );
 
@@ -593,7 +607,7 @@ class AttendanceController extends Controller
                         FROM attendances s 
                         INNER JOIN att_performances t ON t.att_id = s.id
                         INNER JOIN subjectclasses c ON c.id = s.sub_class_id
-                        WHERE c.tea_id IN ( SELECT id FROM teachers WHERE school_id = :sch ) AND t.fully = 0  AND s._date LIKE :dat            
+                        WHERE c.tea_id IN ( SELECT id FROM teachers WHERE school_id = :sch ) AND t.fully = 0  AND s._date LIKE :dat AND s._done = 1            
                         " , 
                         [ "sch" =>  $teacher->school_id, "dat" => "%".$mydate."%" ] ); 
                         
@@ -602,9 +616,11 @@ class AttendanceController extends Controller
                             FROM attendances s 
                             INNER JOIN rowcalls t ON t.att_id = s.id
                             INNER JOIN subjectclasses c ON c.id = s.sub_class_id
-                            WHERE c.tea_id IN ( SELECT id FROM teachers WHERE school_id = :sch ) AND t._status = 0  AND s._date LIKE :dat            
+                            WHERE c.tea_id IN ( SELECT id FROM teachers WHERE school_id = :sch ) AND t._status = 0  AND s._date LIKE :dat AND s._done = 1            
                             " , 
                             [ "sch" =>  $teacher->school_id, "dat" => "%".$mydate."%" ] );
+
+                $att7 = Attendance::where('_date', 'LIKE', "%".$mydate."%")->where('term', '=', $term->term)->count();            
          }
          else{
              // those not done at all
@@ -631,7 +647,7 @@ class AttendanceController extends Controller
             foreach ($att6 as $at1){
                 $absentstudent = intval($at1->absentstudent);
             }
-                 $datablock = array("_date" => $mydate, "TAbsent" => $att , "SAbsent" => $absentstudent, "LClass" => $late, "Incomplete" => $fully, "ADelay" => $delay );
+                 $datablock = array("_date" => $mydate, "TAbsent" => $att , "TTotal" => $att7 ,  "SAbsent" => $absentstudent, "LClass" => $late, "Incomplete" => $fully, "ADelay" => $delay );
              
              $data['status'] = "Success";
              $data['message'] = "Your attendance flag data is provided....";
@@ -666,6 +682,8 @@ class AttendanceController extends Controller
                 }
                  $myattdate = $att->_date;
             }
+
+            $attactivity = AttActivity::where('att_id', $attid)->first();
             
             $myechostring = "<table class='table table-bordered'>
             <thead class='bg-danger' style='color: #fff;'>
@@ -680,6 +698,7 @@ class AttendanceController extends Controller
             $mymsg = array(
                 '_TITLE'=> "View Attendance on <b>".$myattdate."</b>",
                 '_IMAGE'=> $myimage,
+                '_COMMENT' => $attactivity !== null ? $attactivity->_comment : "",
                 '_TEXT'=> $myechostring                
             );
 

@@ -15,6 +15,10 @@ Route::get('/', function () {
     return view('teacher.general.welcome');
 })->middleware('auth');
 
+Route::get('/home', function () {
+    return view('teacher.general.welcome');
+})->middleware('auth');
+
 Route::get('/twelcome', function () {
     return view('teacher.general.welcome');
 })->middleware('auth');
@@ -76,7 +80,6 @@ Route::get('/logoutuser', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
 
 Route::Resource('schools', 'SchoolController');
 
@@ -102,7 +105,7 @@ Route::post('/lessonnotes_submitLsn', 'LessonnoteController@submitLessonnote');
 Route::post('/lessonnotes_viewLsn/{teaid}', 'LessonnoteController@viewLessonnoteTeacher');
 Route::post('/lessonnotes_viewLsnAll/{teaid}', 'LessonnoteController@viewLessonnoteTeacherAll');
 Route::post('/lessonnotes_statusLsn/{lsnid}/id/{idx}', 'LessonnoteController@changeStatusLessonnote');
-Route::post('/lessonnotes_viewflags/{teaid}', 'LessonnoteController@viewLessonnoteFlags');
+Route::post('/lessonnotes_getFlags/{teaid}', 'LessonnoteController@viewLessonnoteFlags');
 
 Route::Resource('lessonnote_managements', 'LessonmgtController');
 

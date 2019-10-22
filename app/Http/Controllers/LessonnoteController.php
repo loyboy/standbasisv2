@@ -128,7 +128,7 @@ class LessonnoteController extends Controller
     public function submitLessonnote(Request $request)
     {
          $policy = 0;///if it matches the policy of the school--- me
-         $fully = 0;///if it has come with the lessnnote+classwork+test+assignment -- head
+         $fully = 1;///if it has come with the lessnnote+classwork+test+assignment -- head
          $qua = 1;///if it has met policy + fully + cycle + closure of this lessonnote -- 
          $flag = 0;///if the no. of students performance in assessment is ok -- teacher after scores added
          $perf = 0;///the total of done + policY + fully + qua
@@ -160,35 +160,84 @@ class LessonnoteController extends Controller
 
         $title = $teacher->fname.$teacher->id. "_Week ".$week. "_Term ".$term->term."_".$cls->title."_".$sub->name."_".date('Y');
 
-        //Storage::disk('local')->put('lessonnotes/'+$title.".docx", $mylessonnote);
-        if ($mylessonnote !== null){           
-           /* $mylessonnote->storeAs(
-                "public/".$lessonnote_url, $title.".docx"
-            ); */
-            Storage::putFileAs(
-                "public/".$lessonnote_url , $mylessonnote, $title.".docx"
-            );
-        }
-
-        $checkifweek = DB::select("SELECT * FROM lessonnotes WHERE tea_id = :id AND title = :ti " , ["id" => $teacher->id, "ti"=>$title ] ); 
-
-        if (!empty($checkifweek)){
-            $data['status'] = "Failed";
-            $data['message'] = "Lessonnote has been submitted already / Please submit for another week.";
-            return response()->json($data);
-         }
-
-         $time = DB::select('SELECT term , resumedate , ( week(curdate()) - week(resumedate) + 1 ) AS weeksout FROM terms WHERE _status = 1 AND school_id = :sch;', [ "sch" => $teacher->school_id ]);
+        $time = DB::select('SELECT term , resumedate , ( week(curdate()) - week(resumedate) + 1 ) AS weeksout FROM terms WHERE _status = 1 AND school_id = :sch;', [ "sch" => $teacher->school_id ]);
                     
-         foreach ($time as $t){
-               $weeksout = $t->weeksout;
-         }
+        foreach ($time as $t){
+              $weeksout = $t->weeksout;
+        }      
 
-         if ($weeksout === $week){
+        if ($weeksout + 1 === $week){
             $policy = 1;
          }
 
-         $perf = intval($policy/3) * 100;
+         $perf = ($policy/3) * 100;
+        
+         //Check if it hass been rejected       
+
+        $checkifweek = DB::select("SELECT * FROM lessonnotes WHERE tea_id = :id AND title = :ti " , ["id" => $teacher->id, "ti"=>$title ] ); 
+        $teaidx = $teacher->id;
+        if (!empty($checkifweek)){
+            $lsnmanage = LessonnoteManagement::where('lsn_id', '=', $checkifweek[0]->id)->where('_revert', "!==" , "1970-10-10 00:00:00")->first();
+            $lsnmanage2 = LessonnoteManagement::where('lsn_id', '=', $checkifweek[0]->id)->where('_submission', "!==" , "1970-10-10 00:00:00")->first();
+            if ($lsnmanage !== null){
+                $title = $teacher->fname.$teacher->id. "_Week ".$week. "_Term ".$term->term."_".$cls->title."_".$sub->name."_".date('Y')."_Resubmitted ".$lsnmanage->_cycle;
+                $lsnmanage->_submission = "1970-10-10 00:00:00";
+                $lsnmanage->_resubmission = date('Y-m-d H:i:s');
+                $lsnmanage->_revert = "1970-10-10 00:00:00";
+                $lsnmanage->_approval =  "1970-10-10 00:00:00";
+                $lsnmanage->_exclosure = date("Y-m-d H:i:s",strtotime( "+10 days", strtotime ( date('d-m-Y H:i') ) ));
+                $lsnmanage->_cycle = $lsnmanage->_cycle + 1;
+                $lsn = Lessonnote::findOrFail($checkifweek[0]->id);
+                $lsn->_file = $title.".docx"; 
+                if ($mylessonnote !== null){
+                    Storage::putFileAs(
+                        "public/".$lessonnote_url , $mylessonnote, $title.".docx"
+                    );
+                }
+                $lsn->save();  
+                $lsnmanage->save();
+
+                $data['status'] = "Success";
+                $data['message'] = "Lessonnote has been resubmitted";
+                return response()->json($data);
+            }
+            else if($lsnmanage2 !== null){
+                $title = $teacher->fname.$teacher->id. "_Week ".$week. "_Term ".$term->term."_".$cls->title."_".$sub->name."_".date('Y')."_Replaced ".date('hh:ss');
+                $lsnmanage->_submission = date('Y-m-d H:i:s');
+                $lsnmanage->_resubmission = "1970-10-10 00:00:00";
+                $lsnmanage->_revert = "1970-10-10 00:00:00";
+                $lsnmanage->_approval =  "1970-10-10 00:00:00";
+                $lsnmanage->_exclosure = date("Y-m-d H:i:s",strtotime( "+10 days", strtotime ( date('d-m-Y H:i') ) ));
+                $lsn = Lessonnote::findOrFail($checkifweek[0]->id);
+                $lsn->_file = $title.".docx"; 
+                if ($mylessonnote !== null){
+                    Storage::putFileAs(
+                        "public/".$lessonnote_url , $mylessonnote, $title.".docx"
+                    );
+                }
+                $lsn->save();  
+                $lsnmanage->save();
+
+                $data['status'] = "Success";
+                $data['message'] = "Lessonnote has been Submitted, even Though You had submitted before.";
+                return response()->json($data);
+            }    
+            else{
+                $data['status'] = "Failed";
+                $data['message'] = "Lessonnote has been submitted already / Please submit for another week.";
+                return response()->json($data);
+            }
+         }
+
+           //Storage::disk('local')->put('lessonnotes/'+$title.".docx", $mylessonnote);
+        if ($mylessonnote !== null){           
+            /* $mylessonnote->storeAs(
+                 "public/".$lessonnote_url, $title.".docx"
+             ); */
+             Storage::putFileAs(
+                 "public/".$lessonnote_url , $mylessonnote, $title.".docx"
+             );
+         }        
 
          $lsnobj = Lessonnote::create([
             'tea_id' =>  $tea,
@@ -210,6 +259,7 @@ class LessonnoteController extends Controller
             LessonnoteManagement::create([
                 'lsn_id' => $lsnobj->id,
                 '_submission' => date('Y-m-d H:i:s'),
+                '_exclosure' => date("Y-m-d H:i:s",strtotime( "+10 days", strtotime ( date('d-m-Y H:i') ) )),
                 '_cycle' => 1                 
             ]);
 
@@ -229,7 +279,7 @@ class LessonnoteController extends Controller
                 //owner now is the head/principal --Put this so that we track his response time
                 LsnActivity::create([
                     'lsn_id' => $lsnobj->id,
-                    'owner' => $principal->id,
+                    'owner' => $principal->teacher_id,
                     'ownertype' => 'Principal',
                     'expected' => $expected,
                     'action' => 0,
@@ -323,9 +373,9 @@ class LessonnoteController extends Controller
         if (!empty($lsn)){
             foreach ($lsn as $lessonnote){ 
                 $lsnperf = LsnPerformance::where('lsn_id', $lessonnote->id)->first();
-                
+                $lsnmanage = LessonnoteManagement::where('lsn_id', $lessonnote->id)->first();
                 $status = $this->getLessonnoteStatus($lessonnote->id);
-                $datablock[] = array("id" => $lessonnote->id, "Subject" => $lessonnote->subject->name, "Title" => $lessonnote->title, "Status" => $status, "Filez" => $lessonnote->_file, "Perf" => $lsnperf->perf, "Teacher"=>$lessonnote->teacher->fname." ".$lessonnote->teacher->lname,  );
+                $datablock[] = array("id" => $lessonnote->id, "Subject" => $lessonnote->subject->name, "Title" => $lessonnote->title, "Status" => $status, "Filez" => $lessonnote->_file, "Perf" => $lsnperf->perf, "Teacher"=>$lessonnote->teacher->fname." ".$lessonnote->teacher->lname, "TeacherID" => $lessonnote->teacher->id, "Cycle" => $lsnmanage->_cycle  );
             }
             $data['status'] = "Success";
             $data['message'] = "Your lessonnote data is provided....";
@@ -374,9 +424,9 @@ class LessonnoteController extends Controller
                     FROM lessonnotes l 
                     INNER JOIN lsn_performances t ON t.lsn_id = l.id
                     INNER JOIN lessonnote_managements c ON c.lsn_id = l.id
-                    WHERE l.tea_id IN ( SELECT id FROM teachers WHERE school_id = :sch ) AND t.policy = 0  AND l.period = :per AND c._submission != :sub          
+                    WHERE l.tea_id IN ( SELECT id FROM teachers WHERE school_id = :sch ) AND t.policy = 0  AND l.period = :per        
                     " , 
-                    [ "sch" =>  $teacher->school_id, "per" => $mycycle , "sub" => "1970-10-10 00:00:00"] );
+                    [ "sch" =>  $teacher->school_id, "per" => $mycycle ] );
                 
                   //Late Re-Submission
                     $lsn2 = DB::select(
@@ -393,39 +443,39 @@ class LessonnoteController extends Controller
                             FROM lessonnotes l 
                             INNER JOIN lsn_performances t ON t.lsn_id = l.id
                             INNER JOIN lessonnote_managements c ON c.lsn_id = l.id
-                            WHERE l.tea_id IN ( SELECT id FROM teachers WHERE school_id = :sch ) AND t.qua = 0  AND l.period = :per AND c._approval != :sub          
+                            WHERE l.tea_id IN ( SELECT id FROM teachers WHERE school_id = :sch ) AND t.qua = 0  AND l.period = :per           
                             " , 
-                            [ "sch" =>  $teacher->school_id, "per" => $mycycle , "sub" => "1970-10-10 00:00:00"] );
+                            [ "sch" =>  $teacher->school_id, "per" => $mycycle ] );
                     // Poor performance
                     $lsn4 = DB::select(
                                 "SELECT COUNT(l.ID) as myperf
                                 FROM lessonnotes l 
                                 INNER JOIN lsn_performances t ON t.lsn_id = l.id
                                 INNER JOIN lessonnote_managements c ON c.lsn_id = l.id
-                                WHERE l.tea_id IN ( SELECT id FROM teachers WHERE school_id = :sch ) AND t.perf <= 30  AND l.period = :per AND c._approval != :sub          
+                                WHERE l.tea_id IN ( SELECT id FROM teachers WHERE school_id = :sch ) AND t.perf <= 30  AND l.period = :per         
                                 " , 
-                                [ "sch" =>  $teacher->school_id, "per" => $mycycle , "sub" => "1970-10-10 00:00:00"] );
-                     //  Delayed action by Somebody 
+                                [ "sch" =>  $teacher->school_id, "per" => $mycycle ] );
+                     //  Delayed action by Principal 
                     $lsn5 = DB::select(
                                     "SELECT COUNT(l.ID) as mydelay
                                     FROM lessonnotes l 
                                     INNER JOIN lsn_activities t ON t.lsn_id = l.id
                                     INNER JOIN lessonnote_managements c ON c.lsn_id = l.id
-                                    WHERE l.tea_id IN ( SELECT id FROM teachers WHERE school_id = :sch ) AND t.slip = 0  AND l.period = :per AND c._approval != :sub          
+                                    WHERE l.tea_id IN ( SELECT id FROM teachers WHERE school_id = :sch ) AND t.actual IS NULL  AND l.period = :per         
                                     " , 
-                                    [ "sch" =>  $teacher->school_id, "per" => $mycycle , "sub" => "1970-10-10 00:00:00"] );
+                                    [ "sch" =>  $teacher->school_id, "per" => $mycycle ] );
                    
-                   // latter we do this late closure A
+                   // latter we do this late closure A, approved but not cloased
                    $lsn6 = DB::select(
                                         "SELECT COUNT(l.ID) as lateclosure
                                         FROM lessonnotes l 
                                         INNER JOIN lsn_activities t ON t.lsn_id = l.id
                                         INNER JOIN lessonnote_managements c ON c.lsn_id = l.id
-                                        WHERE l.tea_id IN ( SELECT id FROM teachers WHERE school_id = :sch ) AND l.period = :per AND c._approval != :sub AND c._exclosure >= CURRENT_DATE         
+                                        WHERE l.tea_id IN ( SELECT id FROM teachers WHERE school_id = :sch ) AND l.period = :per AND c._approval != :sub AND c._closure != :sub1       
                                         " , 
                                         [ "sch" =>  $teacher->school_id, "per" => $mycycle , "sub" => "1970-10-10 00:00:00"] );
 
-                    // latter we do this late closure B -- Not so sure about this
+                    // latter we do this late closure B -- Not so sure about this // 
                    $lsn7 = DB::select(
                         "SELECT COUNT(l.ID) as lateclosure
                         FROM lessonnotes l 
@@ -441,9 +491,9 @@ class LessonnoteController extends Controller
                     FROM lessonnotes l 
                     INNER JOIN lsn_activities t ON t.lsn_id = l.id
                     INNER JOIN lessonnote_managements c ON c.lsn_id = l.id
-                    WHERE l.tea_id IN ( SELECT id FROM teachers WHERE school_id = :sch ) AND l.period = :per AND c._closure = :sub AND datediff(CURRENT_DATE , c._exclosure) >= 14 AND  c._exclosure != :sub2       
+                    WHERE l.tea_id IN ( SELECT id FROM teachers WHERE school_id = :sch ) AND l.period = :per AND c._closure = :sub AND datediff(CURRENT_DATE , c._exclosure) >= 14      
                     " , 
-                    [ "sch" =>  $teacher->school_id, "per" => $mycycle , "sub" => "1970-10-10 00:00:00", "sub2" => "1970-10-10 00:00:00"] );
+                    [ "sch" =>  $teacher->school_id, "per" => $mycycle , "sub" => "1970-10-10 00:00:00"] );
 
                     // Late closure response............. 3 = CLosure
                    $lsn9 = DB::select(
@@ -525,63 +575,157 @@ class LessonnoteController extends Controller
      *  
      * @return \Illuminate\Http\Response
      */
-    public function changeStatusLessonnote($lsnid, $idx)
+    public function changeStatusLessonnote(Request $request, $lsnid, $idx)
     {
         $idx = intval($idx);
+        
+        $teaid = $request->get('teacher');   
+        $comment = $request->get('comment');   
+        
+        $lsnreal = Lessonnote::where('id', $lsnid)->first();
         $lsn = LessonnoteManagement::where('lsn_id', $lsnid)->first();
+
+        $data = array();
 
         if ($idx === 1){ // rejected, so I resubmit
             $lsn->_submission = "1970-10-10 00:00:00";
             $lsn->_revert = "1970-10-10 00:00:00";
             $lsn->_resubmission = date('Y-m-d H:i:s');
+            $lsn->_cycle = $lsn->_cycle + 1;
             $lsn->save();
             $data['status'] = "Success";
             $data['message'] = "Your lessonnote management status has been changed to RESUBMITTED";
-            return response()->json($data);
+           
         }
         else if ($idx === 2){ //I launch it
             $lsn->_submission = "1970-10-10 00:00:00";
             $lsn->_resubmission = "1970-10-10 00:00:00";
             $lsn->_launch = date('Y-m-d H:i:s');
+            $lsn->_cycle = $lsn->_cycle + 1;
             $lsn->save();
             $data['status'] = "Success";
             $data['message'] = "Your lessonnote management status has been changed to LAUNCHED";
-            return response()->json($data);
+           
         }
         else if ($idx === 3){ //I close it
             $lsn->_submission = "1970-10-10 00:00:00";
             $lsn->_resubmission = "1970-10-10 00:00:00";
             $lsn->_launch = "1970-10-10 00:00:00";
             $lsn->_closure = date('Y-m-d H:i:s');
+            $lsn->_cycle = $lsn->_cycle + 1;
             $lsn->save();
             $data['status'] = "Success";
             $data['message'] = "Your lessonnote management status has been changed to CLOSED";
-            return response()->json($data);
+            
         }
 
         else if ($idx === 4){ //I reject it as a Principal
+            if ($teaid !== null){
+                $teacher = Teacher::findOrFail($teaid); 
+                $lsnperf = LsnPerformance::where('lsn_id', $lsnid)->first();
+                $lsnactivity = LsnActivity::where('lsn_id', $lsnid)->where('owner', $teacher->id)->first();
+                $lsnperf->fully = 0;
+                $lsnperf->qua = 0;               
+
+                $actual = strtotime ( date('d-m-Y H:i') );
+                $expected = $lsnactivity->expected;                
+               
+                $lsnactivity->action = 4;
+                $lsnactivity->actual = $actual;
+        
+                $theslip = 0;
+                  
+                if ($expected <  $actual) { 
+                 
+                    $theslip = 1;
+                }
+        
+                $lsnactivity->slip = $theslip;
+
+                if ($lsn->_cycle > 2 && $lsn->_cycle <= 4){
+                   
+                    $lsnperf->perf = 30;
+                }
+                else if ($lsn->_cycle <= 2){
+                    
+                    $lsnperf->perf = 50;
+                }
+                else{
+                    $lsnperf->perf = 10;
+                }               
+                
+                if($comment !== null){
+                    $lsnreal->comment_principal = $comment;
+                    $lsnreal->save();
+                }
+
+                $lsnperf->save();
+                $lsnactivity->save();
+                
+            }
             $lsn->_submission = "1970-10-10 00:00:00";
             $lsn->_resubmission = "1970-10-10 00:00:00";            
             $lsn->_revert = date('Y-m-d H:i:s');
+            $lsn->_cycle = $lsn->_cycle + 1;
             $lsn->save();
             $data['status'] = "Success";
             $data['message'] = "Your lessonnote management status has been changed to REJECTED";
-            return response()->json($data);
+          
         }
 
-        else if ($idx === 5){ //I approve it as a Principal
+        else if ($idx === 5){ //I approve it as a Principal       
+            
+           if ($teaid !== null){
+                $teacher = Teacher::findOrFail($teaid); 
+                $lsnperf = LsnPerformance::where('lsn_id', $lsnid)->first();
+                $lsnactivity = LsnActivity::where('lsn_id', $lsnid)->where('owner', $teacher->id)->first();
+                $lsnperf->fully = 1;
+                $lsnperf->qua = 1;               
+
+                $actual = strtotime ( date('d-m-Y H:i') );
+                $expected = $lsnactivity->expected;                
+               
+                $lsnactivity->action = 5;
+                $lsnactivity->actual = $actual;
+        
+                $theslip = 0;
+                  
+                if ($expected <  $actual) { 
+                 
+                    $theslip = 1;
+                }
+        
+                $lsnactivity->slip = $theslip;
+
+                if ($lsn->_cycle > 2 && $lsn->_cycle <= 4){
+                   
+                    $lsnperf->perf = 50;
+                }
+                else if ($lsn->_cycle <= 2){
+                    
+                    $lsnperf->perf = 100;
+                }
+                else{
+                    $lsnperf->perf = 30;
+                }               
+
+                $lsnperf->save();
+                $lsnactivity->save();
+            }
             $lsn->_submission = "1970-10-10 00:00:00";
             $lsn->_resubmission = "1970-10-10 00:00:00";
             $lsn->_revert = "1970-10-10 00:00:00";
             $lsn->_approval = date('Y-m-d H:i:s');
+            $lsn->_cycle = $lsn->_cycle + 1;
             $lsn->save();
+
             $data['status'] = "Success";
             $data['message'] = "Your lessonnote management status has been changed to APPROVED";
-            return response()->json($data);
         }
 
-        
        
+
+        return response()->json($data);  
 
     }
 

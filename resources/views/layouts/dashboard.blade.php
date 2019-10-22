@@ -128,6 +128,23 @@
 .myhide{
     display: none;
 }
+
+#videox {
+    object-fit: cover;
+}
+
+.dataTable > thead > tr > th[class*="sort"]:after{
+    content: "" !important;
+}
+
+table.dataTable thead > tr > th.sorting_asc, 
+table.dataTable thead > tr > th.sorting_desc, 
+table.dataTable thead > tr > th.sorting, 
+table.dataTable thead > tr > td.sorting_asc, 
+table.dataTable thead > tr > td.sorting_desc, 
+table.dataTable thead > tr > td.sorting {
+    padding-right: inherit;
+}
     </style>
 </head>
     <body id="body" data-theme="amber">

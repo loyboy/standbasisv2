@@ -90,7 +90,7 @@
                                 <div class="card-body">
                                 <h5 class="card-title mb-3">Here you Can:</h5>
                                     <h6 class="card-subtitle mb-4 text-white">View Lessonnote Activity</h6>
-                                    <h6 class="card-subtitle mb-4 text-white">Approve/Disapprove Attendance Activity</h6>                                    
+                                    <h6 class="card-subtitle mb-4 text-white">Approve/Disapprove Lessonnote Activity</h6>                                    
                                         <a href="/plsnview" class="btn btn-light">Click Here</a>
                                 </div>
                             </div>
@@ -103,7 +103,7 @@
                                 <h5 class="card-title mb-3">Here you Can:</h5>
                                     <h6 class="card-subtitle mb-4 text-white">View Teacher Attendance Flags</h6>
                                     <h6 class="card-subtitle mb-4 text-white">View Teacher Lessonnote Flags</h6>                                    
-                                        <a href="javascript:void(0)" class="btn btn-light">Click Here</a>
+                                        <a href="javascript:void(0)" class="btn btn-light">Click to Your Left Hand Side</a>
                                 </div>
                             </div>
                         </div>
