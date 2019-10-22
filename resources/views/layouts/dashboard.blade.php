@@ -130,7 +130,7 @@
 }
 
 #videox {
-    object-fit: cover;
+   width: "100%";
 }
 
 .dataTable > thead > tr > th[class*="sort"]:after{
