@@ -86,6 +86,7 @@
                 cell1.innerHTML = "<strong>"+ datarow.Title + "</strong>";
                 cell2.innerHTML = "<strong>"+ datarow.Status + "</strong>";                
                 cell3.innerHTML = "<strong>"+ datarow.Perf + "%" + "</strong>";
+                
                 if (datarow.Status === "APPROVED.."){
                     mycell4 += "<strong> <a class='btn btn-primary' onclick='changeStatus("+ datarow.id + ", 2)' >  Launch!! </a> </strong> <br>";                 
                 }
@@ -113,23 +114,25 @@
 
 @section('myscript')
     <script>
-         function changeStatus(lsn,idx){       
-            let xhr = new XMLHttpRequest();
-            xhr.open('POST', '/lessonnotes_statusLsn/'+lsn+'/id/'+idx);
-            xhr.responseType = 'json';
-            let formData = new FormData();
-            formData.append("api_token", token);
-            xhr.send(formData);
+         function changeStatus(lsn,idx){      
+            if ( window.confirm("Are you sure you want to change the Current Status?") ) { 
+                let xhr = new XMLHttpRequest();
+                xhr.open('POST', '/lessonnotes_statusLsn/'+lsn+'/id/'+idx);
+                xhr.responseType = 'json';
+                let formData = new FormData();
+                formData.append("api_token", token);
+                xhr.send(formData);
 
-            xhr.onload = function() {
-                let responseObj = xhr.response;
-                if (responseObj.status === "Failed"){
-                    alert(responseObj.message);
-                    document.getElementById('loading').style.display = 'none';
-                    return;
+                xhr.onload = function() {
+                    let responseObj = xhr.response;
+                    if (responseObj.status === "Failed"){
+                        alert(responseObj.message);
+                        document.getElementById('loading').style.display = 'none';
+                        return;
+                    }
+                    
                 }
-                
             }
-         }
+        }
     </script>
 @endsection

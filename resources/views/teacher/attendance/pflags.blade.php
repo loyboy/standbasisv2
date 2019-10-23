@@ -106,7 +106,7 @@
                 cell11.className = "_toolbar";
 
                 cell11.innerHTML = "<strong>"+ "Teacher Subject-Class Absence" + "</strong>";
-                cell13.innerHTML = "<strong>"+ datarow.TAbsent + " periods" + "out of "+ datarow.TTotal +  "</strong>";
+                cell13.innerHTML = "<strong>"+ datarow.TAbsent + " periods" + " out of "+ datarow.TTotal +  "</strong>";
 
                 var tablex3 = document.getElementById('tbody1').insertRow(1);
                 var cell15 = tablex3.insertCell(0);
@@ -224,7 +224,7 @@
                 cell11.className = "_toolbar";
 
                 cell11.innerHTML = "<strong>"+ "Teacher Subject-Class Absence" + "</strong>";
-                cell13.innerHTML = "<strong>"+ datarow.TAbsent + " periods" + "out of "+ datarow.TTotal +  "</strong>";
+                cell13.innerHTML = "<strong>"+ datarow.TAbsent + " periods" + " out of "+ datarow.TTotal +  "</strong>";
 
                 var tablex3 = document.getElementById('tbody1').insertRow(1);
                 var cell15 = tablex3.insertCell(0);
