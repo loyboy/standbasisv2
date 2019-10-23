@@ -122,6 +122,7 @@
                 let formData = new FormData();
                 formData.append("api_token", token);
                 xhr.send(formData);
+                document.getElementById('loading').style.display = 'block';
 
                 xhr.onload = function() {
                     let responseObj = xhr.response;
@@ -130,6 +131,8 @@
                         document.getElementById('loading').style.display = 'none';
                         return;
                     }
+
+                    alert(responseObj.message);
                     
                 }
             }
