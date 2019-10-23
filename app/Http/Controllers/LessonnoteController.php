@@ -405,10 +405,6 @@ class LessonnoteController extends Controller
              if ( !is_null($request->get('cycle')) ){
                  $mycycle = $request->get('cycle');
              }
-
-             if ( !is_null($request->get('_date')) ){
-                $mydate = $request->get('_date');
-            }
      
              $lsn = null;  // not done
              $lsn2 = null; //late attendance    
@@ -558,7 +554,7 @@ class LessonnoteController extends Controller
                     $lateclosure = intval($at1->lateclosure);
                 }
                 
-                     $datablock = array("_date"=> $mydate, "Week" => $mycycle, "LSubmit" => $latesub , "LRSubmit" => $lateresub, "Quality" => $quality, "Perf" => $perf, "Delay" => $delayed, "ClosureA" => $closureA, "ClosureB" => $closureB, "NClosure" => $nonclosure, "LClosure" => $lateclosure   );
+                     $datablock = array("Week" => $mycycle, "LSubmit" => $latesub , "LRSubmit" => $lateresub, "Quality" => $quality, "Perf" => $perf, "Delay" => $delayed, "ClosureA" => $closureA, "ClosureB" => $closureB, "NClosure" => $nonclosure, "LClosure" => $lateclosure   );
                  
                  $data['status'] = "Success";
                  $data['message'] = "Your lessonnote flag data is provided....";

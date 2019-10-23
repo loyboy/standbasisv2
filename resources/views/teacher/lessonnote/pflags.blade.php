@@ -22,9 +22,24 @@
                     <div class=""> 
 
                             <div class="form-group row">
-                                <label class="col-md-4 col-sm-3 control-label">Search Date</label>
+                                <label class="col-md-4 col-sm-3 control-label">Search Week</label>
                                     <div class="col-md-4 col-sm-6">
-                                        <input type="date" value="" class="form-control" onchange="getLessonnoteOnChange()" id="attdate"/>
+                                      
+                                        <select class="form-control" onchange="getLessonnoteOnChange()" id="lsnweek" > 
+                                                    <option value="">Select...</option>
+                                                    <option value="1" >Week 1</option>
+                                                    <option value="2">Week 2</option>
+                                                    <option value="3">Week 3</option>
+                                                    <option value="4">Week 4</option>
+                                                    <option value="5">Week 5</option>
+                                                    <option value="6">Week 6</option>
+                                                    <option value="7">Week 7</option>
+                                                    <option value="8">Week 8</option>
+                                                    <option value="9">Week 9</option>
+                                                    <option value="10">Week 10</option>
+                                                    <option value="11">Week 11</option>
+                                                    <option value="12">Week 12</option>
+                                        </select>
                                     </div>
                             </div>
 
@@ -32,7 +47,7 @@
                     </div>
 
                     <div class="table-responsive" style=" height: 400px; overflow-y: auto; overflow-x: hidden; ">
-                       Your Search Date: <label class="col-md-4 col-sm-3 control-label" > <strong id="mylabel"> 2019-10-10 </strong>  </label>
+                       Your Search Week: <label class="col-md-4 col-sm-3 control-label" > <strong id="mylabel"> Week 1  </strong>  </label>
                         <table id="mydatatable" class="table table-striped table-bordered table-hover">
                             <thead>
                             <tr>
@@ -66,6 +81,7 @@
     let teacher = {{ Auth::user()->teacher_id }};
     let token = '{{ Auth::user()->api_token }}';
     let datex = '{{ date("Y-m-d") }}';
+    let cycle = 1;
 
         let xhr = new XMLHttpRequest();
         xhr.open('POST', '/lessonnotes_getFlags/'+teacher);
@@ -73,6 +89,7 @@
         let formData = new FormData();
         formData.append("api_token", token);
         formData.append("_date", datex);
+        formData.append("cycle", cycle);
         xhr.send(formData);
 
         xhr.onload = function() {
@@ -143,7 +160,7 @@
                 cell22.innerHTML = "<strong>"+ datarow.Delay + "</strong>";
                 
                 let mylabel = document.querySelector('#mylabel');
-                mylabel.innerHTML = datarow._date;
+                mylabel.innerHTML = "Week "+datarow.Week;
                //
         } 
 </script>
@@ -158,14 +175,15 @@
     });
 
     function getLessonnoteOnChange(){
-        let datebox = $('#attdate').val();
+        let cycle = $('#lsnweek').val();
         //let subclassbox = $('#subclass').val();
         let xhr = new XMLHttpRequest();
         xhr.open('POST', '/lessonnotes_getFlags/'+teacher);
         xhr.responseType = 'json';
         let formData = new FormData();
         formData.append("api_token", token);
-        formData.append("_date", datebox);
+        formData.append("cycle", cycle);
+
         document.getElementById('loading').style.display = 'block';
         xhr.send(formData);
 
@@ -238,7 +256,7 @@
                 cell22.innerHTML = "<strong>"+ datarow.Delay + "</strong>";
                 
                 let mylabel = document.querySelector('#mylabel');
-                mylabel.innerHTML = datarow._date;
+                mylabel.innerHTML = "Week "+datarow.Week;
                
                 document.getElementById('loading').style.display = 'none';
         } 
