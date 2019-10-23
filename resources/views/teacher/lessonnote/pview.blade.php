@@ -245,7 +245,7 @@ $.ajax({
             else if (Number(idx) === 4){
                 var comment = prompt("Please enter your Comment(s) About this Lessonnote..");
                 
-                if (comment === ""){ return; }
+                if (comment === null){ alert("You cancelled this action!"); return; }
                 
                 if ( comment !== "" || comment !== null ) {
                     let xhr = new XMLHttpRequest();
