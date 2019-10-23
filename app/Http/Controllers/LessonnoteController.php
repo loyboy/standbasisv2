@@ -473,7 +473,7 @@ class LessonnoteController extends Controller
                                         INNER JOIN lessonnote_managements c ON c.lsn_id = l.id
                                         WHERE l.tea_id IN ( SELECT id FROM teachers WHERE school_id = :sch ) AND l.period = :per AND c._approval != :sub AND c._closure != :sub1       
                                         " , 
-                                        [ "sch" =>  $teacher->school_id, "per" => $mycycle , "sub" => "1970-10-10 00:00:00"] );
+                                        [ "sch" =>  $teacher->school_id, "per" => $mycycle , "sub" => "1970-10-10 00:00:00", "sub1" => "1970-10-10 00:00:00"] );
 
                     // latter we do this late closure B -- Not so sure about this // 
                    $lsn7 = DB::select(
