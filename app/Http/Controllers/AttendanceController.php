@@ -305,9 +305,11 @@ class AttendanceController extends Controller
             $flag = 0;///if the no. of students present is ok
             $perf = 0;///the total of done + policY + fully + qua
 
-            $expecttime = $attendance->_date;
+           
+            $timetable = TimeTable::findOrFail($timeid); 
+            $expecttime = $timetable->_time;
             $expectedtime = strtotime($expecttime);
-            $actualtime = strtotime(date('Y-m-d H:i:s'));
+            $actualtime = strtotime(date('H:i:s'));
 
             if ( ( ($actualtime - $expectedtime) / 60) >= 0 && ($actualtime - $expectedtime)/60 <= 10 ){
                 $policy = 1;

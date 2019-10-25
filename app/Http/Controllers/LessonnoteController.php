@@ -342,6 +342,43 @@ class LessonnoteController extends Controller
         }
     }
 
+      /**
+     *  View Lessonnote of Teacher
+     * @return \Illuminate\Http\Response
+     */
+    public function viewLessonnoteTeacherForScores(Request $request, $lsnid, $task)
+    {
+            $mydate = "";
+       
+            $lsn = array();
+        if($task === 1){//classwork
+            $lsn = Lessonnote::where('_date', 'LIKE', "%".$mydate."%")->whereHas('teacher', function (Builder $query) use ($teaid) {
+                $query->where('id', '=', $teaid);
+            })->get();
+        }
+          
+      
+       
+        $datablock = array();
+        
+        if (!empty($lsn)){
+            foreach ($lsn as $lessonnote){ 
+                $lsnperf = LsnPerformance::where('lsn_id', $lessonnote->id)->first();
+                $status = $this->getLessonnoteStatus($lessonnote->id);
+                $datablock[] = array("id" => $lessonnote->id, "Subject" => $lessonnote->subject->name, "Title" => $lessonnote->title, "Status" => $status, "Filez" => $lessonnote->_file, "Perf" => $lsnperf->perf  );
+            }
+            $data['status'] = "Success";
+            $data['message'] = "Your lessonnote data is provided....";
+            $data['data'] = $datablock;
+            return response()->json($data);
+        }
+        else { 
+            $data['status'] = "Failed";
+            $data['message'] = "Your lessonnote data is not available. Sorry";
+            return response()->json($data);
+        }
+    }
+
     /**
      *  View Lessonnote of Teacher
      * @return \Illuminate\Http\Response
