@@ -8,7 +8,7 @@ class ClassStream extends Model
 {
     public function school()
     {
-        return $this->belongsTo('App\School', 'foreign_key', 'school_id');
+        return $this->belongsTo('App\School', 'school_id', 'id');
     }
 
     /*

@@ -100,7 +100,7 @@ class Kernel extends ConsoleKernel
                 [ "tea" =>  $t->id, "tym" => '%'.$splittime[0].'%' ,"tym2" => '%'.$splittime[1].'%' , "dayz" => $thedayofweek ] );
                 
                 echo "Teacher: ". $t->id."\r\n"; echo "Year: ". $theyear."\r\n"; echo "Term: ". $school_time->term."\r\n"; echo "Time of the day: ".$thetimeofday."\r\n"; echo "Dayofweek: ".$thedayofweek."\r\n";
-                      //  GROUP BY s.ID, te.ID, t.CLASS_ID, st.ID, st.TIME_ID , t.ID
+                    
                 foreach ($resultsteach as $rt)  {
                       
                       echo "Subject now teaching is...".$rt->TEA_ID."\r\n";

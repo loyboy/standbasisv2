@@ -10,13 +10,37 @@
         </div>
 
         <div class="row"> 
-                    <div class="col-xl-12" id="alertdiv"> </div>                      
-                    <div class="col-xl-12">
+                    <div class="col-xl-12" id="alertdiv"> </div>
+
+                    <div class="col-xl-4 col-md-5 col-12">
+                            <div class="card gx-card-full-height">
+                                <img src="http://via.placeholder.com/500x330" id="imgholder" alt="Attendance Card Image" class="card-img-top">
+                                <div class="card-body">
+                                    <h3 class="card-title mb-0">Your Photo</h3>                                   
+                                    <hr>
+                                    <h3 class="card-title mb-0">Today's Attendance Time</h3></div>
+                                <div class="card-mt-footer">
+                                    <div class="card-mt-footer-inner">
+                                        <a href="javascript:void(0)" class="gx-btn gx-flat-btn gx-btn-sm">
+                                            <i class="zmdi zmdi-time zmdi-hc-lg"></i>
+                                            Time
+                                        </a>
+                                        <a href="javascript:void(0)" class="gx-btn gx-flat-btn gx-btn-sm">
+                                            {{ date('H:i') }}
+                                        </a>
+                                     
+                                    </div>
+                                  
+                                </div>
+                            </div>
+                    </div>
+
+                    <div class="col-xl-8 col-md-7 col-12">
                             <div class="gx-entry-header">
                                 <h3 class="entry-heading">Your Students</h3>
                             </div>
                             <div class="gx-card mb-0 px-0 pt-2 pb-3">
-                                <div class="gx-card-body">
+                                <div class="gx-card-body" style="max-height: 400px; overflow: scroll;">
                                     <div class="table-responsive">
                                         <table class="table table-striped mb-0" id="tableofatt">
                                             <thead class="thead-light"> 
@@ -336,10 +360,10 @@
             countdown();//countdown to the time that the Photo will be taken
             setTimeout(function(){
             //begin the visual countdown timer
-            context.drawImage(videox, 0, 0, 500, 350 );
+            context.drawImage(videox, 0, 0, 450, 300 );
             imgsrc = canvasobj.toDataURL("image/jpg");
             $('#picblob').val(imgsrc);
-
+            $('#imgholder').attr('src',imgsrc);
             vidOff();
             
             //audio.play();
@@ -368,7 +392,7 @@
             min: 480,
             ideal: 1080,
             max: 1440
-            }, facingMode: { exact: "environment" } } }).then(function(stream) {
+            }  , facingMode: { exact: "environment" }   } }).then(function(stream) {
                     video.srcObject=stream;
                     localstream = stream;
                     video.play();
@@ -378,6 +402,6 @@
         else{
             console.log("Nope, not seen the camera");
         }
-    } 
+    } //, facingMode: { exact: "environment" }
     </script>
 @endsection

@@ -8,11 +8,11 @@ class Assessment extends Model
 {
     public function subject()
     {
-        return $this->belongsTo('App\Subject', 'foreign_key', 'sub_id');
+        return $this->belongsTo('App\Subject', 'sub_id', 'id');
     }
     public function lessonnote()
     {
-        return $this->belongsTo('App\Lessonnote', 'foreign_key', 'lsn_id');
+        return $this->belongsTo('App\Lessonnote', 'lsn_id', 'id');
     }
 
      /*

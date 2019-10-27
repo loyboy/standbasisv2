@@ -7,10 +7,13 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+
 use App\Lessonnote;
 use App\LessonnoteManagement;
 use App\LsnPerformance;
 use App\LsnActivity;
+use App\Assessment;
+use App\Score;
 
 use App\User;
 use App\Teacher;
@@ -342,7 +345,55 @@ class LessonnoteController extends Controller
         }
     }
 
-      /**
+    
+    /**
+     *  View scores
+     * @return \Illuminate\Http\Response
+    */
+    public function viewLessonnoteScores(Request $request, $teacher)
+    {
+        $mydate = "";
+       
+       // $assessment = array();
+      
+        $datablock = array();
+        
+        $lsn = Lessonnote::where("tea_id",'=',$teacher)->join('lessonnote_managements', 'lessonnotes.id', '=', 'lessonnote_managements.lsn_id')->where('lessonnote_managements._approval', '!=', "1970-10-10 00:00:00")->get();
+        
+        $assessmentcls = Assessment::where('_type', '=', "C")->whereHas('lessonnote', function (Builder $query) use ($teacher) {
+            $query->join('lessonnote_managements', 'lessonnotes.id', '=', 'lessonnote_managements.lsn_id')->where('lessonnotes.tea_id', '=', $teacher)->where('lessonnote_managements._approval', '!=', "1970-10-10 00:00:00"); //classwork
+        })->first(); 
+
+        $assessmenthwk = Assessment::where('_type', '=', "A")->whereHas('lessonnote', function (Builder $query) use ($teacher) {
+            $query->join('lessonnote_managements', 'lessonnotes.id', '=', 'lessonnote_managements.lsn_id')->where('lessonnotes.tea_id', '=', $teacher)->where('lessonnote_managements._approval', '!=', "1970-10-10 00:00:00"); //classwork
+        })->first();
+
+        $clswork = "0"; $homework = "0";
+        if (!is_null($assessmentcls)){           
+            $scoreavg = Score::where('ass_id', '=', $assessmentcls->id)->avg('perf');
+            if (null !== $scoreavg){
+                $clswork = "Avg. Score: ". $scoreavg;
+            }
+        }
+
+        if (!is_null($assessmenthwk)){           
+            $scoreavg = Score::where('ass_id', '=', $assessmenthwk->id)->avg('perf');
+            if (null !== $scoreavg){
+                $homework = "Avg. Score: ". $scoreavg;
+            }                        
+        }
+
+        foreach ($lsn as $lessonnote){ 
+            $datablock[] = array("id" => $lessonnote->id, "Subject" => $lessonnote->subject->name, "Title" => $lessonnote->title,  "Clswork" => $clswork ,  "Hmwork" => $homework  );
+        }       
+
+        $data['status'] = "Success";
+        $data['message'] = "Your lessonnote data is provided....";
+        $data['data'] = $datablock;
+        return response()->json($data);
+    }
+
+    /**
      *  View Lessonnote of Teacher
      * @return \Illuminate\Http\Response
      */
@@ -350,14 +401,12 @@ class LessonnoteController extends Controller
     {
             $mydate = "";
        
-            $lsn = array();
+        $lsn = array();
         if($task === 1){//classwork
             $lsn = Lessonnote::where('_date', 'LIKE', "%".$mydate."%")->whereHas('teacher', function (Builder $query) use ($teaid) {
                 $query->where('id', '=', $teaid);
             })->get();
-        }
-          
-      
+        }   
        
         $datablock = array();
         

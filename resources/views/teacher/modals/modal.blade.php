@@ -176,3 +176,58 @@
              
         </div>
     </div> 
+
+    <!---Add scores -->
+    <div class="modal fade" id="teacheraddscores" tabindex="2" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="modal-header bg-info white">                  
+                        <h4 class="modal-title" id="head_modal_addscoreheader"> Add Scores </h4>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>    
+                        </button>
+                </div>
+
+                <div class="modal-body">                 
+               
+                    <div class="form-group col-md-12">
+                     
+                        <div class="gx-card p-0 overflow-hidden">
+                            <div class="gx-card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th class="text-uppercase" scope="col">S/N</th>
+                                                <th class="text-uppercase" scope="col">Student Name</th>
+                                                <th class="text-uppercase" scope="col">Add Score</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr id="scoremax">
+                                                    <th scope="row">*</th>
+                                                    <td>Max. Score</td>
+                                                    <td><input type="number" required="required" name="max" id="scoremaximum" value="" class=" form-control-sm"/> </td>
+                                                
+                                                </tr>
+                                            
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                     
+                     </div>  
+              
+                        
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-block" onclick="submitScores()"> Submit Scores</button> 
+                </div>
+               
+            </div>
+             
+        </div>
+    </div> 

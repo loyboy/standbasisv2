@@ -191,7 +191,9 @@ table.dataTable thead > tr > td.sorting {
                             </a>
                             <ul class="sub-menu" display="block">
                                 <li><a href="/tlsnsubmit"><span class="nav-text"> Submit Lessonnote </span></a></li>
-                                <li><a href="/tlsnview"><span class="nav-text"> View Submitted Lessonnote </span></a></li>                          
+                                <li><a href="/tlsnview"><span class="nav-text"> View Submitted Lessonnote </span></a></li>  
+                                <li><a href="/tlsnscores"><span class="nav-text"> Add Scores </span></a></li>  
+                                                        
                             </ul>
                         </li>
 

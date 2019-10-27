@@ -133,6 +133,7 @@
                     }
 
                     alert(responseObj.message);
+                    document.getElementById('loading').style.display = 'none';
                     
                 }
             }
