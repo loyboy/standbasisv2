@@ -397,15 +397,14 @@ class LessonnoteController extends Controller
      *  View Lessonnote of Teacher
      * @return \Illuminate\Http\Response
      */
-    public function viewLessonnoteTeacherForScores(Request $request, $lsnid, $task)
+    public function getLessonnoteScores(Request $request, $lsnid, $task)
     {
-            $mydate = "";
+        $mydate = "";
        
         $lsn = array();
         if($task === 1){//classwork
-            $lsn = Lessonnote::where('_date', 'LIKE', "%".$mydate."%")->whereHas('teacher', function (Builder $query) use ($teaid) {
-                $query->where('id', '=', $teaid);
-            })->get();
+
+            $lsn = Lessonnote::where('id', '=', $lsnid)->first();
         }   
        
         $datablock = array();
