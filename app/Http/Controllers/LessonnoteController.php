@@ -180,9 +180,9 @@ class LessonnoteController extends Controller
         $checkifweek = DB::select("SELECT * FROM lessonnotes WHERE tea_id = :id AND title = :ti " , ["id" => $teacher->id, "ti"=>$title ] ); 
         $teaidx = $teacher->id;
         if (!empty($checkifweek)){
-            $lsnmanage = LessonnoteManagement::where('lsn_id', '=', $checkifweek[0]->id)->where('_revert', "!==" , "1970-10-10 00:00:00")->first();
-            $lsnmanage2 = LessonnoteManagement::where('lsn_id', '=', $checkifweek[0]->id)->where('_submission', "!==" , "1970-10-10 00:00:00")->first();
-            if ($lsnmanage !== null){
+            $lsnmanage = LessonnoteManagement::where('lsn_id', '=', $checkifweek[0]->id)->where('_revert', "!=" , "1970-10-10 00:00:00")->first();
+            $lsnmanage2 = LessonnoteManagement::where('lsn_id', '=', $checkifweek[0]->id)->where('_submission', "!=" , "1970-10-10 00:00:00")->first();
+           if ($lsnmanage !== null){
                 $title = $teacher->fname.$teacher->id. "_Week ".$week. "_Term ".$term->term."_".$cls->title."_".$sub->name."_".date('Y')."_Resubmitted ".$lsnmanage->_cycle;
                 $lsnmanage->_submission = "1970-10-10 00:00:00";
                 $lsnmanage->_resubmission = date('Y-m-d H:i:s');
@@ -224,10 +224,11 @@ class LessonnoteController extends Controller
                 $data['status'] = "Success";
                 $data['message'] = "Lessonnote has been Submitted, even Though You had submitted before.";
                 return response()->json($data);
-            }    
+            }  
             else{
                 $data['status'] = "Failed";
                 $data['message'] = "Lessonnote has been submitted already / Please submit for another week.";
+               // $data['message'] = $lsnmanage;
                 return response()->json($data);
             }
          }
