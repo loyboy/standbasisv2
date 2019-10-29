@@ -91,9 +91,9 @@
                     mycell4 += "<strong> <a class='btn btn-primary white' onclick='changeStatus("+ datarow.id + ", 2)' >  Launch Now!! </a> </strong> <br>";                 
                 }
                 if (datarow.Status === "REJECTED.."){
-                    mycell4 += `<strong> <a class='btn btn-danger white' onclick="alert('Principal's Comment: \\n ${datarow.Comment}')" >  Principal's Comment </a> </strong> <br>`;                 
+                    mycell4 += `<strong> <a class='btn btn-danger white' onclick="alert('Principal Comment: \\n ${datarow.Comment}')" >  Principal's Comment </a> </strong> <br>`;                 
               
-                    mycell4 += "<strong> <a class='btn btn-warning white' onclick='changeStatus("+ datarow.id + ", 1)' >  Re-Submit!! </a> </strong> <br>";                 
+                    mycell4 += "<strong> <a href='/tlsnsubmit' class='btn btn-warning white' >  Re-Submit!! </a> </strong> <br>";                 
                 }
                 if (datarow.Status === "ACTIVE.."){
                     mycell4 += "<strong> <a class='btn btn-info white' onclick='changeStatus("+ datarow.id + ", 3)' >  Close!! </a> </strong> <br>";                 
