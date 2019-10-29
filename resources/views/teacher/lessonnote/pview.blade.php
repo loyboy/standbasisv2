@@ -195,7 +195,7 @@ $.ajax({
                 }
 
                 else if (datarow.Status === "REJECTED.."){
-                    mycell4 += `<td> <strong> <a class='btn btn-secondary white' onclick="alert('Your Comment: ${\n} ${datarow.Comment}')" >  View Comment!!  </a> </strong> <br> </td>`; 
+                    mycell4 += `<td> <strong> <a class='btn btn-secondary white' onclick="alert('Your Comment: \\r ${datarow.Comment}')" >  View Comment!!  </a> </strong> <br> </td>`; 
                 }
 
                 else if (datarow.Status === "APPROVED.."){
