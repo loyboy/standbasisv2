@@ -48,6 +48,7 @@
                                 <th>Class Time</th>
                                 <th>Submission Time</th>
                                 <th>Class Performance</th>
+                                <th>Principal's Action</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -134,6 +135,7 @@
                 var cell3 = tablex.insertCell(3);
                 var cell4 = tablex.insertCell(4);
                 var cell5 = tablex.insertCell(5);
+                var cell6 = tablex.insertCell(6);
                 
                 tablex.className = "datarow";
                 cell0.innerHTML = "<strong>"+ (i + 1) + "</strong>";
@@ -141,7 +143,13 @@
                 cell2.innerHTML = "<strong>"+ datarow.ExpTime + "</strong>";
                 cell3.innerHTML = "<strong>"+ datarow.ActTime + "</strong>";
                 cell4.innerHTML = "<strong>"+ datarow.Perf + "%" + "</strong>";
-                cell5.innerHTML = "<strong> <a class='btn btn-primary' onclick='showAttendance("+datarow.id+")' > View Attendance </a> </strong>";
+                if (Number(datarow.Action) === 1){
+                    cell5.innerHTML = `<strong> <a class='btn btn-success white' > Approved </a></strong>`;
+                }
+                else{
+                    cell5.innerHTML = `<strong> <a class='btn btn-danger white' onclick="alert ('${datarow.Comment}')" >  View Comment </a></strong>`;
+                }                
+                cell6.innerHTML = "<strong> <a class='btn btn-primary' onclick='showAttendance("+datarow.id+")' > View Attendance </a> </strong>";
                //cell3.innerHTML = "<div class='form-checkbox'> <input type='checkbox' disabled name='excused[]' id='stad" + datarow.PupilID + "' class='excusedform' value='yes'> </div>";
                 i++;
             }
@@ -212,6 +220,7 @@
                 var cell3 = tablex.insertCell(3);
                 var cell4 = tablex.insertCell(4);
                 var cell5 = tablex.insertCell(5);
+                var cell6 = tablex.insertCell(6);
               
                 tablex.className = "datarow";
                 cell0.innerHTML = "<strong>"+ (i + 1) + "</strong>";
@@ -219,7 +228,13 @@
                 cell2.innerHTML = "<strong>"+ datarow.ExpTime + "</strong>";
                 cell3.innerHTML = "<strong>"+ datarow.ActTime + "</strong>";
                 cell4.innerHTML = "<strong>"+ datarow.Perf + "%" + "</strong>";
-                cell5.innerHTML = "<strong> <a class='btn btn-primary' onclick='showAttendance("+datarow.id+")' > View Attendance </a> </strong>";
+                if (Number(datarow.Action) === 1){
+                    cell5.innerHTML = `<strong> <a class='btn btn-success white' > Approved </a></strong>`;
+                }
+                else{
+                    cell5.innerHTML = `<strong> <a class='btn btn-danger white' onclick="alert ('${datarow.Comment}')" >  View Comment </a></strong>`;
+                }   
+                cell6.innerHTML = "<strong> <a class='btn btn-primary' onclick='showAttendance("+datarow.id+")' > View Attendance </a> </strong>"; 
                //cell3.innerHTML = "<div class='form-checkbox'> <input type='checkbox' disabled name='excused[]' id='stad" + datarow.PupilID + "' class='excusedform' value='yes'> </div>";
                 i++;
             }

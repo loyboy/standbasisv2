@@ -426,9 +426,14 @@ class AttendanceController extends Controller
         
         if (!empty($att)){
             foreach ($att as $attendance){ 
+
                 $attperf = AttPerformance::where('att_id', $attendance->id)->first();
-                $datablock[] = array("id" => $attendance->id,"Subclass" => $attendance->subclass->subject->name. " ".$attendance->subclass->classstream->title , "ExpTime" => $attendance->timetable->_time, "ActTime" => $attendance->_date, "Perf" => $attperf->flag );
+                
+                $attactivity = AttActivity::where('att_id', $attendance->id)->first();
+                
+                $datablock[] = array("id" => $attendance->id,"Subclass" => $attendance->subclass->subject->name. " ".$attendance->subclass->classstream->title , "ExpTime" => $attendance->timetable->_time, "ActTime" => $attendance->_date, "Perf" => $attperf->flag, "Comment" => $attactivity->_comment, "Action" => $attactivity->_action );
             }
+
             $data['status'] = "Success";
             $data['message'] = "Your attendance data is provided....";
             $data['data'] = $datablock;
