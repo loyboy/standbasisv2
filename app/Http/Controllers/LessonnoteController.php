@@ -361,33 +361,49 @@ class LessonnoteController extends Controller
         
         $lsn = Lessonnote::where("tea_id",'=',$teacher)->join('lessonnote_managements', 'lessonnotes.id', '=', 'lessonnote_managements.lsn_id')->where('lessonnote_managements._approval', '!=', "1970-10-10 00:00:00")->get();
         
-        $assessmentcls = Assessment::where('_type', '=', "C")->whereHas('lessonnote', function (Builder $query) use ($teacher) {
-            $query->join('lessonnote_managements', 'lessonnotes.id', '=', 'lessonnote_managements.lsn_id')->where('lessonnotes.tea_id', '=', $teacher)->where('lessonnote_managements._approval', '!=', "1970-10-10 00:00:00"); //classwork
-        })->first(); 
+        foreach ( $lsn as $ls ){
+            $lsnid = $ls->id;
 
-        $assessmenthwk = Assessment::where('_type', '=', "A")->whereHas('lessonnote', function (Builder $query) use ($teacher) {
-            $query->join('lessonnote_managements', 'lessonnotes.id', '=', 'lessonnote_managements.lsn_id')->where('lessonnotes.tea_id', '=', $teacher)->where('lessonnote_managements._approval', '!=', "1970-10-10 00:00:00"); //classwork
-        })->first();
+            //get classes from Class Ctaegory
+         //   $classstream = ClassStream::where("category",'=',$ls->class_category)->get();
 
-        $clswork = "0"; $homework = "0";
-        if (!is_null($assessmentcls)){           
-            $scoreavg = Score::where('ass_id', '=', $assessmentcls->id)->avg('perf');
-            if (null !== $scoreavg){
-                $clswork = "Avg. Score: ". $scoreavg;
+            $assessmentcls = Assessment::where('_type', '=', "C")->whereHas('lessonnote', function (Builder $query) use ($ls) {
+                $query->join('class_streams', 'lessonnotes.class_category', '=', 'class_streams.category')->join('enrollments', 'class_streams.id', '=', 'enrollments.class_id')->where('lessonnotes.id', '=', $ls->id); //classwork
+            })->get(); 
+
+            $assessmenthwk = Assessment::where('_type', '=', "A")->whereHas('lessonnote', function (Builder $query) use ($ls) {
+                $query->join('class_streams', 'lessonnotes.class_category', '=', 'class_streams.category')->join('enrollments', 'class_streams.id', '=', 'enrollments.class_id')->where('lessonnotes.id', '=', $ls->id); //homework
+            })->get();
+
+            // get all the students in that class for this lessonnote
+         /*  $enrolcls = Enrollment::join('scores', 'enrollments.id', '=', 'scores.enrol_id')->whereHas('classtream', function (Builder $query) use ($ls) {
+                $query->where('category', $ls->class_category); 
+            })->get();  */
+
+            $enrolcls = Enrollment::whereHas('classtream', function (Builder $query) use ($ls) {
+                $query->where('category', $ls->class_category); 
+            })->get(); 
+          /*  $clswork = "0"; $homework = "0";
+            if (!is_null($assessmentcls)){           
+                //$scoreavg = Score::where('ass_id', '=', $assessmentcls->id)->avg('perf');
+                $scoreavg = Score::where('ass_id', '=', $assessmentcls->id)->count('perf');
+                if (null !== $scoreavg){
+                    $clswork = "Added Scores to: ". $scoreavg." To ";
+                }
             }
-        }
+    
+            if (!is_null($assessmenthwk)){           
+                $scoreavg = Score::where('ass_id', '=', $assessmenthwk->id)->avg('perf');
+                if (null !== $scoreavg){
+                    $homework = "Avg. Score: ". $scoreavg;
+                }                        
+            }*/
 
-        if (!is_null($assessmenthwk)){           
-            $scoreavg = Score::where('ass_id', '=', $assessmenthwk->id)->avg('perf');
-            if (null !== $scoreavg){
-                $homework = "Avg. Score: ". $scoreavg;
-            }                        
-        }
-
-        foreach ($lsn as $lessonnote){ 
-            $datablock[] = array("id" => $lessonnote->id, "Subject" => $lessonnote->subject->name, "Title" => $lessonnote->title,  "Clswork" => $clswork ,  "Hmwork" => $homework  );
-        }       
-
+         //   $datablock[] = array("id" => $lessonnote->id, "Subject" => $lessonnote->subject->name, "Title" => $lessonnote->title,  "Clswork" => $clswork ,  "Hmwork" => $homework  );
+         $datablock[] = array("id" => $ls->id, "Subject" => $ls->subject->name, "Title" => $ls->title,  "ObjectCls" => $assessmentcls ,  "ObjectHmw" => $assessmenthwk , "ObjectPupils" => $enrolcls );
+     
+        }      
+        
         $data['status'] = "Success";
         $data['message'] = "Your lessonnote data is provided....";
         $data['data'] = $datablock;
@@ -461,7 +477,7 @@ class LessonnoteController extends Controller
                 $lsnperf = LsnPerformance::where('lsn_id', $lessonnote->id)->first();
                 $lsnmanage = LessonnoteManagement::where('lsn_id', $lessonnote->id)->first();
                 $status = $this->getLessonnoteStatus($lessonnote->id);
-                $datablock[] = array("id" => $lessonnote->id, "Subject" => $lessonnote->subject->name, "Title" => $lessonnote->title, "Status" => $status, "Filez" => $lessonnote->_file, "Perf" => $lsnperf->perf, "Teacher"=>$lessonnote->teacher->fname." ".$lessonnote->teacher->lname, "TeacherID" => $lessonnote->teacher->id, "Cycle" => $lsnmanage->_cycle  );
+                $datablock[] = array("id" => $lessonnote->id, "Subject" => $lessonnote->subject->name, "Title" => $lessonnote->title, "Status" => $status, "Filez" => $lessonnote->_file, "Perf" => $lsnperf->perf, "Teacher"=>$lessonnote->teacher->fname." ".$lessonnote->teacher->lname, "TeacherID" => $lessonnote->teacher->id, "Cycle" => $lsnmanage->_cycle , "Comment" => $lessonnote->comment_principal ? $lessonnote->comment_principal : ""  );
             }
             $data['status'] = "Success";
             $data['message'] = "Your lessonnote data is provided....";
