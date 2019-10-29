@@ -332,7 +332,7 @@ class LessonnoteController extends Controller
             foreach ($lsn as $lessonnote){ 
                 $lsnperf = LsnPerformance::where('lsn_id', $lessonnote->id)->first();
                 $status = $this->getLessonnoteStatus($lessonnote->id);
-                $datablock[] = array("id" => $lessonnote->id, "Subject" => $lessonnote->subject->name, "Title" => $lessonnote->title, "Status" => $status, "Filez" => $lessonnote->_file, "Perf" => $lsnperf->perf  );
+                $datablock[] = array("id" => $lessonnote->id, "Subject" => $lessonnote->subject->name, "Title" => $lessonnote->title, "Status" => $status, "Filez" => $lessonnote->_file, "Perf" => $lsnperf->perf, "Comment" => $lessonnote->comment_principal ? $lessonnote->comment_principal : ""  );
             }
             $data['status'] = "Success";
             $data['message'] = "Your lessonnote data is provided....";
@@ -703,7 +703,7 @@ class LessonnoteController extends Controller
             $lsn->_submission = "1970-10-10 00:00:00";
             $lsn->_resubmission = "1970-10-10 00:00:00";
             $lsn->_launch = date('Y-m-d H:i:s');
-            $lsn->_cycle = $lsn->_cycle + 1;
+        
             $lsn->save();
             $data['status'] = "Success";
             $data['message'] = "Your lessonnote management status has been changed to LAUNCHED";
@@ -714,7 +714,7 @@ class LessonnoteController extends Controller
             $lsn->_resubmission = "1970-10-10 00:00:00";
             $lsn->_launch = "1970-10-10 00:00:00";
             $lsn->_closure = date('Y-m-d H:i:s');
-            $lsn->_cycle = $lsn->_cycle + 1;
+         
             $lsn->save();
             $data['status'] = "Success";
             $data['message'] = "Your lessonnote management status has been changed to CLOSED";
