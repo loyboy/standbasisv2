@@ -775,7 +775,7 @@ class AttendanceController extends Controller
                             }                            
                            
                             $datablock[] = array("Pupil" => $pupil->fname.' '.$pupil->lname ,"Subclass" => $subclass->subject->name." ".$subclass->classstream->title , 
-                            "Time" => $t->timetable->_time, "Timeid" => $t->timetable->id, "Present" => $statuscomment, "Remark" => $remarkcomment  );
+                            "Time" => $t->timetable->_time, "Timeid" => $t->timetable->id, "Present" => $statuscomment, "Remark" => $remarkcomment , "Rowcall" => $rowcall );
                   
                         }
                     }
