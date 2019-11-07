@@ -73,7 +73,7 @@
     <div class="row">
                         <div class="col-xl-4 col-sm-6 col-12">
                             <div class="bg-primary text-white card">
-                                <div class="card-header border-0">Regulate the Teacher Attendance?</div>
+                                <div class="card-header border-0">Attendance</div>
                                 <div class="card-body">
                                 <h5 class="card-title mb-3">Here you Can:</h5>
                                     <h6 class="card-subtitle mb-4 text-white">View Attendance Activity</h6>
@@ -86,7 +86,7 @@
                         
                         <div class="col-xl-4 col-sm-6 col-12">
                             <div class="bg-success text-white card">
-                                <div class="card-header border-0"> Regulate the Teacher's Lessonnote?</div>
+                                <div class="card-header border-0">Lessonnote</div>
                                 <div class="card-body">
                                 <h5 class="card-title mb-3">Here you Can:</h5>
                                     <h6 class="card-subtitle mb-4 text-white">View Lessonnote Activity</h6>
@@ -98,7 +98,7 @@
 
                         <div class="col-xl-4 col-sm-6 col-12">
                             <div class="bg-danger text-white card">
-                                <div class="card-header border-0"> View Teacher Violations/Flags</div>
+                                <div class="card-header border-0"> Flags</div>
                                 <div class="card-body">
                                 <h5 class="card-title mb-3">Here you Can:</h5>
                                     <h6 class="card-subtitle mb-4 text-white">View Teacher Attendance Flags</h6>

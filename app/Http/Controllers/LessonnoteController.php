@@ -29,6 +29,43 @@ class LessonnoteController extends Controller
     {
         $this->middleware('apiuser', ['only' => ['index','show']]);
     }
+    /*** Helper Functions */
+    public function getScoreClassWork($enrolid){ //Helpher One
+        $scorescls = Score::where('enrol_id',$enrolid)->whereHas('assessment', function (Builder $query) {
+            $query->where('_type', '=', "C"); //classwork
+        })->first(); 
+        //return $scorescls ? $scorescls->actual : "";
+        $data['status'] = "Success";
+        $data['data'] = $scorescls ? $scorescls->actual : "";
+        return response()->json($data);
+    }
+
+    public function getScoreHomeWork($enrolid){ //Helpher Two
+        $scorescls = Score::where('enrol_id',$enrolid)->whereHas('assessment', function (Builder $query) {
+            $query->where('_type', '=', "A"); //homework
+        })->first(); 
+       // return $scorescls ? $scorescls->actual : "";
+       $data['status'] = "Success";
+       $data['data'] = $scorescls ? $scorescls->actual : "";
+       return response()->json($data);
+    }
+
+    public function getPupilName($enrolid){ //Helpher Three
+        $enrol = Enrollment::where('id',$enrolid)->first(); 
+       // return $enrol ? $enrol->pupil->fname." ".$enrol->pupil->lname : "";
+        $data['status'] = "Success";
+        $data['data'] =  $enrol ? $enrol->pupil->fname." ".$enrol->pupil->lname : "";
+        return response()->json($data);
+    }
+
+    public function getClassName($enrolid){ //Helpher Four
+        $enrol = Enrollment::where('id',$enrolid)->first(); 
+     //   return $enrol ? $enrol->classtream->title." ".$enrol->classtream->ext : "";
+        $data['status'] = "Success";
+        $data['data'] =  $enrol ? $enrol->classtream->title." ".$enrol->classtream->ext : "";
+        return response()->json($data);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -348,104 +385,84 @@ class LessonnoteController extends Controller
 
     
     /**
+     *  View students in that lessonnote that was submitted
+     * @return \Illuminate\Http\Response
+    */
+    public function viewLessonnoteScores(Request $request, $lsnid, $task)
+    {
+        $mydate = "";
+
+        $ls = Lessonnote::where("id",'=',$lsnid)->first();      
+
+        $enrolcls = Enrollment::whereHas('classtream', function (Builder $query) use ($ls) {
+            $query->where('category', $ls->class_category); 
+        })->get(); 
+
+        $datablock = array("id" => $ls->id, "Subject" => $ls->subject->name, "Title" => $ls->title, "ObjectPupils" => $enrolcls, "Task" => intval($task) );
+     
+        
+     
+        $data['status'] = "Success";
+        $data['message'] = "Your lessonnote pupil data is provided....";
+        $data['data'] = $datablock;
+        return response()->json($data);
+    }
+
+    /**
      *  View scores
      * @return \Illuminate\Http\Response
     */
-    public function viewLessonnoteScores(Request $request, $teacher)
+    public function viewLessonnoteTeacherScores(Request $request, $teacher)
     {
-        $mydate = "";
+            $mydate = "";
        
-       // $assessment = array();
-      
-        $datablock = array();
-        
-        $lsn = Lessonnote::where("tea_id",'=',$teacher)->join('lessonnote_managements', 'lessonnotes.id', '=', 'lessonnote_managements.lsn_id')->where('lessonnote_managements._approval', '!=', "1970-10-10 00:00:00")->get();
-        
-        foreach ( $lsn as $ls ){
-            $lsnid = $ls->id;
+            $assessment = array();
 
-            //get classes from Class Ctaegory
-         //   $classstream = ClassStream::where("category",'=',$ls->class_category)->get();
+            $datablock = array();
+        
+            $lsn = Lessonnote::where("tea_id",'=',$teacher)->rightJoin('lessonnote_managements', 'lessonnote_managements.lsn_id', '=', 'lessonnotes.id')->where('lessonnote_managements._approval', '!=', "1970-10-10 00:00:00")->get();
 
-            $assessmentcls = Assessment::where('_type', '=', "C")->whereHas('lessonnote', function (Builder $query) use ($ls) {
+            foreach ($lsn as $ls){
+           
+           $clswork = "0"; $homework = "0";
+           
+           $assessmentcls = Assessment::where('_type', '=', "C")->whereHas('lessonnote', function (Builder $query) use ($ls) {
                 $query->join('class_streams', 'lessonnotes.class_category', '=', 'class_streams.category')->join('enrollments', 'class_streams.id', '=', 'enrollments.class_id')->where('lessonnotes.id', '=', $ls->id); //classwork
             })->get(); 
 
             $assessmenthwk = Assessment::where('_type', '=', "A")->whereHas('lessonnote', function (Builder $query) use ($ls) {
                 $query->join('class_streams', 'lessonnotes.class_category', '=', 'class_streams.category')->join('enrollments', 'class_streams.id', '=', 'enrollments.class_id')->where('lessonnotes.id', '=', $ls->id); //homework
             })->get();
-
-            // get all the students in that class for this lessonnote
-         /*  $enrolcls = Enrollment::join('scores', 'enrollments.id', '=', 'scores.enrol_id')->whereHas('classtream', function (Builder $query) use ($ls) {
-                $query->where('category', $ls->class_category); 
-            })->get();  */
-
-            $enrolcls = Enrollment::whereHas('classtream', function (Builder $query) use ($ls) {
-                $query->where('category', $ls->class_category); 
-            })->get(); 
-          /*  $clswork = "0"; $homework = "0";
-            if (!is_null($assessmentcls)){           
-                //$scoreavg = Score::where('ass_id', '=', $assessmentcls->id)->avg('perf');
+           
+            $clswork = "0"; $homework = "0";
+                if ( count($assessmentcls) > 0){     
+                    //$scoreavg = Score::where('ass_id', '=', $assessmentcls->id)->avg('perf');
                 $scoreavg = Score::where('ass_id', '=', $assessmentcls->id)->count('perf');
-                if (null !== $scoreavg){
-                    $clswork = "Added Scores to: ". $scoreavg." To ";
-                }
-            }
+                    if (null !== $scoreavg){
+                        $clswork = "Added Scores to: ". $scoreavg." To ";
+                    }
+                
+                } 
     
-            if (!is_null($assessmenthwk)){           
-                $scoreavg = Score::where('ass_id', '=', $assessmenthwk->id)->avg('perf');
+            if (count($assessmentcls) > 0){           
+                $scoreavg = Score::where('ass_id', '=', $assessmenthwk->id)->count('perf');
                 if (null !== $scoreavg){
-                    $homework = "Avg. Score: ". $scoreavg;
+                    $homework = "Added Scores to: ". $scoreavg;
                 }                        
-            }*/
+            }
 
-         //   $datablock[] = array("id" => $lessonnote->id, "Subject" => $lessonnote->subject->name, "Title" => $lessonnote->title,  "Clswork" => $clswork ,  "Hmwork" => $homework  );
-         $datablock[] = array("id" => $ls->id, "Subject" => $ls->subject->name, "Title" => $ls->title,  "ObjectCls" => $assessmentcls ,  "ObjectHmw" => $assessmenthwk , "ObjectPupils" => $enrolcls );
-     
-        }      
+            $datablock[] = array("id" => $ls->lsn_id, "blob" => $lsn, "Subject" => $ls->subject->name, "Title" => $ls->title,  "Clswork" => $clswork ,  "Hmwork" => $homework  );
+      
+        }
         
         $data['status'] = "Success";
-        $data['message'] = "Your lessonnote data is provided....";
+        $data['message'] = "Your lessonnote pupil data is provided....";
         $data['data'] = $datablock;
         return response()->json($data);
     }
 
     /**
-     *  View Lessonnote of Teacher
-     * @return \Illuminate\Http\Response
-     */
-    public function getLessonnoteScores(Request $request, $lsnid, $task)
-    {
-        $mydate = "";
-       
-        $lsn = array();
-        if($task === 1){//classwork
-
-            $lsn = Lessonnote::where('id', '=', $lsnid)->first();
-        }   
-       
-        $datablock = array();
-        
-        if (!empty($lsn)){
-            foreach ($lsn as $lessonnote){ 
-                $lsnperf = LsnPerformance::where('lsn_id', $lessonnote->id)->first();
-                $status = $this->getLessonnoteStatus($lessonnote->id);
-                $datablock[] = array("id" => $lessonnote->id, "Subject" => $lessonnote->subject->name, "Title" => $lessonnote->title, "Status" => $status, "Filez" => $lessonnote->_file, "Perf" => $lsnperf->perf  );
-            }
-            $data['status'] = "Success";
-            $data['message'] = "Your lessonnote data is provided....";
-            $data['data'] = $datablock;
-            return response()->json($data);
-        }
-        else { 
-            $data['status'] = "Failed";
-            $data['message'] = "Your lessonnote data is not available. Sorry";
-            return response()->json($data);
-        }
-    }
-
-    /**
-     *  View Lessonnote of Teacher
+     *  
      * @return \Illuminate\Http\Response
      */
     public function viewLessonnoteTeacherAll(Request $request, $teaid)

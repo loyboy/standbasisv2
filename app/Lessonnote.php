@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Enrollment;
+use App\Score;
 
 class Lessonnote extends Model
 {
@@ -18,6 +20,8 @@ class Lessonnote extends Model
     {
         return $this->belongsTo('App\Term', 'term_id', 'id');
     }
+
+   
      /*
     * The attributes that are mass assignable.
     *

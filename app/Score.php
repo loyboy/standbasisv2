@@ -8,11 +8,11 @@ class Score extends Model
 {
     public function assessment()
     {
-        return $this->belongsTo('App\Assessment', 'foreign_key', 'ass_id');
+        return $this->belongsTo('App\Assessment', 'ass_id', 'id');
     }
     public function enrollment()
     {
-        return $this->belongsTo('App\Enrollment', 'foreign_key', 'enrol_id');
+        return $this->belongsTo('App\Enrollment', 'enrol_id', 'id');
     }
 
      /*

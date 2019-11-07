@@ -7,14 +7,14 @@
 <div class="animated slideInUpTiny animation-duration-3">
 
     <div class="page-heading">
-        <h2 class="title">Add Scores to an Assessment</h2>
+        <h2 class="title">Add Scores to an Assessment </h2>
     </div>
 
     <div class="row">
         <div class="col-lg-12">
             <div class="gx-card">
                 <div class="gx-card-header">
-                    <h3 class="card-heading">Choose a Lessonnote Assessment and Add Scores to them</h3>
+                    <h3 class="card-heading">Choose a Lessonnote Assessment and Add Scores to them </h3>
                 </div>
                 <div class="gx-card-body">
                     <div class="table-responsive">
@@ -22,7 +22,7 @@
                         <table id = "mydatatable" class="table table-striped table-bordered table-hover">
                             <thead>
                             <tr>
-                                <th>S/N</th>
+                                <th>Pupil ID</th>
                                 <th>Lessonnote Name </th>
                                 <th>Classwork</th>
                                 <th>Assignment</th>
@@ -112,7 +112,7 @@
     function addScores(lsn, task){
         
         let xhr = new XMLHttpRequest();
-        xhr.open('POST', '/lessonnotes_getScores/'+lsn+'/task/'+task);
+        xhr.open('POST', '/lessonnotes_getLsnScores/'+lsn+'/task/'+ task);
         xhr.responseType = 'json';
         let formData = new FormData();
         formData.append("api_token", token);
@@ -129,6 +129,41 @@
             }
 
             document.getElementById('loading').style.display = 'none';
+            let attend = responseObj.data.ObjectPupils;
+            let i = 0;
+            let htmltr = ` <tr id="scoremax">
+                                    <th scope="row">*</th>
+                                    <td>  </td>
+                                    <td>Max. Score</td>
+                                    <td><input type="number" required="required" name="max" id="scoremaximum" value="" class=" form-control-sm"/> </td>                 
+                                </tr>`;
+            for ( let datarow of attend ){ 
+                let val = datarow.id;
+               
+                $.ajax({
+                url: '/lessonnotes_helper3/'+val, 
+                type: "POST", 
+                data: {}
+                }).done(function(e){
+                    //alert(e.message);
+                    htmltr += `<tr class="score">
+                                    <th scope="row">*</th>
+                                    <td> ${datarow.id} </td>
+                                    <td> ${e.data}</td>
+                                    <td><input type="number" required="required" name="score${datarow.id}" value="" class=" form-control-sm"/> </td>
+                              </tr>`;
+                              $('#scoretbody').append(htmltr);
+                }).fail(function(e){
+                    // Report that there is a problem!
+                        alert(e.responseText);
+                });
+
+                
+                
+                i++;
+                             
+            }
+           
             
             $('#teacheraddscores').modal({
                      backdrop: 'static',

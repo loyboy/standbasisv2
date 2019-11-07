@@ -195,25 +195,26 @@
                      
                         <div class="gx-card p-0 overflow-hidden">
                             <div class="gx-card-body">
-                                <div class="table-responsive">
+                                <div class="table-responsive" style="height: 400px; overflow-y: auto; overflow-x: hidden; ">
                                     <table class="table table-hover mb-0">
                                             <thead>
-                                            <tr>
-                                                <th scope="col">#</th>
-                                                <th class="text-uppercase" scope="col">S/N</th>
-                                                <th class="text-uppercase" scope="col">Student Name</th>
-                                                <th class="text-uppercase" scope="col">Add Score</th>
-                                            </tr>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th class="text-uppercase" scope="col">S/N</th>
+                                                    <th class="text-uppercase" scope="col">Student Name</th>
+                                                    <th class="text-uppercase" scope="col">Add Score</th>
+                                                </tr>
                                             </thead>
-                                            <tbody>
+
+                                            <tbody id="scoretbody">
                                                 <tr id="scoremax">
                                                     <th scope="row">*</th>
                                                     <td>Max. Score</td>
                                                     <td><input type="number" required="required" name="max" id="scoremaximum" value="" class=" form-control-sm"/> </td>
                                                 
-                                                </tr>
-                                            
+                                                </tr>                                            
                                             </tbody>
+                                            
                                         </table>
                                     </div>
                                 </div>
