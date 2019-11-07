@@ -103,7 +103,9 @@
                                 <h5 class="card-title mb-3">Here you Can:</h5>
                                     <h6 class="card-subtitle mb-4 text-white">View Teacher Attendance Flags</h6>
                                     <h6 class="card-subtitle mb-4 text-white">View Teacher Lessonnote Flags</h6>                                    
-                                        <a href="javascript:void(0)" class="btn btn-light">Click to Your Left Hand Side</a>
+                                        <a href="/pattflags" class="btn btn-light">Click to View Attendance Flags</a>
+                                        <br>
+                                        <a href="/plsnflags" class="btn btn-light">Click to View Lessonnote Flags</a>
                                 </div>
                             </div>
                         </div>
