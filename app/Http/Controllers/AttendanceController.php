@@ -784,12 +784,12 @@ class AttendanceController extends Controller
                           //  $rowcall = Rowcall::join('attendances', 'rowcalls.att_id', '=', 'attendances.id')->join('pupils', 'rowcalls.pup_id', '=', 'pupils.id')->where('attendances._done',1)->where('attendances.sub_class_id',$sub)->where('pupils.id',$pupil->id)->first();
 
                             if (!is_null($rowcall)){
-                                $statuscomment = $rowcall->_status;
+                                $statuscomment = $rowcall->_status === 1 ? "Present" : "Absent";
                                 $remarkcomment = $rowcall->remark;
                             }                            
                            
                             $datablock[] = array("Pupil" => $pupil->fname.' '.$pupil->lname ,"Subclass" => $subclass->subject->name." ".$subclass->classstream->title , 
-                            "Time" => $timetable->_time, "Timeid" => $timetable->id, "Present" => $statuscomment, "Remark" => $remarkcomment , "Rowcall" => $rowcall );
+                            "Time" => $timetable->_time, "Timeid" => $timetable->id, "Present" => $statuscomment, "Remark" => $remarkcomment );
                   
                         }
                     }
