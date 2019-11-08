@@ -775,7 +775,7 @@ class AttendanceController extends Controller
 
                             $timetable = Timetable::where('id', $t->time_id)->first();
                             
-                           $rowcall = Rowcall::whereHas('attendance', function (Builder $query) use ($sub){
+                           $rowcall = Rowcall::whereHas('attendance', function (Builder $query) use ($sub,$mydate){
                                 $query->where('_done', '=', '1')->where('sub_class_id', '=', $sub)->where('_date', 'LIKE', '%'.$mydate.'%');
                             })->whereHas('pupil', function (Builder $query) use ($pupil) {
                                 $query->where('id', '=', $pupil->id);
