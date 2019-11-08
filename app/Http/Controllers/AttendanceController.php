@@ -743,18 +743,28 @@ class AttendanceController extends Controller
                 $dayofweek = date('N', strtotime($mydate));
 
                 foreach ($enrol as $p){
-                   // $rowcall = Rowcall::where('pup_id', $p->id)->get();
                     $cls = $p->class_id;
-                    $pupil = $p->pupil_id;
+                    $pup = $p->pupil_id;
+
                    
                     // first check if the term is active
-                    $pupil = Pupil::where('id', $pupil)->first();
+                    $pupil = Pupil::where('id', $pup)->first();
 
-                    $timesch = TimetableSch::whereHas('timetable', function (Builder $query) use ($dayofweek) {
+                /*    $timesch = TimetableSch::whereHas('timetable', function (Builder $query) use ($dayofweek) {
                         $query->where('_day', '=', $dayofweek);
                     })->whereHas('subclass', function (Builder $query) use ($cls) {
                         $query->where('class_id', '=', $cls);
-                    })->get();
+                    })->get();*/
+
+                    $timesch = DB::select(
+                        "SELECT s.sub_class , s.time_id
+                        FROM timetable_sches s 
+                        INNER JOIN subjectclasses t ON t.ID = s.SUB_CLASS 
+                        INNER JOIN timetables t1 ON t1.ID = s.TIME_ID 
+                        WHERE t1._day = :dayz AND t.class_id = :cls                       
+                        " , 
+                        [ "dayz" =>  $dayofweek, "cls" =>  $cls ] );
+                    
 
                     if (!empty($timesch)){
                         $statuscomment = "No Attendance Taken Yet";
@@ -762,12 +772,16 @@ class AttendanceController extends Controller
                         foreach ($timesch as $t){  
                             $sub = $t->sub_class;
                             $subclass = Subjectclass::where('id', $t->sub_class)->first();
+
+                            $timetable = Timetable::where('id', $t->time_id)->first();
                             
-                            $rowcall = Rowcall::whereHas('attendance', function (Builder $query) use ($sub){
-                                $query->where('_done', '=', 1)->where('sub_class_id', '=', $sub);
+                           $rowcall = Rowcall::whereHas('attendance', function (Builder $query) use ($sub){
+                                $query->where('_done', '=', '1')->where('sub_class_id', '=', $sub)->where('_date', 'LIKE', '%'.$mydate.'%');
                             })->whereHas('pupil', function (Builder $query) use ($pupil) {
-                                $query->where('id', '=', $pupil);
+                                $query->where('id', '=', $pupil->id);
                             })->first();
+
+                          //  $rowcall = Rowcall::join('attendances', 'rowcalls.att_id', '=', 'attendances.id')->join('pupils', 'rowcalls.pup_id', '=', 'pupils.id')->where('attendances._done',1)->where('attendances.sub_class_id',$sub)->where('pupils.id',$pupil->id)->first();
 
                             if (!is_null($rowcall)){
                                 $statuscomment = $rowcall->_status;
@@ -775,7 +789,7 @@ class AttendanceController extends Controller
                             }                            
                            
                             $datablock[] = array("Pupil" => $pupil->fname.' '.$pupil->lname ,"Subclass" => $subclass->subject->name." ".$subclass->classstream->title , 
-                            "Time" => $t->timetable->_time, "Timeid" => $t->timetable->id, "Present" => $statuscomment, "Remark" => $remarkcomment , "Rowcall" => $rowcall );
+                            "Time" => $timetable->_time, "Timeid" => $timetable->id, "Present" => $statuscomment, "Remark" => $remarkcomment , "Rowcall" => $rowcall );
                   
                         }
                     }
@@ -788,7 +802,7 @@ class AttendanceController extends Controller
 
                 $data['status'] = "Success";
                 $data['message'] = "Your attendance data is provided....";
-                $data['data'] = array("table" => $datablock, "header" => $headerblock, "Date" => $mydate);
+                $data['data'] = array("table" => $datablock, "header" => $headerblock, "timesch" => $timesch, "Date" => $mydate);
                 return response()->json($data);
 
              /*   $data['status'] = "Success";
