@@ -72,6 +72,11 @@ Route::get('/ptwards', function () {
     return view('teacher.attendance.ptward');
 })->middleware('auth');
 
+//Reports
+Route::get('/reportgen/{id}', function ($id) {
+    return view('teacher.reportview', ['classid' => $id]);
+})->middleware('auth');
+
 
 Route::get('/logoutuser', function () {
    Auth::logout();
@@ -96,7 +101,7 @@ Route::post('/attendances_viewAttLog/{teaid}', 'AttendanceController@viewAttenda
 Route::post('/attendances_attendAtt/{teaid}', 'AttendanceController@attendTo'); //
 Route::post('/attendances_attendAttComment/{attid}', 'AttendanceController@attendViewComment');
 Route::post('/attendances_getFlags/{teaid}', 'AttendanceController@viewAttendanceFlags');
-Route::post('/attendances_viewWards/{teaid}', 'AttendanceController@viewWardsAtt');
+Route::post('/attendances_viewWards/{teaid}', 'AttendanceController@viewWardsAtt'); //getSubjectAttendance
 
 Route::Resource('lessonnotes', 'LessonnoteController');
 /////Custom functions for lessonnote
@@ -106,6 +111,14 @@ Route::post('/lessonnotes_viewLsn/{teaid}', 'LessonnoteController@viewLessonnote
 Route::post('/lessonnotes_viewLsnAll/{teaid}', 'LessonnoteController@viewLessonnoteTeacherAll');
 Route::post('/lessonnotes_statusLsn/{lsnid}/id/{idx}', 'LessonnoteController@changeStatusLessonnote');
 Route::post('/lessonnotes_getFlags/{teaid}', 'LessonnoteController@viewLessonnoteFlags');
+Route::post('/lessonnotes_viewLsnScores/{teaid}', 'LessonnoteController@viewLessonnoteTeacherScores');
+Route::post('/lessonnotes_getLsnScores/{lsnid}/task/{task}', 'LessonnoteController@viewLessonnoteScores');
+///////helpher functions
+Route::post('/lessonnotes_helper1/{enrolid}', 'LessonnoteController@getScoreClassWork');
+Route::post('/lessonnotes_helper2/{enrolid}', 'LessonnoteController@getScoreHomeWork');
+Route::post('/lessonnotes_helper3/{enrolid}', 'LessonnoteController@getPupilName');
+Route::post('/lessonnotes_helper4/{enrolid}', 'LessonnoteController@getClassName');
+
 
 Route::Resource('lessonnote_managements', 'LessonmgtController');
 
@@ -116,6 +129,8 @@ Route::Resource('teachers', 'TeacherController');
 Route::Resource('class_streams', 'ClassStreamController');
 
 Route::Resource('subjects', 'SubjectController');
+Route::post('/subjects_getSubAttend/{pupid}/sub/{subid}', 'SubjectController@getSubjectAttendance');
+Route::post('/subjects_getSubAll', 'SubjectController@getSubjectAll');
 
 Route::Resource('subjectclasses', 'SubjectClassController');
 Route::post('/subjectclasses_findTeaSub/{id}/type/{type}', 'SubjectClassController@findTeaSubjects');
@@ -123,11 +138,13 @@ Route::post('/subjectclasses_findTeaSub/{id}/type/{type}', 'SubjectClassControll
 Route::Resource('pupils', 'PupilController');
 Route::post('/pupils_getPupilForTeacher/{teaid}', 'PupilController@getPupilForTeacher');
 Route::post('/pupils_getClassForTeacher/{teaid}', 'PupilController@getClassForTeacher');
+Route::post('/pupils_getClass/{clsid}', 'PupilController@getAllPupilsInClass');
 
 Route::Resource('terms', 'TermController');
 Route::post('/terms_getDate/{schid}', 'TermController@getTermDate');
 
 Route::Resource('enrollments', 'EnrolmentController');
+
 
 Route::Resource('timetables', 'TimetableController');
 
