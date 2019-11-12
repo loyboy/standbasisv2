@@ -17,6 +17,23 @@ class PupilController extends Controller
         $this->middleware('apiuser', ['only' => ['index','show']]);
         $this->middleware('apisuperuser', ['only' => ['store','update','destroy']]);
     }
+    
+    //Helper Function
+    public static function getAllPupilsInClass($cls)
+    {
+        $enrol = Enrollment::where('class_id',$cls)->get();
+       
+        return $enrol->toArray();
+    }
+
+    public static function getPupilName($enrolid){ //Helpher Three
+        $enrol = Enrollment::where('id',$enrolid)->first(); 
+       // return $enrol ? $enrol->pupil->fname." ".$enrol->pupil->lname : "";
+      //  $data['status'] = "Success";
+     //   $data['data'] =  $enrol ? $enrol->pupil->fname." ".$enrol->pupil->lname : "";
+        return $enrol ? $enrol->pupil->fname." ".$enrol->pupil->lname : "";
+    }
+
     /**
      * Display a listing of the resource.
      *
