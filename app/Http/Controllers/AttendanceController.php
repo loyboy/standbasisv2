@@ -485,7 +485,7 @@ class AttendanceController extends Controller
                     $thecomment = $attavt->_comment;
                     $theaction = $attavt->_action;
                 }
-                $datablock[] = array("id" => $attendance->id,"Subclass" => $attendance->subclass->subject->name. " ".$attendance->subclass->classstream->title , "ExpTime" => $attendance->timetable->_time, "ActTime" => $attendance->_date, "Perf" => $attperf->flag, "Teacher" => $attendance->subclass->teacher->fname." ".$attendance->subclass->teacher->lname, 
+                $datablock[] = array("id" => $attendance->id,"Subclass" => $attendance->subclass->subject->name. " ".$attendance->subclass->classstream->title , "ExpTime" => $attendance->timetable->_time, "ActTime" => $attendance->_date, "Perf" => $attperf->flag, "TPerf" => $attperf->perf, "Teacher" => $attendance->subclass->teacher->fname." ".$attendance->subclass->teacher->lname, 
                 "Comment" => $thecomment, "Action" => $action[$theaction] );
             }
             $data['status'] = "Success";

@@ -27,7 +27,7 @@
                                 <th>Lessonnote Name </th>
                                 <th>Current Status</th>
                                 <th> Current Quality </th>
-                                <th> No. of Trips </th>  
+                                <th> Cycles </th>  
                                 <th> Your Action</th>                             
                                 <th>View</th>
                             </tr>

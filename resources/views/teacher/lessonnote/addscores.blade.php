@@ -8,6 +8,13 @@
 
     <div class="page-heading">
         <h2 class="title">Add Scores to an Assessment </h2>
+        <?php  if(session()->has('ln_enterscore_success')) { ?>
+                            <div class="alert alert-info alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <i class="fa fa-anchor"></i>&nbsp;&nbsp;You have successfully added Scores to that Lessonnote Assessment... 
+                            </div>
+                
+        <?php } ?>
     </div>
 
     <div class="row">
@@ -52,6 +59,7 @@
 
 @section('myscript')
 <script>
+
  $(document).ready(function(){ 
 
        // let datebox = $('#attdate').val();
@@ -80,19 +88,20 @@
                 var cell1 = "";
                 var cell2 = "";
                 var cell3 = "";
+                //onclick='addScores("+ datarow.id + ", 1)'
 
                 cell0 = "<td> <strong>"+ (i + 1) + "</strong> </td> ";
                 cell1 = "<td> <strong>"+ datarow.Title + "</strong> </td>";
 
                 if (datarow.Clswork === "0"){                    
-                    cell2 += "<td> <strong> <a href='#' class='btn btn-primary white' onclick='addScores("+ datarow.id + ", 1)' >  Add Classwork Scores </a> </strong> <br>"; 
+                    cell2 += `<td> <strong> <a href='tlsnscoresadd/CW/${datarow.id}' class='btn btn-primary white'   >  Add Classwork Scores </a> </strong> <br>`; 
                 }
                 else{                    
                     cell2 += "<td> <strong> <a href='#' class='btn btn-primary white' >" + datarow.Clswork + " </a> </strong> <br>";                 
                 }
 
                 if (datarow.Hmwork === "0"){                    
-                    cell3 += "<td> <strong> <a href='#' class='btn btn-primary white' onclick='addScores("+ datarow.id + ", 2)' >  Add Homework Scores </a> </strong> <br>"; 
+                    cell3 += `<td> <strong> <a href='tlsnscoresadd/AS/${datarow.id}' class='btn btn-primary white' >  Add Homework Scores </a> </strong> <br>`; 
                 }
                 else{                    
                     cell3 += "<td> <strong> <a href='#' class='btn btn-primary white' >" + datarow.Hmwork + " </a> </strong> <br>";                 
@@ -109,6 +118,8 @@
         }
   });
 
+
+/*
     function addScores(lsn, task){
         
         let xhr = new XMLHttpRequest();
@@ -171,7 +182,7 @@
             },'show');
     
         }    
-    }
+    }*/
 </script>
 @endsection
 

@@ -63,9 +63,21 @@ Route::get('/tlsnscores', function () {
     return view('teacher.lessonnote.addscores');
 })->middleware('auth');
 
+Route::get('/tlsnscoresadd/{type}/{lsnid}', function ($type, $lsnid) {
+    session(['ln_enterscore_type' => $type]);
+    session(['ln_enterscore_lsn' => $lsnid]);
+    return view('teacher.lessonnote.enterscores');
+})->middleware('auth');
+
 Route::get('/tmneview', function () {
     return view('teacher.mne.teacher');
 })->middleware('auth');
+
+Route::get('/pdaily/{date}', function ($date) {
+    return view('teacher.attendance.daily', compact('date'));
+})->middleware('auth');
+
+//////////////////////////////////////
 
 //Parents
 Route::get('/ptwards', function () {
@@ -113,6 +125,7 @@ Route::post('/lessonnotes_statusLsn/{lsnid}/id/{idx}', 'LessonnoteController@cha
 Route::post('/lessonnotes_getFlags/{teaid}', 'LessonnoteController@viewLessonnoteFlags');
 Route::post('/lessonnotes_viewLsnScores/{teaid}', 'LessonnoteController@viewLessonnoteTeacherScores');
 Route::post('/lessonnotes_getLsnScores/{lsnid}/task/{task}', 'LessonnoteController@viewLessonnoteScores');
+Route::post('/lessonnotes_enterscores', 'LessonnoteController@enterscore');
 ///////helpher functions
 Route::post('/lessonnotes_helper1/{enrolid}', 'LessonnoteController@getScoreClassWork');
 Route::post('/lessonnotes_helper2/{enrolid}', 'LessonnoteController@getScoreHomeWork');

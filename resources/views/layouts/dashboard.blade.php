@@ -53,6 +53,8 @@
     <link id="override-css-id" href="{{ asset('theme/css/theme-indigo.min.css') }}" rel="stylesheet">
     <!-- Color-Theme stylesheet -->
 
+    @yield('mycss')
+
     <style>
         .centertext{
             text-align: 'center';
@@ -238,8 +240,10 @@ table.dataTable thead > tr > td.sorting {
                                 <i class="zmdi zmdi-view-dashboard zmdi-hc-fw"></i>
                                 <span class="nav-text">Attendance</span>
                             </a>
+                            <?php $date = date('Y-m-d');  ?>
                             <ul class="sub-menu" display="block">                               
-                                <li><a href="/pattviews"><span class="nav-text">View Attendances</span></a></li>                          
+                                <li><a href="/pattviews"><span class="nav-text">View Attendances</span></a></li>      
+                                <li><a href="<?php echo "/pdaily/".$date; ?>"><span class="nav-text">View Daily Attendance Timetable</span></a></li>                          
                             </ul>
                         </li>
 

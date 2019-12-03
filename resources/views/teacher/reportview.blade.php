@@ -3,6 +3,7 @@
     <head>
     <?php use App\Http\Controllers\SubjectController;?>
     <?php use App\Http\Controllers\PupilController;?>
+   
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -14,7 +15,6 @@
 
     <link href="{{ asset('css/mytable.css') }}" rel="stylesheet">
   
-
     <script> 
         $(document).ready(function() {
             $('.JStableOuter table').scroll(function(e) { 
@@ -37,7 +37,7 @@
     <div class="row border border-default">         
 	
             <div class="bg-primary text-center p-2 col-md-12">
-                <p class="lead text-white">Standbasis Report for Students</p>
+                <p class="lead text-white">Standbasis Report for Student's Attendance</p>
             </div>         
 
     <div class="JStableOuter" >
@@ -46,7 +46,8 @@
       <tr style="top: 0px" >
         <th style="left: 0px" ></th>
         <?php
-               $sub = SubjectController::getSubjectAll();
+               $school = Auth::user()->teacher->school_id;
+               $sub = SubjectController::getSubjectAll($school);
                foreach ($sub as $s){
         ?>
             <th class="blueHead twist"> <?php echo $s['name']; ?> </th>
@@ -85,7 +86,7 @@
         <tr>
             <td> <?php echo PupilController::getPupilName($p['id']); ?></td>
         <?php
-               $sub = SubjectController::getSubjectAll();
+               $sub = SubjectController::getSubjectAll($school);
                foreach ($sub as $s){                     
         ?>
             <td> <?php echo SubjectController::getSubjectAttendance($p['pupil_id'], $s['id']); ?> </td>

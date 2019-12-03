@@ -23,11 +23,15 @@ class SubjectController extends Controller
       //  return response()->json($data);
     }
 
-    public static function getSubjectAll(){ //Helpher One
-        $subjects = Subject::all();
+    public static function getSubjectAll($school){ //Helpher One                
+   
+       $subjects  = Subject::where('school','LIKE', $school.";")->get();
        
         return $subjects->toArray();
+
     }
+
+ 
 
     public static function getSubjectAttendance($pupid, $subid){ 
         

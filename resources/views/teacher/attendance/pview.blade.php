@@ -49,6 +49,7 @@
                                 <th>Class Time</th>
                                 <th>Submission Time</th>
                                 <th>Class Performance</th>
+                                <th>Teacher Performance</th>
                                 <th>View</th>
                                 <th>Your Action</th>
                             </tr>
@@ -136,7 +137,7 @@
                 var cell5 = "";
                 var cell6 = "";
                 var cell7 = "";
-              
+                var cell8 = "";
 
                 cell0 = "<td> <strong>"+ (i + 1) + "</strong> </td> ";
                 cell1 = "<td> <strong>"+ datarow.Teacher + "</strong> </td>";
@@ -144,26 +145,27 @@
                 cell3 = "<td> <strong>"+ datarow.ExpTime + "</strong> </td>";
                 cell4 = "<td> <strong>"+ datarow.ActTime + "</strong> </td>";
                 cell5 = "<td> <strong>"+ datarow.Perf + " %" + "</strong> </td>";
+                cell8 = "<td> <strong>"+ datarow.TPerf + " %" + "</strong> </td>";
                 
                 cell6= "<td> <strong> <a class='btn btn-primary' onclick='showAttendance("+datarow.id+")' > View Attendance </a> </strong> </td>";
 
                 var ht1 = "";
                 if ( datarow.Action === "No action yet"){
-                    cell7 = "<td> <strong> <a class='btn btn-success' onclick='approveAtt("+datarow.id+")' > Approve </a> <br> <a class='btn btn-danger' onclick='disapproveAtt("+datarow.id+")' > Disapprove </a>  </strong> </td>";
+                    cell7 = "<td> <strong> <a class='btn btn-success' onclick='approveAtt("+datarow.id+")' > Approve </a> <br> <a class='btn btn-danger' onclick='disapproveAtt("+datarow.id+")' > Query </a>  </strong> </td>";
  
                 }
 
                 else if ( datarow.Action === "Approved"){
-                    cell7 = "<td> <strong> <a class='btn btn-success' > Approved by You </a> </strong> </td>";
+                    cell7 = "<td> <strong> <a class='btn btn-success' > Approved </a> </strong> </td>";
  
                 }
 
                 else if ( datarow.Action === "Declined"){
-                    cell7 = "<td> <strong> <a class='btn btn-danger' onclick='viewComment("+datarow.id+")' > Declined by You, View Comment </a> </strong> </td>";
+                    cell7 = "<td> <strong> <a class='btn btn-danger' onclick='viewComment("+datarow.id+")' > Queried, View Comment </a> </strong> </td>";
  
                 }
 
-                var newRow = "<tr>" + cell0 + cell1 + cell2 + cell3 + cell4 + cell5 + cell6 + cell7+ "</tr>";
+                var newRow = "<tr>" + cell0 + cell1 + cell2 + cell3 + cell4 + cell5 + cell8 + cell6 + cell7+ "</tr>";
                 var table = $('#mydatatable').DataTable();
                 table.row.add($(newRow)).draw();
                 
@@ -334,8 +336,9 @@
                 var cell3 = tablex.insertCell(3);
                 var cell4 = tablex.insertCell(4);
                 var cell5 = tablex.insertCell(5);
-                var cell6 = tablex.insertCell(6);
-                var cell7 = tablex.insertCell(7);
+                var cell8 = tablex.insertCell(6);
+                var cell6 = tablex.insertCell(7);
+                var cell7 = tablex.insertCell(8);
                 
                 tablex.className = "datarow";
                 cell7.className = "attendlist";
@@ -346,22 +349,23 @@
                 cell3.innerHTML = "<strong>"+ datarow.ExpTime + "</strong>";
                 cell4.innerHTML = "<strong>"+ datarow.ActTime + "</strong>";
                 cell5.innerHTML = "<strong>"+ datarow.Perf + " %" + "</strong>";
+                cell8.innerHTML = "<strong>"+ datarow.TPerf + " %" + "</strong>";
                 
                 cell6.innerHTML = "<strong> <a class='btn btn-primary' onclick='showAttendance("+datarow.id+")' > View Attendance </a> </strong>";
 
                 var ht1 = "";
                 if ( datarow.Action === "No action yet"){
-                    cell7.innerHTML = "<strong> <a class='btn btn-success' onclick='approveAtt("+datarow.id+")' > Approve </a> <br> <a class='btn btn-danger' onclick='disapproveAtt("+datarow.id+")' > Disapprove </a>  </strong> ";
+                    cell7.innerHTML = "<strong> <a class='btn btn-success' onclick='approveAtt("+datarow.id+")' > Approve </a> <br> <a class='btn btn-danger' onclick='disapproveAtt("+datarow.id+")' > Query </a>  </strong> ";
  
                 }
 
                 else if ( datarow.Action === "Approved"){
-                    cell7.innerHTML = "<strong> <a class='btn btn-success' > Approved by You </a> </strong> ";
+                    cell7.innerHTML = "<strong> <a class='btn btn-success' > Approved </a> </strong> ";
  
                 }
 
                 else if ( datarow.Action === "Declined"){
-                    cell7.innerHTML = "<strong> <a class='btn btn-danger' onclick='viewComment("+datarow.id+")' > Declined by You, View Comment </a> </strong> ";
+                    cell7.innerHTML = "<strong> <a class='btn btn-danger' onclick='viewComment("+datarow.id+")' > Queried, View Comment </a> </strong> ";
  
                 }
                //cell3.innerHTML = "<div class='form-checkbox'> <input type='checkbox' disabled name='excused[]' id='stad" + datarow.PupilID + "' class='excusedform' value='yes'> </div>";

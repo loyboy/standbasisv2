@@ -280,6 +280,8 @@ class LessonnoteController extends Controller
              );
          }        
 
+       
+
          $lsnobj = Lessonnote::create([
             'tea_id' =>  $tea,
             'sub_id' => $subject,
@@ -289,6 +291,26 @@ class LessonnoteController extends Controller
             '_date' => date('Y-m-d'),
             'period' => $week,
             '_file' => $title.".docx" ]);
+
+              //Create an assessment option
+                $assobjhomework = Assessment::create([
+                    'lsn_id' =>  $lsnobj->id,
+                    'sub_id' => $subject,
+                    'source' => 'nil',
+                    'title' => $title . " Assignment",
+                    '_date' => date('Y-m-d'),
+                    '_type' => 'AS',
+                ]);
+
+                $assobjclswork = Assessment::create([
+                    'lsn_id' =>  $lsnobj->id,
+                    'sub_id' => $subject,
+                    'source' => 'nil',
+                    'title' => $title . " Classwork",
+                    '_date' => date('Y-m-d'),
+                    '_type' => 'CW',
+                ]);
+                ////////////////
 
             $sch = $teacher->school_id;
             
@@ -846,6 +868,48 @@ class LessonnoteController extends Controller
 
         return response()->json($data);  
 
+    }
+
+    public function enterscore(Request $request){
+
+        $scores = $request->input('score');
+        $max = $request->input('max');
+        $examid = $request->input('examid');
+        $classid = $request->input('clsid');
+       
+        $scorex = implode(";", $scores);//turn into a concatenated string
+        $scorearray = explode(";", $scorex);
+
+        $totalpupils = session('ln_pupil');
+        $i = 0;
+        
+         $checkifexists = DB::select("SELECT actual FROM scores WHERE ass_id = :ex " , ["ex"=>$examid ] ); 
+         
+         if ( count($checkifexists) <= 0 )   {  
+        foreach ($totalpupils as $to) {
+           
+         $exam = new Score;
+         $exam->actual = $scorearray[$i]; 
+         $exam->max = $max;
+         $exam->_date = date('Y-m-d');
+         $exam->enrol_id = $to->pupid;      
+         $exam->perf = 0;
+         $exam->save(); 
+         $i++;
+
+                    }   } else {
+             foreach ($totalpupils as $to) {
+                 
+           $exam = new Score;             
+           $exam::where('exam_id',$examid )->update(['perf' => 0,'max' => $max,'_date' => date('Y-m-d'), 'actual' => $scorearray[$i]]);
+              $i++;
+                 
+             }
+                    }
+        
+        $request->session()->flash('ln_enterscore_success',1);
+        
+         return redirect('/tlsnscores');
     }
 
     private function getLessonnoteStatus($lsn){

@@ -1,0 +1,150 @@
+@extends('layouts.dashboard')
+@include('teacher.functions.attendance.index')
+
+@section('mycss')
+
+@endsection
+
+
+
+@section('principal')
+
+							<div class="form-group row">
+                                <label class="col-md-4 col-sm-3 control-label">Search Date</label>
+                                    <div class="col-md-4 col-sm-6">
+                                        <input type="date" class="form-control" onchange="getDateOnChange()" id="datebox"/>
+                                    </div>
+                            </div>
+
+<table class="table" border="1" cellpadding="10" cellspacing="5">
+	<tr>
+		<td>...</td>
+		<td> 8.00 - 8-40 am </td>
+		<td> 8.40 - 9.20 am</td>
+		<td> 9.20 - 10.00 am</td>
+        <td> 10.00 - 10.40 am</td>
+        <td> 10.40 - 11.20 am</td>
+        <td> 12.00 - 12.40 pm</td>
+        <td> 12.40 - 13.20 pm</td>
+        <td> 13.20 - 14.00 pm</td>
+        <td> 14.00 - 14.40 pm</td>
+	</tr>
+
+	<tr>
+		<td>JS1A</td>
+		<td> <?php echo getSubTime($date, '8:05:00', 1, 1); ?></td>
+		<td> <?php echo getSubTime($date, '8:45:00', 1, 1); ?></td>
+		<td><?php echo getSubTime($date, '9:25:00',  1, 1); ?></td>
+		<td><?php echo getSubTime($date, '10:05:00',  1, 1); ?></td>
+		<td><?php echo getSubTime($date, '10:45:00',  1, 1); ?></td>
+		<td><?php echo getSubTime($date, '12:00:00',  1, 1); ?></td>
+		<td><?php echo getSubTime($date, '12:40:00',  1, 1); ?></td>
+		<td><?php echo getSubTime($date, '13:20:00',  1, 1); ?></td>
+		<td><?php echo getSubTime($date, '14:00:00',  1, 1); ?></td>
+	</tr>
+
+	<tr>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td colspan="9"></td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+	</tr>
+	<tr>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+	</tr>
+	<tr>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+	</tr>
+	<tr>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+	</tr>
+	<tr>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+		<td>CELL</td>
+	</tr>
+</table>
+
+@endsection
+
+@section('myscript')
+<script>
+function getDateOnChange(){
+        let datebox = $('#datebox').val();
+		window.location.replace("/pdaily/"+datebox);
+}
+</script>
+@endsection
+
