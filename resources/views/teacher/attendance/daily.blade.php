@@ -134,6 +134,58 @@
 		<td colspan="2"><?php echo getSubTime($date, '14:00:00',  13, 1); ?></td>
 	</tr>
 
+	<tr>
+		<td><b style="font-size: 18px;"> SS2A </b></td>
+		<td colspan="2"> <?php echo getSubTime($date, '8:05:00', 9, 1); ?></td>
+		<td colspan="2"> <?php echo getSubTime($date, '8:45:00', 9, 1); ?></td>
+		<td colspan="2"><?php echo getSubTime($date, '9:25:00',  9, 1); ?></td>
+		<td colspan="2"><?php echo getSubTime($date, '10:05:00', 9, 1); ?></td>
+		<td colspan="2"><?php echo getSubTime($date, '10:45:00',  9, 1); ?></td>
+		<td colspan="2"><?php echo getSubTime($date, '12:00:00',  9, 1); ?></td>
+		<td colspan="2"><?php echo getSubTime($date, '12:40:00',  9, 1); ?></td>
+		<td colspan="2"><?php echo getSubTime($date, '13:20:00',  9, 1); ?></td>
+		<td colspan="2"><?php echo getSubTime($date, '14:00:00',  9, 1); ?></td>
+	</tr>
+
+	<tr>
+		<td><b style="font-size: 18px;"> SS2B </b></td>
+		<td colspan="2"> <?php echo getSubTime($date, '8:05:00', 10, 1); ?></td>
+		<td colspan="2"> <?php echo getSubTime($date, '8:45:00', 10, 1); ?></td>
+		<td colspan="2"><?php echo getSubTime($date, '9:25:00',  10, 1); ?></td>
+		<td colspan="2"><?php echo getSubTime($date, '10:05:00', 10, 1); ?></td>
+		<td colspan="2"><?php echo getSubTime($date, '10:45:00',  10, 1); ?></td>
+		<td colspan="2"><?php echo getSubTime($date, '12:00:00',  10, 1); ?></td>
+		<td colspan="2"><?php echo getSubTime($date, '12:40:00',  10, 1); ?></td>
+		<td colspan="2"><?php echo getSubTime($date, '13:20:00',  10, 1); ?></td>
+		<td colspan="2"><?php echo getSubTime($date, '14:00:00',  10, 1); ?></td>
+	</tr>
+
+	<tr>
+		<td><b style="font-size: 18px;"> SS3A </b></td>
+		<td colspan="2"> <?php echo getSubTime($date, '8:05:00', 11, 1); ?></td>
+		<td colspan="2"> <?php echo getSubTime($date, '8:45:00', 11, 1); ?></td>
+		<td colspan="2"><?php echo getSubTime($date, '9:25:00',  11, 1); ?></td>
+		<td colspan="2"><?php echo getSubTime($date, '10:05:00', 11, 1); ?></td>
+		<td colspan="2"><?php echo getSubTime($date, '10:45:00',  11, 1); ?></td>
+		<td colspan="2"><?php echo getSubTime($date, '12:00:00',  11, 1); ?></td>
+		<td colspan="2"><?php echo getSubTime($date, '12:40:00',  11, 1); ?></td>
+		<td colspan="2"><?php echo getSubTime($date, '13:20:00',  11, 1); ?></td>
+		<td colspan="2"><?php echo getSubTime($date, '14:00:00',  11, 1); ?></td>
+	</tr>
+
+	<tr>
+		<td><b style="font-size: 18px;"> SS3B </b></td>
+		<td colspan="2"> <?php echo getSubTime($date, '8:05:00', 12, 1); ?></td>
+		<td colspan="2"> <?php echo getSubTime($date, '8:45:00', 12, 1); ?></td>
+		<td colspan="2"><?php echo getSubTime($date, '9:25:00',  12, 1); ?></td>
+		<td colspan="2"><?php echo getSubTime($date, '10:05:00', 12, 1); ?></td>
+		<td colspan="2"><?php echo getSubTime($date, '10:45:00',  12, 1); ?></td>
+		<td colspan="2"><?php echo getSubTime($date, '12:00:00',  12, 1); ?></td>
+		<td colspan="2"><?php echo getSubTime($date, '12:40:00',  12, 1); ?></td>
+		<td colspan="2"><?php echo getSubTime($date, '13:20:00',  12, 1); ?></td>
+		<td colspan="2"><?php echo getSubTime($date, '14:00:00',  12, 1); ?></td>
+	</tr>
+
 	
 </table>
 
