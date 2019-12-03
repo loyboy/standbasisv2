@@ -10,9 +10,9 @@
 @section('principal')
 
 							<div class="form-group row">
-                                <label class="col-md-4 col-sm-3 control-label">Search Date</label>
+                                <label class="col-md-4 col-sm-3 control-label">Current Search Date</label>
                                     <div class="col-md-4 col-sm-6">
-                                        <input type="date" class="form-control" onchange="getDateOnChange()" id="datebox"/>
+                                        <input type="date" class="form-control" value="<?php echo $date; ?>" onchange="getDateOnChange()" id="datebox"/>
                                     </div>
                             </div>
 
