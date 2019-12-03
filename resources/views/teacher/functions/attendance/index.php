@@ -10,7 +10,7 @@ function getSubTime($date, $period, $classid, $sch){
         return $html;
    }
    else{
-        $html = "<span>  <b> Error </b> </span> <br>  ";
+        $html = "<span>  <b> Space </b> </span> <br>  ";
         return $html;
    }
 }
