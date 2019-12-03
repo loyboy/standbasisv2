@@ -82,7 +82,18 @@
 		<td colspan="2"><?php echo getSubTime($date, '14:00:00',  4, 1); ?></td>
 	</tr>
 
-
+	<tr>
+		<td><b style="font-size: 18px;"> JS3A </b></td>
+		<td colspan="2"> <?php echo getSubTime($date, '8:05:00', 5, 1); ?></td>
+		<td colspan="2"> <?php echo getSubTime($date, '8:45:00', 5, 1); ?></td>
+		<td colspan="2"><?php echo getSubTime($date, '9:25:00',  5, 1); ?></td>
+		<td colspan="2"><?php echo getSubTime($date, '10:05:00',  5, 1); ?></td>
+		<td colspan="2"><?php echo getSubTime($date, '10:45:00',  5, 1); ?></td>
+		<td colspan="2"><?php echo getSubTime($date, '12:00:00',  5, 1); ?></td>
+		<td colspan="2"><?php echo getSubTime($date, '12:40:00',  5, 1); ?></td>
+		<td colspan="2"><?php echo getSubTime($date, '13:20:00',  5, 1); ?></td>
+		<td colspan="2"><?php echo getSubTime($date, '14:00:00',  5, 1); ?></td>
+	</tr>
 	
 </table>
 
