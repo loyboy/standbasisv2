@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
     <?php use App\Http\Controllers\SubjectController;?>
-    <?php use App\Http\Controllers\PupilController;?>
+    <?php use App\Http\Controllers\TeacherController;?>
     <?php use App\Http\Controllers\ClassStreamController;?>
    
     <meta charset="utf-8">
@@ -45,13 +45,13 @@
   <table>
     <thead>
       <tr style="top: 0px" >
-        <th style="left: 0px" > Student Name </th>
+        <th style="left: 0px" > Teacher Name </th>
         <?php
                $school = Auth::user()->teacher->school_id;
                $sub = SubjectController::getSubjectAll($school);
-               foreach ($sub as $s){
+            foreach ($sub as $s){
         ?>
-            <th class="blueHead twist"> <?php echo $s['name']; ?> </th>
+                <th class="blueHead twist"> <?php echo $s['name']; ?> </th>
 
         <?php } ?>
 
@@ -81,16 +81,16 @@
     <tbody>
       
         <?php
-               $pup = PupilController::getAllPupilsInClass($classid);
-               foreach ($pup as $p){
+               $teacher = TeacherController::getAllTeachersinSchool($school);
+               foreach ($teacher as $t){
         ?>
         <tr>
-            <td> <?php echo PupilController::getPupilName($p['id']); ?></td>
+            <td> <?php echo TeacherController::getTeacherName($t['id']); ?></td>
         <?php
                $sub = SubjectController::getSubjectAll($school);
                foreach ($sub as $s){                     
         ?>
-            <td> <?php echo SubjectController::getSubjectAttendance($p['pupil_id'], $s['id']); ?> </td>
+            <td> <?php echo SubjectController::getSubjectAttendanceTeacher($t['id'], $s['id']); ?> </td>
 
         <?php } ?>
           

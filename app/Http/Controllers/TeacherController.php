@@ -14,6 +14,17 @@ class TeacherController extends Controller
     $this->middleware('apiuser', ['only' => ['show']]);
     $this->middleware('apisuperuser', ['only' => ['store','update','destroy']]);
 }
+
+ /*** Helper Functions */
+ public static function getAllTeachersinSchool($schid){ //Helpher One
+    $teachers = Teacher::where('school_id',$schid)->where('_type', 0)->where('_status', 1)->get();        
+    return  $teachers->toArray();
+}
+
+  public static function getTeacherName($teaid){ //Helpher One
+        $teacher = Teacher::where('id',$teaid)->first();        
+        return  $teacher->fname. " ".  $teacher->lname;
+  }
     /**
      * Display a listing of the resource.
      *

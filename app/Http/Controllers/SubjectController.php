@@ -30,6 +30,7 @@ class SubjectController extends Controller
 
     } 
 
+    // You may add other parameters to granulate the search.......like term and year
     public static function getSubjectAttendance($pupid, $subid){ 
         
         $subject = Subject::where('id',$subid)->first(); 
@@ -38,7 +39,7 @@ class SubjectController extends Controller
 
         $pupil = Pupil::where('id', $pupid)->first();
 
-        $term = Term::where('school_id',$pupil->school_id)->first();
+        $term = Term::where('school_id',$pupil->school_id)->where('_status',1)->first();
 
         $startdate = $term->resumedate;
         $enddate = date('Y-m-d');
@@ -49,6 +50,42 @@ class SubjectController extends Controller
           
           //total no. of times attendance was taken 
           $results2 = DB::select(" SELECT COUNT(a.id) AS total FROM attendances a JOIN rowcalls r ON r.ATT_ID = a.id WHERE a.sub_class_id IN (SELECT id FROM subjectclasses WHERE sub_id = :sub) AND a._date <= :endd AND a._date >= :startd AND r.PUP_ID = :pupid AND a._desc LIKE :des" , [ "endd" => $enddate , "startd" => $startdate, "pupid" => $pupid ,  "des" => '%'.$theterm[$termval].'%', "sub" => $subid  ] ); 
+            
+            $perf = 0;
+            $present = 0;//no. of times present
+            $total = 0;//total times attendance taken
+                
+            foreach ($results as $r){ $present = $r->present; } 
+            foreach ($results2 as $r){ $total = $r->total; }
+            if ($total === 0){
+                $perf = 0;
+            }  
+            else{
+                $perf = intval($present)/intval($total) * 100;
+            }
+      
+            return $perf." %";
+    }
+    //
+    public static function getSubjectAttendanceTeacher($teaid, $subid){ 
+        
+        $subject = Subject::where('id',$subid)->first(); 
+
+        $theterm = array(1 => '1st Term', 2 => '2nd Term', 3 => '3rd Term');
+
+        $teacher = Teacher::where('id', $teaid)->first();
+
+        $term = Term::where('school_id',$teacher->school_id)->where('_status',1)->first();
+
+        $startdate = $term->resumedate;
+        $enddate = date('Y-m-d');
+        $termval =  intval($term->term);
+
+          //no. of times present 
+          $results = DB::select(" SELECT COUNT(a.id) AS present FROM attendances a WHERE a.sub_class_id IN (SELECT id FROM subjectclasses WHERE sub_id = :sub AND tea_id = :tea ) AND a._date <= :endd AND a._date >= :startd AND a._desc LIKE :dess AND a._done = 1" , [ "endd" => $enddate , "startd" => $startdate,  "tea" => $teaid , "dess" => '%'.$theterm[$termval].'%' , "sub" => $subid ] ); 
+          
+          //total no. of times attendance was taken 
+          $results2 = DB::select(" SELECT COUNT(a.id) AS total FROM attendances a WHERE a.sub_class_id IN (SELECT id FROM subjectclasses WHERE sub_id = :sub AND tea_id = :tea ) AND a._date <= :endd AND a._date >= :startd AND a._desc LIKE :dess" , [ "endd" => $enddate , "startd" => $startdate, "tea" => $teaid ,  "dess" => '%'.$theterm[$termval].'%', "sub" => $subid  ] ); 
             
             $perf = 0;
             $present = 0;//no. of times present
