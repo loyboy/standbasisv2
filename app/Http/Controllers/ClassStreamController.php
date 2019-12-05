@@ -13,6 +13,12 @@ class ClassStreamController extends Controller
     $this->middleware('apiuser', ['only' => ['index','show']]);
     $this->middleware('apisuperuser', ['only' => ['store','update','destroy']]);
 }
+
+ /*** Helper Functions */
+ public static function getClassName($classid){ //Helpher One
+    $classtream = ClassStream::where('id',$classid)->first();        
+    return  $classtream->title. " ".  $classtream->ext;
+}
     /**
      * Display a listing of the resource.
      *

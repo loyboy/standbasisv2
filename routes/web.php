@@ -85,8 +85,8 @@ Route::get('/ptwards', function () {
 })->middleware('auth');
 
 //Reports
-Route::get('/reportgen/{id}', function ($id) {
-    return view('teacher.reportview', ['classid' => $id]);
+Route::get('/creportgen/{id}', function ($id) {
+    return view('teacher.class_reportview', ['classid' => $id]);
 })->middleware('auth');
 
 

@@ -20,18 +20,15 @@ class SubjectController extends Controller
      public static function getSubjectName($subid){ //Helpher One
         $subject = Subject::where('id',$subid)->first();        
         return  $subject->name;
-      //  return response()->json($data);
     }
 
     public static function getSubjectAll($school){ //Helpher One                
    
-       $subjects  = Subject::where('school','LIKE', $school.";")->get();
+        $subjects  = Subject::where('school','LIKE', $school.";")->get();
        
         return $subjects->toArray();
 
-    }
-
- 
+    } 
 
     public static function getSubjectAttendance($pupid, $subid){ 
         
@@ -69,7 +66,7 @@ class SubjectController extends Controller
             return $perf." %";
     }
 
-
+////////////////////////////////////////////////////////////////////////////
     /**
      * Display a listing of the resource.
      *
