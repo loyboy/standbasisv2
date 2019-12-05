@@ -89,7 +89,7 @@ Route::get('/creportgen/{id}', function ($id) {
     return view('teacher.class_reportview', ['classid' => $id]);
 })->middleware('auth');
 
-Route::get('/treportgen', function ($id) {
+Route::get('/treportgen', function () {
     return view('teacher.teacher_reportview');
 })->middleware('auth');
 
