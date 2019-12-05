@@ -38,7 +38,7 @@
     <div class="row border border-default">         
 	
             <div class="bg-primary text-center p-2 col-md-12">
-                <p class="lead text-white">Standbasis Report for Class': <?php echo ClassStreamController::getClassName($classid) ?>  Attendance</p>
+                <p class="lead text-white">Standbasis Report for All Teacher's Attendance</p>
             </div>         
 
     <div class="JStableOuter" >
