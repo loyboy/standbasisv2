@@ -40,7 +40,7 @@ class SubjectController extends Controller
 
         $pupil = Pupil::where('id', $pupid)->first();
 
-        $term = Term::where('school_id',$pupil->school_id)->where('_status',1)->first();
+        $term = Term::where('school_id',$teacher->school_id)->latest('id')->first();
 
         $startdate = $term->resumedate;
         $enddate = date('Y-m-d');
@@ -68,7 +68,7 @@ class SubjectController extends Controller
             return $perf." %";
     }
     //
-    public static function getSubjectAttendanceTeacher($teaid, $subid){ 
+    public static function getSubjectAttendanceTeacher($teaid, $classid, $subid){ 
         
         $subject = Subject::where('id',$subid)->first(); 
 
@@ -83,10 +83,10 @@ class SubjectController extends Controller
         $termval =  intval($term->term);
 
           //no. of times present 
-          $results = DB::select(" SELECT COUNT(a.id) AS present FROM attendances a WHERE a.sub_class_id IN (SELECT id FROM subjectclasses WHERE sub_id = :sub AND tea_id = :tea ) AND a._date <= :endd AND a._date >= :startd AND a._desc LIKE :dess AND a._done = 1" , [ "endd" => $enddate , "startd" => $startdate,  "tea" => $teaid , "dess" => '%'.$theterm[$termval].'%' , "sub" => $subid ] ); 
+          $results = DB::select(" SELECT COUNT(a.id) AS present FROM attendances a WHERE a.sub_class_id IN (SELECT id FROM subjectclasses WHERE sub_id = :sub AND tea_id = :tea AND class_id = :cls ) AND a._date <= :endd AND a._date >= :startd AND a._desc LIKE :dess AND a._done = 1" , [ "endd" => $enddate , "startd" => $startdate,  "tea" => $teaid , "dess" => '%'.$theterm[$termval].'%' , "sub" => $subid, "cls" => $classid ] ); 
           
           //total no. of times attendance was taken 
-          $results2 = DB::select(" SELECT COUNT(a.id) AS total FROM attendances a WHERE a.sub_class_id IN (SELECT id FROM subjectclasses WHERE sub_id = :sub AND tea_id = :tea ) AND a._date <= :endd AND a._date >= :startd AND a._desc LIKE :dess" , [ "endd" => $enddate , "startd" => $startdate, "tea" => $teaid ,  "dess" => '%'.$theterm[$termval].'%', "sub" => $subid  ] ); 
+          $results2 = DB::select(" SELECT COUNT(a.id) AS total FROM attendances a WHERE a.sub_class_id IN (SELECT id FROM subjectclasses WHERE sub_id = :sub AND tea_id = :tea AND class_id = :cls ) AND a._date <= :endd AND a._date >= :startd AND a._desc LIKE :dess" , [ "endd" => $enddate , "startd" => $startdate, "tea" => $teaid ,  "dess" => '%'.$theterm[$termval].'%', "sub" => $subid, "cls" => $classid  ] ); 
             
             $perf = 0;
             $present = 0;//no. of times present

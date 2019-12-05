@@ -85,12 +85,12 @@
                foreach ($teacher as $t){
         ?>
         <tr>
-            <td> <?php echo TeacherController::getTeacherName($t['id']); ?></td>
+            <td> <?php echo TeacherController::getTeacherName($t->tea_id). " ". ClassStreamController::getClassName($t->class_id);  ?></td>
         <?php
                $sub = SubjectController::getSubjectAll($school);
                foreach ($sub as $s){                     
         ?>
-            <td> <?php echo SubjectController::getSubjectAttendanceTeacher($t['id'], $s['id']); ?> </td>
+            <td> <?php echo SubjectController::getSubjectAttendanceTeacher($t->tea_id, $t->class_id, $s['id']); ?> </td>
 
         <?php } ?>
           

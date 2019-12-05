@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Teacher;
+use App\Subjectclass;
 
 class TeacherController extends Controller
 {
@@ -17,8 +18,13 @@ class TeacherController extends Controller
 
  /*** Helper Functions */
  public static function getAllTeachersinSchool($schid){ //Helpher One
-    $teachers = Teacher::where('school_id',$schid)->where('_type', 0)->where('_status', 1)->get();        
-    return  $teachers->toArray();
+   
+    $subclass = Subjectclass::whereHas('teacher', function (Builder $query) use ($schid) {
+        $query->where('school_id', '=', $schid);
+    })->get();
+
+    //$teachers = Subjectclass::where('school_id',$schid)->where('_type', 0)->where('_status', 1)->get();        
+    return  $subclass;
 }
 
   public static function getTeacherName($teaid){ //Helpher One
