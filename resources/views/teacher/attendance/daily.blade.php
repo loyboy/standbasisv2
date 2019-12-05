@@ -1,12 +1,7 @@
 @extends('layouts.dashboard')
 @include('teacher.functions.attendance.index')
 
-@section('mycss')
-
-@endsection
-
-
-
+ 
 @section('principal')
 
 							<div class="form-group row">

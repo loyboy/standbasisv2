@@ -80,7 +80,7 @@
     <tbody>
       
         <?php
-               $pup = PupilController::getAllPupilsInClass(5);
+               $pup = PupilController::getAllPupilsInClass($classid);
                foreach ($pup as $p){
         ?>
         <tr>
