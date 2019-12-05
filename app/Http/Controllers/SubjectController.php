@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Subject;
 use App\Pupil;
 use App\Term;
+use App\Teacher;
 
 class SubjectController extends Controller
 {
