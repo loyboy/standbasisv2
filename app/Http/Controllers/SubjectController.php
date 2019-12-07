@@ -65,7 +65,7 @@ class SubjectController extends Controller
                 $perf = intval($present)/intval($total) * 100;
             }
       
-            return $perf." %";
+            return $perf === 0 ? "---" : intval($perf)." %";
     }
     //
     public static function getSubjectAttendanceTeacher($teaid, $classid, $subid){ 
