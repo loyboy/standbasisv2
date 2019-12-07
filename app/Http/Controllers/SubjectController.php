@@ -101,7 +101,7 @@ class SubjectController extends Controller
                 $perf = intval($present)/intval($total) * 100;
             }
       
-            return intval($perf)." %";
+            return $perf === 0 ? "---" : intval($perf)." %";
     }
 
 ////////////////////////////////////////////////////////////////////////////
