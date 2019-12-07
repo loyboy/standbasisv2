@@ -40,7 +40,7 @@ class SubjectController extends Controller
 
         $pupil = Pupil::where('id', $pupid)->first();
 
-        $term = Term::where('school_id',$teacher->school_id)->latest('id')->first();
+        $term = Term::where('school_id',$pupil->school_id)->latest('id')->first();
 
         $startdate = $term->resumedate;
         $enddate = date('Y-m-d');
