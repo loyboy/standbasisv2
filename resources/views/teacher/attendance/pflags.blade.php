@@ -307,7 +307,7 @@
             type: 'post',
             data: { type: typeofscript, key: id, value: value, date: datex },
             success:function(response){
-                console.log('Save successfully '+ response); 
+                console.log('Save successfully '+ JSON.stringify(response)); 
             }
         });
  

@@ -270,6 +270,19 @@ table.dataTable thead > tr > td.sorting {
                         </li>
                     @endif
 
+                    @if (Auth::check() && Auth::user()->_type === 2)
+                        <li class="menu open">
+                            <a href="javascript:void(0)">
+                                <i class="zmdi zmdi-hc-fw zmdi-view-compact"></i>
+                                <span class="nav-text">View Flags</span>
+                            </a>
+                            <ul class="sub-menu" display="block">
+                                <li><a href="/pattflags"><span class="nav-text"> View Attendance Flags </span></a></li>
+                                <li><a href="/plsnflags"><span class="nav-text"> View Lessonnote Flags </span></a></li>                                                    
+                            </ul>
+                        </li>
+                    @endif
+
                     @if (Auth::check() && Auth::user()->_type === 3)
                         <li class="menu open">
                             <a href="javascript:void(0)">
