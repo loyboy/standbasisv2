@@ -269,6 +269,19 @@ table.dataTable thead > tr > td.sorting {
                             </ul>
                         </li>
                     @endif
+
+                    @if (Auth::check() && Auth::user()->_type === 3)
+                        <li class="menu open">
+                            <a href="javascript:void(0)">
+                                <i class="zmdi zmdi-hc-fw zmdi-view-compact"></i>
+                                <span class="nav-text">View Flags</span>
+                            </a>
+                            <ul class="sub-menu" display="block">
+                                <li><a href="/pattflags"><span class="nav-text"> View Attendance Flags </span></a></li>
+                                <li><a href="/plsnflags"><span class="nav-text"> View Lessonnote Flags </span></a></li>                                                    
+                            </ul>
+                        </li>
+                    @endif
                    
                 </ul>
             </div>
@@ -614,6 +627,14 @@ table.dataTable thead > tr > td.sorting {
                                 @if (Auth::user()->_type === 1)
                                     <img class="user-avatar border-0 size-40"  src="{{ asset('images/letterP.jpg') }}" width="150" height="150" alt="User">
                                 @endif
+
+                                @if (Auth::user()->_type === 2)
+                                    <img class="user-avatar border-0 size-40"  src="{{ asset('images/letterA.jpg') }}" width="150" height="150" alt="User">
+                                @endif
+
+                                @if (Auth::user()->_type === 3)
+                                    <img class="user-avatar border-0 size-40"  src="{{ asset('images/letterG.jpg') }}" width="150" height="150" alt="User">
+                                @endif
                            
                                 @if (Auth::user()->_type === 6)
                                     <img class="user-avatar border-0 size-40"  src="{{ asset('images/letterG.png') }}" width="150" height="150" alt="User">
@@ -629,6 +650,14 @@ table.dataTable thead > tr > td.sorting {
 
                                 @if (Auth::user()->_type === 1)
                                     <img class="user-avatar border-0 size-40"  src="{{ asset('images/letterP.jpg') }}"  width="150" height="150" alt="User">
+                                @endif
+
+                                @if (Auth::user()->_type === 2)
+                                    <img class="user-avatar border-0 size-40"  src="{{ asset('images/letterA.jpg') }}"  width="150" height="150" alt="User">
+                                @endif
+
+                                @if (Auth::user()->_type === 3)
+                                    <img class="user-avatar border-0 size-40"  src="{{ asset('images/letterG.jpg') }}"  width="150" height="150" alt="User">
                                 @endif
 
                                 @if (Auth::user()->_type === 6)
@@ -652,6 +681,9 @@ table.dataTable thead > tr > td.sorting {
                                         @endif
                                         @if (Auth::user()->_type === 2)
                                             <small>Administrator</small>
+                                        @endif
+                                        @if (Auth::user()->_type === 3)
+                                            <small>School Owner</small>
                                         @endif
                                         
                                     </div>
@@ -678,6 +710,8 @@ table.dataTable thead > tr > td.sorting {
                     @yield('principal')
                 @elseif (Auth::check() && Auth::user()->_type === 2)
                     @yield('admin')
+                @elseif (Auth::check() && Auth::user()->_type === 3)
+                    @yield('owner')
                 @else
                     @yield('content')
                 @endif
@@ -685,8 +719,7 @@ table.dataTable thead > tr > td.sorting {
             <!-- Footer -->
             <footer class="gx-footer">
                 <div class="d-flex flex-row justify-content-between">
-                    <p> Copyright Standbasis © 2019</p>
-                    
+                    <p> Copyright Standbasis © 2018 - <?php echo date('Y') ?></p>                    
                 </div>
             </footer>
             <!-- /footer -->

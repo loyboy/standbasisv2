@@ -62,10 +62,147 @@
 
                               
 <!--/gx-wrapper-->
-<script>    
-    let teacher = {{ Auth::user()->teacher_id }};
-    let token = '{{ Auth::user()->api_token }}';
-    let datex = '{{ date("Y-m-d") }}';
+
+@endsection
+
+@section('admin')
+  <!--gx-wrapper-->
+  <div class="gx-wrapper">
+
+<div class="animated slideInUpTiny animation-duration-3">
+
+    <div class="page-heading">
+        <h2 class="title">View Attendance Flags Data</h2>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="gx-card">
+                <div class="gx-card-header">
+                    <h3 class="card-heading">All attendance flags triggered within system</h3>
+                </div>
+               
+                <div class="gx-card-body">
+                
+                    <div class=""> 
+
+                            <div class="form-group row">
+                                <label class="col-md-4 col-sm-3 control-label">Search Date</label>
+                                    <div class="col-md-4 col-sm-6">
+                                        <input type="date" value="" class="form-control" onchange="getAttendanceOnChange()" id="attdate"/>
+                                    </div>
+                            </div>
+
+                      
+                    </div>
+
+                    <div class="table-responsive" style=" height: 400px; overflow-y: auto; overflow-x: hidden; ">
+                       Your Search Date: <label class="col-md-4 col-sm-3 control-label" > <strong id="mylabel"> 2019-10-10 </strong>  </label>
+                        <table id="mydatatable" class="table table-striped table-bordered table-hover">
+                            <thead>
+                            <tr>
+                               
+                                <th>Flag Type</th>
+                                <th>Flag count</th>
+                                <th>Head Teacher remarks</th>
+                              
+                               
+                            </tr>
+                            </thead>
+
+                            <tbody id="tbody1" style="overflow: scroll; ">
+                                <tr> <td colspan="3" style="text-align: center;"> Attendance Flags data will display here...  </td> </tr>
+                            </tbody>
+                           
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+                              
+<!--/gx-wrapper-->
+
+@endsection
+
+
+@section('owner')
+  <!--gx-wrapper-->
+  <div class="gx-wrapper">
+
+<div class="animated slideInUpTiny animation-duration-3">
+
+    <div class="page-heading">
+        <h2 class="title">View Attendance Flags Data</h2>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="gx-card">
+                <div class="gx-card-header">
+                    <h3 class="card-heading">All attendance flags triggered within system</h3>
+                </div>
+               
+                <div class="gx-card-body">
+                
+                    <div class=""> 
+
+                            <div class="form-group row">
+                                <label class="col-md-4 col-sm-3 control-label">Search Date</label>
+                                    <div class="col-md-4 col-sm-6">
+                                        <input type="date" value="" class="form-control" onchange="getAttendanceOnChange()" id="attdate"/>
+                                    </div>
+                            </div>
+
+                      
+                    </div>
+
+                    <div class="table-responsive" style=" height: 400px; overflow-y: auto; overflow-x: hidden; ">
+                       Your Search Date: <label class="col-md-4 col-sm-3 control-label" > <strong id="mylabel"> 2019-10-10 </strong>  </label>
+                        <table id="mydatatable" class="table table-striped table-bordered table-hover">
+                            <thead>
+                            <tr>
+                               
+                                <th>Flag Type</th>
+                                <th>Flag count</th>
+                                <th>Head Teacher remarks</th>
+                              
+                               
+                            </tr>
+                            </thead>
+
+                            <tbody id="tbody1" style="overflow: scroll; ">
+                                <tr> <td colspan="3" style="text-align: center;"> Attendance Flags data will display here...  </td> </tr>
+                            </tbody>
+                           
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+                              
+<!--/gx-wrapper-->
+
+@endsection
+
+
+@section('myscript')
+<script>
+    $(document).ready(function(){
+        let teacher = {{ Auth::user()->teacher_id }};
+        let token = '{{ Auth::user()->api_token }}';
+        let datex = '{{ date("Y-m-d") }}';
 
         let xhr = new XMLHttpRequest();
         xhr.open('POST', '/attendances_getFlags/'+teacher);
@@ -146,16 +283,9 @@
                 mylabel.innerHTML = datarow._date;
                //
         } 
-</script>
-@endsection
-
-
-
-@section('myscript')
-<script>
-    $(document).ready(function(){
-   
     });
+
+
     function showAttendance(idx){
          $.ajax({
             type: "POST",           
