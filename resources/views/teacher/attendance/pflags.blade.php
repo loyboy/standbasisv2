@@ -233,7 +233,7 @@
 
                 cell10.innerHTML = "<strong>"+ "Student Absence" + "</strong>";
                 cell11.innerHTML = "<strong>"+ datarow.SAbsent + "</strong>";
-                cell12.innerHTML = `  <div contentEditable='true' class='edit' id = 'mysabsent'> </div> `;
+                cell12.innerHTML = `  <div contentEditable='true' class='edit' id = 'mysabsent' onfocusout='getFocus()'> </div> `;
 
                 var tablex2 = document.getElementById('tbody1').insertRow(1);
                 var cell11 = tablex2.insertCell(0);
@@ -245,7 +245,7 @@
 
                 cell11.innerHTML = "<strong>"+ "Teacher Subject-Class Absence" + "</strong>";
                 cell13.innerHTML = "<strong>"+ datarow.TAbsent + " periods" + " out of "+ datarow.TTotal +  "</strong>";
-                cell14.innerHTML = `  <div contentEditable='true' class='edit' id = 'mytabsent'> </div> `;
+                cell14.innerHTML = `  <div contentEditable='true' class='edit' id = 'mytabsent' onfocusout='getFocus()'> </div> `;
 
                 var tablex3 = document.getElementById('tbody1').insertRow(1);
                 var cell15 = tablex3.insertCell(0);
@@ -257,7 +257,7 @@
 
                 cell15.innerHTML = "<strong>"+ "Late Class" + "</strong>";
                 cell16.innerHTML = "<strong>"+ datarow.LClass + "</strong>";
-                cell17.innerHTML = `  <div contentEditable='true' class='edit' id = 'mylateclass'> </div> `;
+                cell17.innerHTML = `  <div contentEditable='true' class='edit' id = 'mylateclass' onfocusout='getFocus()' > </div> `;
 
                 var tablex4 = document.getElementById('tbody1').insertRow(1);
                 var cell18 = tablex4.insertCell(0);
@@ -269,7 +269,7 @@
 
                 cell18.innerHTML = "<strong>"+ "Attendance Approval Delay" + "</strong>";
                 cell19.innerHTML = "<strong>"+ datarow.ADelay + "</strong>";
-                cell20.innerHTML = `  <div contentEditable='true' class='edit' id = 'myappdelay'> </div> `;
+                cell20.innerHTML = `  <div contentEditable='true' class='edit' id = 'myappdelay' onfocusout='getFocus()'> </div> `;
 
                 
                 var tablex5 = document.getElementById('tbody1').insertRow(1);
@@ -282,7 +282,7 @@
 
                 cell21.innerHTML = "<strong>"+ "Incomplete Submission  (No Images included)" + "</strong>";
                 cell22.innerHTML = "<strong>"+ datarow.Incomplete + "</strong>";
-                cell23.innerHTML = `  <div contentEditable='true' class='edit' id = 'myincomplete'> </div> `;
+                cell23.innerHTML = `  <div contentEditable='true' class='edit' id = 'myincomplete' onfocusout='getFocus()'> </div> `;
                 
                 let mylabel = document.querySelector('#mylabel');
                 mylabel.innerHTML = datarow._date;
@@ -294,7 +294,8 @@
     });
 
     
-    $(".edit").focusout(function(){
+    //$(".edit").focusout(function(){
+    function getFocus(){
         var id = this.id;
         var value = $(this).text();
         var datex = $('attdate').val()
@@ -310,7 +311,7 @@
             }
         });
  
-    });
+    }
 
     function showAttendance(idx){
          $.ajax({
@@ -371,7 +372,7 @@
 
                 cell10.innerHTML = "<strong>"+ "Student Absence" + "</strong>";
                 cell11.innerHTML = "<strong>"+ datarow.SAbsent + "</strong>";
-                cell12.innerHTML = `  <div contentEditable='true' class='edit' id = 'mysabsent'> </div> `;
+                cell12.innerHTML = `  <div contentEditable='true' class='edit' id = 'mysabsent' onfocusout='getFocus()'> </div> `;
 
                 var tablex2 = document.getElementById('tbody1').insertRow(1);
                 var cell11 = tablex2.insertCell(0);
@@ -383,7 +384,7 @@
 
                 cell11.innerHTML = "<strong>"+ "Teacher Subject-Class Absence" + "</strong>";
                 cell13.innerHTML = "<strong>"+ datarow.TAbsent + " periods" + " out of "+ datarow.TTotal +  "</strong>";
-                cell14.innerHTML = `  <div contentEditable='true' class='edit' id = 'mytabsent'> </div> `;
+                cell14.innerHTML = `  <div contentEditable='true' class='edit' id = 'mytabsent' onfocusout='getFocus()'> </div> `;
 
                 var tablex3 = document.getElementById('tbody1').insertRow(1);
                 var cell15 = tablex3.insertCell(0);
@@ -395,7 +396,7 @@
 
                 cell15.innerHTML = "<strong>"+ "Late Class" + "</strong>";
                 cell16.innerHTML = "<strong>"+ datarow.LClass + "</strong>";
-                cell17.innerHTML = `  <div contentEditable='true' class='edit' id = 'mylateclass'> </div> `;
+                cell17.innerHTML = `  <div contentEditable='true' class='edit' id = 'mylateclass' onfocusout='getFocus()'> </div> `;
 
                 var tablex4 = document.getElementById('tbody1').insertRow(1);
                 var cell18 = tablex4.insertCell(0);
@@ -407,7 +408,7 @@
 
                 cell18.innerHTML = "<strong>"+ "Attendance Approval Delay" + "</strong>";
                 cell19.innerHTML = "<strong>"+ datarow.ADelay + "</strong>";
-                cell20.innerHTML = `  <div contentEditable='true' class='edit' id = 'myappdelay'> </div> `;
+                cell20.innerHTML = `  <div contentEditable='true' class='edit' id = 'myappdelay' onfocusout='getFocus()'> </div> `;
 
                 
                 var tablex5 = document.getElementById('tbody1').insertRow(1);
@@ -420,7 +421,7 @@
 
                 cell21.innerHTML = "<strong>"+ "Incomplete Submission  (No Images included)" + "</strong>";
                 cell22.innerHTML = "<strong>"+ datarow.Incomplete + "</strong>";
-                cell23.innerHTML = `  <div contentEditable='true' class='edit' id = 'myincomplete'> </div> `;
+                cell23.innerHTML = `  <div contentEditable='true' class='edit' id = 'myincomplete' onfocusout='getFocus()'> </div> `;
                 
                 let mylabel = document.querySelector('#mylabel');
                 mylabel.innerHTML = datarow._date;
