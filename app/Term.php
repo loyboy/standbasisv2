@@ -17,6 +17,6 @@ class Term extends Model
     * @var array
     */
    protected $fillable = [
-    'school_id', 'term', 'session', 'resumedate', '_status', 'holiday'
+    'school_id', 'term', 'session', 'resumedate', '_status', 'holiday', '_cron'
    ];
 }

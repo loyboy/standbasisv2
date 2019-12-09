@@ -41,7 +41,7 @@ class Kernel extends ConsoleKernel
             foreach($allschools as $sch){
                 //get the resumption year & term
                  //$school_time = DB::table('school_time')->select("_resumedate","_term")->where('sch_id', $sch->sch_id)->where('_status', 1)->where('_attend', 1)->first();
-                 $school_time = Term::where('school_id', $sch->id)->where('_status', 1)->first();
+                 $school_time = Term::where('school_id', $sch->id)->where('_cron', 1)->first();
                  
                  echo "School time set...";
                  
