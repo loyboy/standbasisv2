@@ -853,6 +853,8 @@ class AttendanceController extends Controller
             else if ($key === "myincomplete"){
                 $attcomment->st_incomplete = $value;
             }
+
+            $attcomment->save();
            
             $data['status'] = "Success";             
             $data['message'] = "You have updated a comment for that attendance...";
