@@ -629,11 +629,11 @@ table.dataTable thead > tr > td.sorting {
                                 @endif
 
                                 @if (Auth::user()->_type === 2)
-                                    <img class="user-avatar border-0 size-40"  src="{{ asset('images/letterA.jpg') }}" width="150" height="150" alt="User">
+                                    <img class="user-avatar border-0 size-40"  src="{{ asset('images/letterA.png') }}" width="150" height="150" alt="User">
                                 @endif
 
                                 @if (Auth::user()->_type === 3)
-                                    <img class="user-avatar border-0 size-40"  src="{{ asset('images/letterG.jpg') }}" width="150" height="150" alt="User">
+                                    <img class="user-avatar border-0 size-40"  src="{{ asset('images/letterG.png') }}" width="150" height="150" alt="User">
                                 @endif
                            
                                 @if (Auth::user()->_type === 6)
@@ -653,11 +653,11 @@ table.dataTable thead > tr > td.sorting {
                                 @endif
 
                                 @if (Auth::user()->_type === 2)
-                                    <img class="user-avatar border-0 size-40"  src="{{ asset('images/letterA.jpg') }}"  width="150" height="150" alt="User">
+                                    <img class="user-avatar border-0 size-40"  src="{{ asset('images/letterA.png') }}"  width="150" height="150" alt="User">
                                 @endif
 
                                 @if (Auth::user()->_type === 3)
-                                    <img class="user-avatar border-0 size-40"  src="{{ asset('images/letterG.jpg') }}"  width="150" height="150" alt="User">
+                                    <img class="user-avatar border-0 size-40"  src="{{ asset('images/letterG.png') }}"  width="150" height="150" alt="User">
                                 @endif
 
                                 @if (Auth::user()->_type === 6)
