@@ -118,6 +118,7 @@ Route::post('/attendances_attendAttComment/{attid}', 'AttendanceController@atten
 Route::post('/attendances_getFlags/{teaid}', 'AttendanceController@viewAttendanceFlags');
 Route::post('/attendances_viewWards/{teaid}', 'AttendanceController@viewWardsAtt'); //getSubjectAttendance
 Route::post('/attendances_attcomment', 'AttendanceController@makeComment');
+Route::post('/attendances_getattcomment', 'AttendanceController@getComment');
 
 Route::Resource('lessonnotes', 'LessonnoteController');
 /////Custom functions for lessonnote
