@@ -298,7 +298,7 @@
     function getFocus(event){
         var id = event.target.id;
         var value = event.target.innerHTML
-        var datex = $('#attdate').val()
+        var datex = $('#attdate').val() !== "" ? $('#attdate').val() : $('#mylabel').text();
 
         console.log("Lost focus: "+ id + " " + value + " " + datex  )
        
