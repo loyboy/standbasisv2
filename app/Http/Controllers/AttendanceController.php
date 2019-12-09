@@ -883,6 +883,29 @@ class AttendanceController extends Controller
 
       }
 
+        // The Flags comment 
+        public function getComment(Request $request)
+        { 
+          $type = $request->get('type');
+          $key = $request->get('key');
+          $date = $request->get('date');
+  
+          $attcomment = AttComment::where('_date',  $date)->where('_owner',  $type)->first();
+  
+          if ($attcomment !== null){           
+             
+              $data['status'] = "Success";             
+              $data['message'] = "You have gotten a comment for that attendance...";
+              $data['val'] = $attcomment;
+              
+              return response()->json($data);
+          }       
+  
+          $data['status'] = "Failed";
+          return response()->json($data);
+  
+        }
+
     /**
      * 
      * Get teacher teaching subjects 

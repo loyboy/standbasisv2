@@ -205,6 +205,14 @@
         let typeofscript = {{ Auth::user()->_type }};
 
     $(document).ready(function(){  
+        let mydate = $('#mylabel').text()
+        
+        getComment('mysabsent',mydate)
+        getComment('mytabsent',mydate)
+        getComment('mylateclass',mydate)
+        getComment('myappdelay',mydate) 
+        getComment('myincomplete',mydate)
+
         let xhr = new XMLHttpRequest();
         xhr.open('POST', '/attendances_getFlags/'+teacher);
         xhr.responseType = 'json';
@@ -233,7 +241,7 @@
 
                 cell10.innerHTML = "<strong>"+ "Student Absence" + "</strong>";
                 cell11.innerHTML = "<strong>"+ datarow.SAbsent + "</strong>";
-                cell12.innerHTML = `  <div contentEditable='true' class='edit' id = 'mysabsent' onfocusout='getFocus(event)'> </div> `;
+                cell12.innerHTML = `  <div contentEditable='true' class='edit' id = 'mysabsent' onfocusout='getFocus(event)' > </div> `;
 
                 var tablex2 = document.getElementById('tbody1').insertRow(1);
                 var cell11 = tablex2.insertCell(0);
@@ -335,6 +343,18 @@
                
             }
         });     
+    }
+
+    function getComment(id, datex){
+        $.ajax({
+            url: 'attendances_getattcomment',
+            type: 'post',
+            data: { type: typeofscript, key: id, date: datex },
+            success:function(response){
+                console.log('Gotten successfully '+ JSON.stringify(response)); 
+                $('#'+id).val(response.val)
+            }
+        });
     }
 
    
