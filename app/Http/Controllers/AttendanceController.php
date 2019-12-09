@@ -899,6 +899,11 @@ class AttendanceController extends Controller
               $data['val'] = $attcomment;
               
               return response()->json($data);
+          }
+          else{
+            $data['status'] = "Not seen";
+            $data['val'] = $attcomment;
+            return response()->json($data);
           }       
   
           $data['status'] = "Failed";
