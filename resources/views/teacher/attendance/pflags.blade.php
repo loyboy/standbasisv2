@@ -199,11 +199,10 @@
 
 @section('myscript')
 <script>
-    $(document).ready(function(){
         let teacher = {{ Auth::user()->teacher_id }};
         let token = '{{ Auth::user()->api_token }}';
         let datex = '{{ date("Y-m-d") }}';
-
+    $(document).ready(function(){  
         let xhr = new XMLHttpRequest();
         xhr.open('POST', '/attendances_getFlags/'+teacher);
         xhr.responseType = 'json';
