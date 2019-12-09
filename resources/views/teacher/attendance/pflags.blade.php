@@ -319,9 +319,11 @@
         var id = this.id;
         var value = $(this).text();
         var datex = $('attdate').val()
+
+        console.log("Lost focus: "+ id + " " + value + " " + datex  )
        
         $.ajax({
-            url: 'attcomment',
+            url: 'attendances_attcomment',
             type: 'post',
             data: { type: typeofscript, key: id, value: value, date: datex },
             success:function(response){
