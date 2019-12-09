@@ -104,7 +104,7 @@
                                
                                 <th>Flag Type</th>
                                 <th>Flag count</th>
-                                <th>Head Teacher remarks</th>
+                                <th>Admin's remarks</th>
                               
                                
                             </tr>
@@ -170,7 +170,7 @@
                                
                                 <th>Flag Type</th>
                                 <th>Flag count</th>
-                                <th>Head Teacher remarks</th>
+                                <th>Owner's remarks</th>
                               
                                
                             </tr>
@@ -202,6 +202,8 @@
         let teacher = {{ Auth::user()->teacher_id }};
         let token = '{{ Auth::user()->api_token }}';
         let datex = '{{ date("Y-m-d") }}';
+        let typeofscript = {{ Auth::user()->_type }};
+
     $(document).ready(function(){  
         let xhr = new XMLHttpRequest();
         xhr.open('POST', '/attendances_getFlags/'+teacher);
@@ -231,7 +233,7 @@
 
                 cell10.innerHTML = "<strong>"+ "Student Absence" + "</strong>";
                 cell11.innerHTML = "<strong>"+ datarow.SAbsent + "</strong>";
-             //   cell12.innerHTML = "<strong>"+ datarow.SAbsent + "</strong>";
+                cell12.innerHTML = `  <div contentEditable='true' class='edit' id = 'mysabsent'> </div> `;
 
                 var tablex2 = document.getElementById('tbody1').insertRow(1);
                 var cell11 = tablex2.insertCell(0);
@@ -243,6 +245,7 @@
 
                 cell11.innerHTML = "<strong>"+ "Teacher Subject-Class Absence" + "</strong>";
                 cell13.innerHTML = "<strong>"+ datarow.TAbsent + " periods" + " out of "+ datarow.TTotal +  "</strong>";
+                cell14.innerHTML = `  <div contentEditable='true' class='edit' id = 'mytabsent'> </div> `;
 
                 var tablex3 = document.getElementById('tbody1').insertRow(1);
                 var cell15 = tablex3.insertCell(0);
@@ -254,6 +257,7 @@
 
                 cell15.innerHTML = "<strong>"+ "Late Class" + "</strong>";
                 cell16.innerHTML = "<strong>"+ datarow.LClass + "</strong>";
+                cell17.innerHTML = `  <div contentEditable='true' class='edit' id = 'mylateclass'> </div> `;
 
                 var tablex4 = document.getElementById('tbody1').insertRow(1);
                 var cell18 = tablex4.insertCell(0);
@@ -265,6 +269,7 @@
 
                 cell18.innerHTML = "<strong>"+ "Attendance Approval Delay" + "</strong>";
                 cell19.innerHTML = "<strong>"+ datarow.ADelay + "</strong>";
+                cell20.innerHTML = `  <div contentEditable='true' class='edit' id = 'myappdelay'> </div> `;
 
                 
                 var tablex5 = document.getElementById('tbody1').insertRow(1);
@@ -277,6 +282,7 @@
 
                 cell21.innerHTML = "<strong>"+ "Incomplete Submission  (No Images included)" + "</strong>";
                 cell22.innerHTML = "<strong>"+ datarow.Incomplete + "</strong>";
+                cell23.innerHTML = `  <div contentEditable='true' class='edit' id = 'myincomplete'> </div> `;
                 
                 let mylabel = document.querySelector('#mylabel');
                 mylabel.innerHTML = datarow._date;
@@ -309,6 +315,22 @@
         });     
     }
 
+    $(".edit").focusout(function(){
+        var id = this.id;
+        var value = $(this).text();
+        var datex = $('attdate').val()
+       
+        $.ajax({
+            url: 'attcomment',
+            type: 'post',
+            data: { type: typeofscript, key: id, value: value, date: datex },
+            success:function(response){
+                console.log('Save successfully '+ response); 
+            }
+        });
+ 
+    });
+
     function getAttendanceOnChange(){
         let datebox = $('#attdate').val();
         //let subclassbox = $('#subclass').val();
@@ -335,14 +357,14 @@
                 var tablex = document.getElementById('tbody1').insertRow(0);
                 var cell10 = tablex.insertCell(0);
                 var cell11 = tablex.insertCell(1);
-                var cell12 = tablex.insertCell(2);
-               
+                var cell12 = tablex.insertCell(2);               
+              
               
                 cell10.className = "_toolbar widthplus";
 
                 cell10.innerHTML = "<strong>"+ "Student Absence" + "</strong>";
                 cell11.innerHTML = "<strong>"+ datarow.SAbsent + "</strong>";
-              
+                cell12.innerHTML = `  <div contentEditable='true' class='edit' id = 'mysabsent'> </div> `;
 
                 var tablex2 = document.getElementById('tbody1').insertRow(1);
                 var cell11 = tablex2.insertCell(0);
@@ -354,6 +376,7 @@
 
                 cell11.innerHTML = "<strong>"+ "Teacher Subject-Class Absence" + "</strong>";
                 cell13.innerHTML = "<strong>"+ datarow.TAbsent + " periods" + " out of "+ datarow.TTotal +  "</strong>";
+                cell14.innerHTML = `  <div contentEditable='true' class='edit' id = 'mytabsent'> </div> `;
 
                 var tablex3 = document.getElementById('tbody1').insertRow(1);
                 var cell15 = tablex3.insertCell(0);
@@ -365,6 +388,7 @@
 
                 cell15.innerHTML = "<strong>"+ "Late Class" + "</strong>";
                 cell16.innerHTML = "<strong>"+ datarow.LClass + "</strong>";
+                cell17.innerHTML = `  <div contentEditable='true' class='edit' id = 'mylateclass'> </div> `;
 
                 var tablex4 = document.getElementById('tbody1').insertRow(1);
                 var cell18 = tablex4.insertCell(0);
@@ -376,6 +400,7 @@
 
                 cell18.innerHTML = "<strong>"+ "Attendance Approval Delay" + "</strong>";
                 cell19.innerHTML = "<strong>"+ datarow.ADelay + "</strong>";
+                cell20.innerHTML = `  <div contentEditable='true' class='edit' id = 'myappdelay'> </div> `;
 
                 
                 var tablex5 = document.getElementById('tbody1').insertRow(1);
@@ -386,8 +411,9 @@
               
                 cell21.className = "_toolbar";
 
-                cell21.innerHTML = "<strong>"+ "Incomplete Submission (No Images included)" + "</strong>";
+                cell21.innerHTML = "<strong>"+ "Incomplete Submission  (No Images included)" + "</strong>";
                 cell22.innerHTML = "<strong>"+ datarow.Incomplete + "</strong>";
+                cell23.innerHTML = `  <div contentEditable='true' class='edit' id = 'myincomplete'> </div> `;
                 
                 let mylabel = document.querySelector('#mylabel');
                 mylabel.innerHTML = datarow._date;

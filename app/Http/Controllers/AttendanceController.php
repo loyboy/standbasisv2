@@ -18,6 +18,7 @@ use App\Rowcall;
 use App\AttActivity;
 use App\AttPerformance;
 use App\Pupil;
+use App\AttComment;
 use Illuminate\Support\Facades\Auth;
 
 class AttendanceController extends Controller
@@ -825,6 +826,60 @@ class AttendanceController extends Controller
                 return response()->json($data);
             }
     }
+
+      // The Flags comment 
+      public function makeComment(Request $request)
+      { 
+        $type = $request->get('type');
+        $key = $request->get('key');
+        $value = $request->get('value');
+        $date = $request->get('date');
+
+        $attcomment = AttComment::where('_date',  $date)->where('_owner',  $type)->first();
+
+        if ($attcomment !== null){
+            if ($key === "mysabsent"){
+                $attcomment->st_pabsence = $value;
+            }
+            else if ($key === "mytabsent"){
+                $attcomment->st_tabsence = $value;
+            }
+            else if ($key === "mylateclass"){
+                $attcomment->st_lateclass = $value;
+            }
+            else if ($key === "myappdelay"){
+                $attcomment->st_delayapproval = $value;
+            }
+            else if ($key === "myincomplete"){
+                $attcomment->st_incomplete = $value;
+            }
+           
+            $data['status'] = "Success";             
+            $data['message'] = "You have updated a comment for that attendance...";
+            
+            return response()->json($data);
+        }
+        else{
+            AttComment::create([
+                '_date' =>  $date,
+                '_owner' => $type,
+                'st_pabsence' => $key === "mysabsent" ? $value : "",
+                'st_tabsence' => $key === "mytabsent" ? $value : "",
+                'st_lateclass' => $key === "mylateclass" ? $value : "",
+                'st_delayapproval' => $key === "myappdelay" ? $value : "",
+                'st_incomplete' => $key === "myincomplete" ? $value : ""                 
+            ]);
+
+            $data['status'] = "Success";             
+            $data['message'] = "You have created a new comment for that attendance...";
+            
+            return response()->json($data);
+        }
+
+        $data['status'] = "Failed";
+        return response()->json($data);
+
+      }
 
     /**
      * 

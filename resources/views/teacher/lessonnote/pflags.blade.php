@@ -54,7 +54,7 @@
                                
                                 <th>Flag Type</th>
                                 <th>Flag count</th>
-                                <th>Head Teacher remarks</th>
+                                <th>Your remarks</th>
                               
                                
                             </tr>
@@ -78,10 +78,186 @@
                               
 <!--/gx-wrapper-->
 <script>    
+ 
+</script>
+@endsection
+
+
+@section('admin')
+  <!--gx-wrapper-->
+  <div class="gx-wrapper">
+
+<div class="animated slideInUpTiny animation-duration-3">
+
+    <div class="page-heading">
+        <h2 class="title">View Lessonnote Flags Data</h2>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="gx-card">
+                <div class="gx-card-header">
+                    <h3 class="card-heading">All Lessonnote flags triggered within system</h3>
+                </div>
+               
+                <div class="gx-card-body">
+                
+                    <div class=""> 
+
+                            <div class="form-group row">
+                                <label class="col-md-4 col-sm-3 control-label">Search Week</label>
+                                    <div class="col-md-4 col-sm-6">
+                                      
+                                        <select class="form-control" onchange="getLessonnoteOnChange()" id="lsnweek" > 
+                                                    <option value="">Select...</option>
+                                                    <option value="1" >Week 1</option>
+                                                    <option value="2">Week 2</option>
+                                                    <option value="3">Week 3</option>
+                                                    <option value="4">Week 4</option>
+                                                    <option value="5">Week 5</option>
+                                                    <option value="6">Week 6</option>
+                                                    <option value="7">Week 7</option>
+                                                    <option value="8">Week 8</option>
+                                                    <option value="9">Week 9</option>
+                                                    <option value="10">Week 10</option>
+                                                    <option value="11">Week 11</option>
+                                                    <option value="12">Week 12</option>
+                                        </select>
+                                    </div>
+                            </div>
+
+                      
+                    </div>
+
+                    <div class="table-responsive" style=" height: 400px; overflow-y: auto; overflow-x: hidden; ">
+                       Your Search Week: <label class="col-md-4 col-sm-3 control-label" > <strong id="mylabel"> Week 1  </strong>  </label>
+                        <table id="mydatatable" class="table table-striped table-bordered table-hover">
+                            <thead>
+                            <tr>
+                               
+                                <th>Flag Type</th>
+                                <th>Flag count</th>
+                                <th>Your remarks</th>
+                              
+                               
+                            </tr>
+                            </thead>
+
+                            <tbody id="tbody1" style="overflow: scroll; ">
+                                <tr> <td colspan="3" style="text-align: center;"> Lessonnotes Flags data will display here...  </td> </tr>
+                            </tbody>
+                           
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+                              
+<!--/gx-wrapper-->
+<script>    
+ 
+</script>
+@endsection
+
+@section('owner')
+  <!--gx-wrapper-->
+  <div class="gx-wrapper">
+
+<div class="animated slideInUpTiny animation-duration-3">
+
+    <div class="page-heading">
+        <h2 class="title">View Lessonnote Flags Data</h2>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="gx-card">
+                <div class="gx-card-header">
+                    <h3 class="card-heading">All Lessonnote flags triggered within system</h3>
+                </div>
+               
+                <div class="gx-card-body">
+                
+                    <div class=""> 
+
+                            <div class="form-group row">
+                                <label class="col-md-4 col-sm-3 control-label">Search Week</label>
+                                    <div class="col-md-4 col-sm-6">
+                                      
+                                        <select class="form-control" onchange="getLessonnoteOnChange()" id="lsnweek" > 
+                                                    <option value="">Select...</option>
+                                                    <option value="1" >Week 1</option>
+                                                    <option value="2">Week 2</option>
+                                                    <option value="3">Week 3</option>
+                                                    <option value="4">Week 4</option>
+                                                    <option value="5">Week 5</option>
+                                                    <option value="6">Week 6</option>
+                                                    <option value="7">Week 7</option>
+                                                    <option value="8">Week 8</option>
+                                                    <option value="9">Week 9</option>
+                                                    <option value="10">Week 10</option>
+                                                    <option value="11">Week 11</option>
+                                                    <option value="12">Week 12</option>
+                                        </select>
+                                    </div>
+                            </div>
+
+                      
+                    </div>
+
+                    <div class="table-responsive" style=" height: 400px; overflow-y: auto; overflow-x: hidden; ">
+                       Your Search Week: <label class="col-md-4 col-sm-3 control-label" > <strong id="mylabel"> Week 1  </strong>  </label>
+                        <table id="mydatatable" class="table table-striped table-bordered table-hover">
+                            <thead>
+                            <tr>
+                               
+                                <th>Flag Type</th>
+                                <th>Flag count</th>
+                                <th>Your remarks</th>
+                              
+                               
+                            </tr>
+                            </thead>
+
+                            <tbody id="tbody1" style="overflow: scroll; ">
+                                <tr> <td colspan="3" style="text-align: center;"> Lessonnotes Flags data will display here...  </td> </tr>
+                            </tbody>
+                           
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+                              
+<!--/gx-wrapper-->
+<script>    
+ 
+</script>
+@endsection
+
+
+
+@section('myscript')
+<script>
+
     let teacher = {{ Auth::user()->teacher_id }};
     let token = '{{ Auth::user()->api_token }}';
     let datex = '{{ date("Y-m-d") }}';
     let cycle = 1;
+
+    $(document).ready(function(){      
 
         let xhr = new XMLHttpRequest();
         xhr.open('POST', '/lessonnotes_getFlags/'+teacher);
@@ -163,15 +339,6 @@
                 mylabel.innerHTML = "Week "+datarow.Week;
                //
         } 
-</script>
-@endsection
-
-
-
-@section('myscript')
-<script>
-    $(document).ready(function(){
-   
     });
 
     function getLessonnoteOnChange(){
