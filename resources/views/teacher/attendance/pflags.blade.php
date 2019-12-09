@@ -290,7 +290,11 @@
         } 
 
 
-        $(".edit").focusout(function(){
+
+    });
+
+    
+    $(".edit").focusout(function(){
         var id = this.id;
         var value = $(this).text();
         var datex = $('attdate').val()
@@ -306,10 +310,7 @@
             }
         });
  
-      });
-
     });
-
 
     function showAttendance(idx){
          $.ajax({
