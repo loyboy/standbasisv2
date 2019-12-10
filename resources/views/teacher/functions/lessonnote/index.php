@@ -35,11 +35,11 @@ function checkforExamGeneral($lsn_id, $type){
     $name = DB::select("SELECT id FROM assessments WHERE _type = :typ AND lsn_id = :lsn " , [ "lsn" => $lsn_id,"typ" => $type  ] );
     if (count($name) <= 0){
       
-      $subexam = DB::select("SELECT name FROM subjects WHERE id IN ( SELECT sub_id FROM lessonnotes WHERE id = :lsn ) " , [ "lsn" => $lsn_id ] );
+      $subexam = DB::select(" SELECT sub_id FROM lessonnotes WHERE id = :lsn  " , [ "lsn" => $lsn_id ] );
       $id = DB::table('assessments')->insertGetId(
         [
             'lsn_id' =>  $lsn_id,
-            'sub_id' =>  $subexam[0]->name,
+            'sub_id' =>  $subexam[0]->sub_id,
             'source' => 'nil',
             'title' => " Test",
             '_date' => date('Y-m-d'),
