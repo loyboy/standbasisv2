@@ -205,14 +205,7 @@
         let typeofscript = {{ Auth::user()->_type }};
 
     $(document).ready(function(){  
-        let mydate = $('#mylabel').text()
-        
-        getComment('mysabsent',mydate)
-        getComment('mytabsent',mydate)
-        getComment('mylateclass',mydate)
-        getComment('myappdelay',mydate) 
-        getComment('myincomplete',mydate)
-
+        //let mydate = $('#mylabel').text()
         let xhr = new XMLHttpRequest();
         xhr.open('POST', '/attendances_getFlags/'+teacher);
         xhr.responseType = 'json';
@@ -294,6 +287,12 @@
                 
                 let mylabel = document.querySelector('#mylabel');
                 mylabel.innerHTML = datarow._date;
+
+                getComment('mysabsent',datex)
+                getComment('mytabsent',datex)
+                getComment('mylateclass',datex)
+                getComment('myappdelay',datex) 
+                getComment('myincomplete',datex)
                //
         } 
 
@@ -361,6 +360,7 @@
 
     function getAttendanceOnChange(){
         let datebox = $('#attdate').val();
+       
         //let subclassbox = $('#subclass').val();
         let xhr = new XMLHttpRequest();
         xhr.open('POST', '/attendances_getFlags/'+teacher);
@@ -447,6 +447,12 @@
                 mylabel.innerHTML = datarow._date;
                
                 document.getElementById('loading').style.display = 'none';
+
+                getComment('mysabsent',datebox)
+                getComment('mytabsent',datebox)
+                getComment('mylateclass',datebox)
+                getComment('myappdelay',datebox) 
+                getComment('myincomplete',datebox)
         } 
     }
 </script>
