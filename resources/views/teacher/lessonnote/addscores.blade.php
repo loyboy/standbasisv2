@@ -33,6 +33,7 @@
                                 <th>Lessonnote Name </th>
                                 <th>Classwork</th>
                                 <th>Assignment</th>
+                                <th>Test</th>
                             </tr>
                             </thead>
 
