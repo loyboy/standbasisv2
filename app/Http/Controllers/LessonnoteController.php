@@ -484,17 +484,17 @@ class LessonnoteController extends Controller
                         $homework = "Added Scores to: ". $scoreavg;
                     }                        
             }
-
+/*
             if (count($assessmenttest) > 0){           
                 $scoreavg = Score::where('ass_id', '=', $assessmenttest->id)->count('perf');
                     if (null !== $scoreavg){
                         $test = "Added Scores to: ". $scoreavg;
                     }                        
-            }
+            } */
 
             $datablock[] = array("id" => $ls->lsn_id, "blob" => $lsn, "Subject" => $ls->subject->name, "Title" => $ls->title,  "Clswork" => $clswork ,  "Hmwork" => $homework , "Test" => $test);
       
-        }
+        } 
         
         $data['status'] = "Success";
         $data['message'] = "Your lessonnote pupil data is provided....";
