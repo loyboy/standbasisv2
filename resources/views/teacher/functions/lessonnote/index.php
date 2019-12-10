@@ -33,10 +33,28 @@ function getmaxscore($lsn,$type){
 function checkforExamGeneral($lsn_id, $type){
     $sub_name = "";
     $name = DB::select("SELECT id FROM assessments WHERE _type = :typ AND lsn_id = :lsn " , [ "lsn" => $lsn_id,"typ" => $type  ] );
-    foreach($name as $n){
+    if (count($name) <= 0 && $type === 'TS'){
+      
+      $subexam = DB::select("SELECT * FROM assessments WHERE _type = :typ AND lsn_id = :lsn " , [ "lsn" => $lsn_id,"typ" => 'CW' ] );
+      $id = DB::table('assessments')->insertGetId(
+        [
+            'lsn_id' =>  $lsn_id,
+            'sub_id' =>  $subexam[0]->sub_id,
+            'source' => 'nil',
+            'title' => " Test",
+            '_date' => date('Y-m-d'),
+            '_type' => 'TS',
+        ]
+      );
+
+        return $id;
+    }
+    else{
+      foreach($name as $n){
         $sub_name = $n->id;  
       }   
-      return $sub_name;
+        return $sub_name;
+    }
 }
 ///////////save
 function getLNName($lsn_id){
