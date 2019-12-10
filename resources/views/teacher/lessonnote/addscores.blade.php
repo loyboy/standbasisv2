@@ -89,6 +89,7 @@
                 var cell1 = "";
                 var cell2 = "";
                 var cell3 = "";
+                var cell4 = "";
                 //onclick='addScores("+ datarow.id + ", 1)'
 
                 cell0 = "<td> <strong>"+ (i + 1) + "</strong> </td> ";
@@ -106,6 +107,13 @@
                 }
                 else{                    
                     cell3 += "<td> <strong> <a href='#' class='btn btn-primary white' >" + datarow.Hmwork + " </a> </strong> <br>";                 
+                }
+
+                if (datarow.Test === "0"){                    
+                    cell4 += `<td> <strong> <a href='tlsnscoresadd/TS/${datarow.id}' class='btn btn-primary white' >  Add Test Scores </a> </strong> <br>`; 
+                }
+                else{                    
+                    cell4 += "<td> <strong> <a href='#' class='btn btn-primary white' >" + datarow.Test + " </a> </strong> <br>";                 
                 }
         
               

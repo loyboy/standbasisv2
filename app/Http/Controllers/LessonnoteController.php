@@ -310,6 +310,17 @@ class LessonnoteController extends Controller
                     '_date' => date('Y-m-d'),
                     '_type' => 'CW',
                 ]);
+
+                $assobjtest = Assessment::create([
+                    'lsn_id' =>  $lsnobj->id,
+                    'sub_id' => $subject,
+                    'source' => 'nil',
+                    'title' => $title . " Test",
+                    '_date' => date('Y-m-d'),
+                    '_type' => 'TS',
+                ]);
+
+             
                 ////////////////
 
             $sch = $teacher->school_id;
@@ -446,34 +457,42 @@ class LessonnoteController extends Controller
 
             foreach ($lsn as $ls){
            
-           $clswork = "0"; $homework = "0";
-           
-           $assessmentcls = Assessment::where('_type', '=', "C")->whereHas('lessonnote', function (Builder $query) use ($ls) {
+           $assessmentcls = Assessment::where('_type', '=', "CW")->whereHas('lessonnote', function (Builder $query) use ($ls) {
                 $query->join('class_streams', 'lessonnotes.class_category', '=', 'class_streams.category')->join('enrollments', 'class_streams.id', '=', 'enrollments.class_id')->where('lessonnotes.id', '=', $ls->id); //classwork
             })->get(); 
 
-            $assessmenthwk = Assessment::where('_type', '=', "A")->whereHas('lessonnote', function (Builder $query) use ($ls) {
+            $assessmenthwk = Assessment::where('_type', '=', "AS")->whereHas('lessonnote', function (Builder $query) use ($ls) {
+                $query->join('class_streams', 'lessonnotes.class_category', '=', 'class_streams.category')->join('enrollments', 'class_streams.id', '=', 'enrollments.class_id')->where('lessonnotes.id', '=', $ls->id); //homework
+            })->get();
+
+            $assessmenttest = Assessment::where('_type', '=', "TS")->whereHas('lessonnote', function (Builder $query) use ($ls) {
                 $query->join('class_streams', 'lessonnotes.class_category', '=', 'class_streams.category')->join('enrollments', 'class_streams.id', '=', 'enrollments.class_id')->where('lessonnotes.id', '=', $ls->id); //homework
             })->get();
            
-            $clswork = "0"; $homework = "0";
-                if ( count($assessmentcls) > 0){     
-                    //$scoreavg = Score::where('ass_id', '=', $assessmentcls->id)->avg('perf');
+            $clswork = "0"; $homework = "0"; $test = "0";
+            
+            if ( count($assessmentcls) > 0){
                 $scoreavg = Score::where('ass_id', '=', $assessmentcls->id)->count('perf');
                     if (null !== $scoreavg){
                         $clswork = "Added Scores to: ". $scoreavg." To ";
-                    }
-                
-                } 
+                    }                
+            } 
     
-            if (count($assessmentcls) > 0){           
+            if (count($assessmenthwk) > 0){           
                 $scoreavg = Score::where('ass_id', '=', $assessmenthwk->id)->count('perf');
-                if (null !== $scoreavg){
-                    $homework = "Added Scores to: ". $scoreavg;
-                }                        
+                    if (null !== $scoreavg){
+                        $homework = "Added Scores to: ". $scoreavg;
+                    }                        
             }
 
-            $datablock[] = array("id" => $ls->lsn_id, "blob" => $lsn, "Subject" => $ls->subject->name, "Title" => $ls->title,  "Clswork" => $clswork ,  "Hmwork" => $homework  );
+            if (count($assessmenttest) > 0){           
+                $scoreavg = Score::where('ass_id', '=', $assessmenttest->id)->count('perf');
+                    if (null !== $scoreavg){
+                        $test = "Added Scores to: ". $scoreavg;
+                    }                        
+            }
+
+            $datablock[] = array("id" => $ls->lsn_id, "blob" => $lsn, "Subject" => $ls->subject->name, "Title" => $ls->title,  "Clswork" => $clswork ,  "Hmwork" => $homework , "Test" => $test);
       
         }
         
