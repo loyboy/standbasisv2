@@ -470,7 +470,7 @@ class LessonnoteController extends Controller
             })->get();
            
             $clswork = "0"; $homework = "0"; $test = "0";
-            
+        /* Work on this cos You need to change the query here    
             if ( count($assessmentcls) > 0){
                 $scoreavg = Score::where('ass_id', '=', $assessmentcls->id)->count('perf');
                     if (null !== $scoreavg){
@@ -484,7 +484,7 @@ class LessonnoteController extends Controller
                         $homework = "Added Scores to: ". $scoreavg;
                     }                        
             }
-/*
+
             if (count($assessmenttest) > 0){           
                 $scoreavg = Score::where('ass_id', '=', $assessmenttest->id)->count('perf');
                     if (null !== $scoreavg){
