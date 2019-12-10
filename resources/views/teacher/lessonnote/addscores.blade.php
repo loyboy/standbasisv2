@@ -117,7 +117,7 @@
                 }
         
               
-                var newRow = "<tr>" + cell0 + cell1 + cell2 + cell3 + "</tr>";
+                var newRow = "<tr>" + cell0 + cell1 + cell2 + cell3 + cell4 +  "</tr>";
                 
                 table.row.add($(newRow)).draw();
 
