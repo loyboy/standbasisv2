@@ -147,6 +147,8 @@ table.dataTable thead > tr > td.sorting_desc,
 table.dataTable thead > tr > td.sorting {
     padding-right: inherit;
 }
+
+*[contenteditable="true"]{display: inline-block;}
     </style>
 </head>
     <body id="body" data-theme="amber">
