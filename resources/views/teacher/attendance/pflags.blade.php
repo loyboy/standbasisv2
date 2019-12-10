@@ -351,7 +351,7 @@
             data: { type: typeofscript, key: id, date: datex },
             success:function(response){
                 console.log('Gotten successfully '+ JSON.stringify(response)); 
-                $('#'+id).val(response.val)
+                $('#'+id).text(response.val)
             }
         });
     }

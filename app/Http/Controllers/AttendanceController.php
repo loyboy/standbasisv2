@@ -892,11 +892,29 @@ class AttendanceController extends Controller
   
           $attcomment = AttComment::where('_date',  $date)->where('_owner',  $type)->first();
   
-          if ($attcomment !== null){           
+          if ($attcomment !== null){  
+
+            $val = "";
+              
+            if ($key === "mysabsent"){
+                $val = $attcomment->st_pabsence;
+            }
+            else if ($key === "mytabsent"){
+                $val = $attcomment->st_tabsence;
+            }
+            else if ($key === "mylateclass"){
+                $val =  $attcomment->st_lateclass;
+            }
+            else if ($key === "myappdelay"){
+                $val = $attcomment->st_delayapproval;
+            }
+            else if ($key === "myincomplete"){
+                $val =  $attcomment->st_incomplete;
+            }
              
               $data['status'] = "Success";             
               $data['message'] = "You have gotten a comment for that attendance...";
-              $data['val'] = $attcomment;
+              $data['val'] = $val;
               
               return response()->json($data);
           }
