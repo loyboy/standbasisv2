@@ -89,8 +89,16 @@ Route::get('/creportgen/{id}', function ($id) {
     return view('teacher.class_reportview', ['classid' => $id]);
 })->middleware('auth');
 
+Route::get('/creportlsngen/{id}', function ($id) {
+    return view('teacher.class_lsnreportview', ['classid' => $id]);
+})->middleware('auth');
+
 Route::get('/treportgen', function () {
     return view('teacher.teacher_reportview');
+})->middleware('auth');
+
+Route::get('/treportlsngen', function () {
+    return view('teacher.teacher_lsnreportview');
 })->middleware('auth');
 
 Route::get('/logoutuser', function () {
