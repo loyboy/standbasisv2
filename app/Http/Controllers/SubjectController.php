@@ -84,13 +84,13 @@ class SubjectController extends Controller
         $termval =  intval($term->term);
         
         //AND l._SUBMISSION <= :dat AND l._SUBMISSION >= :dat2
-        $resultclw =  DB::select(" SELECT IFNULL(AVG(s.perf),0) as perf FROM scores s WHERE s.enrol_id = :pup AND s.ass_id IN ( SELECT id FROM assessments a JOIN lessonnote_managements l ON l.lsn_id = a.lsn_id JOIN lessonnotes ln ON ln.id = a.lsn_id WHERE a._TYPE = :typ AND l._APPROVAL != :appr AND ln.SUB_ID = :sub )  ",
+        $resultclw =  DB::select(" SELECT IFNULL(AVG(s.perf),0) as perf FROM scores s WHERE s.enrol_id = :pup AND s.ass_id IN ( SELECT a.id FROM assessments a JOIN lessonnote_managements l ON l.lsn_id = a.lsn_id JOIN lessonnotes ln ON ln.id = a.lsn_id WHERE a._TYPE = :typ AND l._APPROVAL != :appr AND ln.SUB_ID = :sub )  ",
         [ "pup" => $pupid, "typ" => "CW", "appr" => "1970-10-10 00:00:00" , "sub" => $subid ]);
          
-        $resulthmwk =  DB::select(" SELECT IFNULL(AVG(s.perf),0) as perf FROM scores s WHERE s.enrol_id = :pup AND s.ass_id IN ( SELECT id FROM assessments a JOIN lessonnote_managements l ON l.lsn_id = a.lsn_id JOIN lessonnotes ln ON ln.id = a.lsn_id WHERE a._TYPE = :typ AND l._APPROVAL != :appr AND ln.SUB_ID = :sub )  ",
+        $resulthmwk =  DB::select(" SELECT IFNULL(AVG(s.perf),0) as perf FROM scores s WHERE s.enrol_id = :pup AND s.ass_id IN ( SELECT a.id FROM assessments a JOIN lessonnote_managements l ON l.lsn_id = a.lsn_id JOIN lessonnotes ln ON ln.id = a.lsn_id WHERE a._TYPE = :typ AND l._APPROVAL != :appr AND ln.SUB_ID = :sub )  ",
         [ "pup" => $pupid, "typ" => "AS", "appr" => "1970-10-10 00:00:00" , "sub" => $subid ]);
        
-        $resulttest =  DB::select(" SELECT IFNULL(AVG(s.perf),0) as perf FROM scores s WHERE s.enrol_id = :pup AND s.ass_id IN ( SELECT id FROM assessments a JOIN lessonnote_managements l ON l.lsn_id = a.lsn_id JOIN lessonnotes ln ON ln.id = a.lsn_id WHERE a._TYPE = :typ AND l._APPROVAL != :appr AND ln.SUB_ID = :sub )  ",
+        $resulttest =  DB::select(" SELECT IFNULL(AVG(s.perf),0) as perf FROM scores s WHERE s.enrol_id = :pup AND s.ass_id IN ( SELECT a.id FROM assessments a JOIN lessonnote_managements l ON l.lsn_id = a.lsn_id JOIN lessonnotes ln ON ln.id = a.lsn_id WHERE a._TYPE = :typ AND l._APPROVAL != :appr AND ln.SUB_ID = :sub )  ",
         [ "pup" => $pupid, "typ" => "TS", "appr" => "1970-10-10 00:00:00" , "sub" => $subid ]);
        
             $clw = 0; $hmwork = 0; $test = 0;
