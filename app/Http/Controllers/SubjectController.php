@@ -67,6 +67,45 @@ class SubjectController extends Controller
       
             return $perf === 0 ? "---" : intval($perf)." %";
     }
+
+    //lessonnote 
+    public static function getSubjectLessonnote($pupid, $subid){ 
+        
+        $subject = Subject::where('id',$subid)->first(); 
+
+        $theterm = array(1 => '1st Term', 2 => '2nd Term', 3 => '3rd Term');
+
+        $pupil = Pupil::where('id', $pupid)->first();
+
+        $term = Term::where('school_id',$pupil->school_id)->latest('id')->first();
+
+        $startdate = $term->resumedate;
+        $enddate = date('Y-m-d');
+        $termval =  intval($term->term);
+        
+        //AND l._SUBMISSION <= :dat AND l._SUBMISSION >= :dat2
+        $resultclw =  DB::select(" SELECT IFNULL(AVG(s._perf),0) as perf FROM scores s WHERE s.enrol_id = :pup AND s.ass_id IN ( SELECT id FROM assessments a JOIN lessonnote_managements l ON l.lsn_id = a.lsn_id JOIN lessonnotes ln ON ln.id = a.lsn_id WHERE a._TYPE = :typ AND l._APPROVAL != :appr AND ln.SUB_ID = :sub )  ",
+        [ "pup" => $pupid, "typ" => "CW", "appr" => "1970-10-10 00:00:00" , "sub" => $subid ]);
+         
+        $resulthmwk =  DB::select(" SELECT IFNULL(AVG(s._perf),0) as perf FROM scores s WHERE s.enrol_id = :pup AND s.ass_id IN ( SELECT id FROM assessments a JOIN lessonnote_managements l ON l.lsn_id = a.lsn_id JOIN lessonnotes ln ON ln.id = a.lsn_id WHERE a._TYPE = :typ AND l._APPROVAL != :appr AND ln.SUB_ID = :sub )  ",
+        [ "pup" => $pupid, "typ" => "AS", "appr" => "1970-10-10 00:00:00" , "sub" => $subid ]);
+       
+        $resulttest =  DB::select(" SELECT IFNULL(AVG(s._perf),0) as perf FROM scores s WHERE s.enrol_id = :pup AND s.ass_id IN ( SELECT id FROM assessments a JOIN lessonnote_managements l ON l.lsn_id = a.lsn_id JOIN lessonnotes ln ON ln.id = a.lsn_id WHERE a._TYPE = :typ AND l._APPROVAL != :appr AND ln.SUB_ID = :sub )  ",
+        [ "pup" => $pupid, "typ" => "TS", "appr" => "1970-10-10 00:00:00" , "sub" => $subid ]);
+       
+            $clw = 0; $hmwork = 0; $test = 0;
+            if ($resultclw[0] !== null){
+                   $clw = intval($resultclw[0]->perf);
+                }
+            if ($resulthmwk[0] !== null){
+                    $hmwork = intval($resulthmwk[0]->perf);
+                 }  
+            if ($resulttest[0] !== null){
+                    $test = intval($resulttest[0]->perf);
+                }
+      
+            return " CW: ". $clw . "% <br> ". " HW:  ". $hmwork . "% <br>" . " TS:  ". $test. "% ";
+    }
     //
     public static function getSubjectAttendanceTeacher($teaid, $classid, $subid){ 
         
