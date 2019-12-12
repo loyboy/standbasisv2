@@ -38,10 +38,15 @@
     <div class="row border border-default">         
 	
             <div class="bg-primary text-center p-2 col-md-12">
-                <p class="lead text-white">Standbasis Report for Class': <?php echo ClassStreamController::getClassName($classid) ?>  Attendance</p>
+                <p class="lead text-white">Standbasis Report for Class': <?php echo ClassStreamController::getClassName($classid) ?>  Lessonnote Performance </p>
             </div>         
 
     <div class="JStableOuter" >
+    <p> 
+        <span> CW :  </span> <span> Classwork Score </span>
+        <span> AS :  </span> <span> Assignment Score </span>
+        <span> TS :  </span> <span> Test Score </span>
+    </p>
   <table>
     <thead>
       <tr style="top: 0px" >
