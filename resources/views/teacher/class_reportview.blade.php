@@ -17,7 +17,17 @@
     <link href="{{ asset('css/mytable.css') }}" rel="stylesheet">
   
     <script> 
+    function exportExcel(elem) {
+            var table = document.getElementById("table");
+            var html = table.outerHTML;
+            var url = 'data:application/vnd.ms-excel,' + escape(html); // Set your html table into url 
+            elem.setAttribute("href", url);
+            elem.setAttribute("download", "export.xls"); // Choose the file name
+            return false;
+    }
+    
         $(document).ready(function() {
+
             $('.JStableOuter table').scroll(function(e) { 
             
                 $('.JStableOuter thead').css("left", -$(".JStableOuter tbody").scrollLeft()); 
@@ -39,9 +49,15 @@
 	
             <div class="bg-primary text-center p-2 col-md-12">
                 <p class="lead text-white">Standbasis Report for Class': <?php echo ClassStreamController::getClassName($classid) ?>  Attendance</p>
+                <br>
+                <a id="downloadLink" class="btn btn-danger" onclick="exportExcel(this)">Export to excel</a>
             </div>         
 
     <div class="JStableOuter" >
+    <?php  
+        $header = array();
+
+    ?>
   <table>
     <thead>
       <tr style="top: 0px" >
@@ -51,7 +67,7 @@
                $sub = SubjectController::getSubjectAll($school);
                foreach ($sub as $s){
         ?>
-            <th class="blueHead twist"> <?php echo $s['name']; ?> </th>
+            <th class="blueHead twist"> <?php array_push( $header, $s['name']); echo $s['name']; ?> </th>
 
         <?php } ?>
 

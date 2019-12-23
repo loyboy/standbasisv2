@@ -56,27 +56,7 @@
         <?php } ?>
 
       </tr>
-     <!-- <tr style="top: 0px" >
-        <th style="left: 0px" ></th>
-        <th> <p> $16,417,480 </p> </th>
-        <th class="profitCol" > <p> $2,412,287 </p> </th>
-        <th class="revenueCol" > <p> $18,829,767 </p> </th>
-        <th></th>
-        <th></th>
-        <th> <p> $748,371 </p> </th>
-        <th> <p> $249,938 </p> </th>
-        <th> <p> $17,831,458 </p> </th>
-        <th> <p>$150,825</p> </th>
-        <th></th>
-
-        <th class="lightBlueBox" >P/L</th>
-        <th class="lightBlueBox" > <p>Dec 16</p> <span class="profitCol" >$500</span> </th>
-        <th class="lightBlueBox" >  <p>Dec 17</p> <span class="profitCol" >$68,128</span> </th>
-        <th class="lightBlueBox" >  <p>Dec 17</p> <span class="profitCol" >$68,638</span> </th>
-        <th class="lightBlueBox" >  <p>Dec 17</p><span class="negativeCost" > -$79,052 </span> </th>
-         <th class="lightBlueBox" >  <p>Dec 17</p> <span class="profitCol" >$68,638</span> </th>
-
-      </tr> -->
+   
     </thead>
     <tbody>
       
@@ -95,8 +75,7 @@
         <?php } ?>
           
         </tr>
-        <?php } ?>  
-      
+        <?php } ?>      
 
 
     </tbody>
