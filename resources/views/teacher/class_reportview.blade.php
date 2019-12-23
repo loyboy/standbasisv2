@@ -17,14 +17,15 @@
     <link href="{{ asset('css/mytable.css') }}" rel="stylesheet">
   
     <script> 
-    function exportExcel(elem) {
-            var table = document.getElementById("table");
-            var html = table.outerHTML;
-            var url = 'data:application/vnd.ms-excel,' + escape(html); // Set your html table into url 
-            elem.setAttribute("href", url);
-            elem.setAttribute("download", "export.xls"); // Choose the file name
-            return false;
-    }
+    
+        function exportExcel(elem) {
+                var table = document.getElementById("mytable");
+                var html = table.outerHTML;
+                var url = 'data:application/vnd.ms-excel,' + escape(html); // Set your html table into url 
+                elem.setAttribute("href", url);
+                elem.setAttribute("download", "export.xls"); // Choose the file name
+                return false;
+        }
     
         $(document).ready(function() {
 
@@ -39,6 +40,7 @@
 
             });
         });
+
     </script>
     <!-- Styles -->
     </head>
@@ -58,7 +60,7 @@
         $header = array();
 
     ?>
-  <table>
+  <table id = "mytable">
     <thead>
       <tr style="top: 0px" >
         <th style="left: 0px" > Student Name </th>
