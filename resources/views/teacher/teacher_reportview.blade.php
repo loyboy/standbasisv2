@@ -17,6 +17,16 @@
     <link href="{{ asset('css/mytable.css') }}" rel="stylesheet">
   
     <script> 
+
+        function exportExcel(elem) {
+                var table = document.getElementById("mytable");
+                var html = table.outerHTML;
+                var url = 'data:application/vnd.ms-excel,' + escape(html); // Set your html table into url 
+                elem.setAttribute("href", url);
+                elem.setAttribute("download", "standbasis_teacher_attendance_report.xls"); // Choose the file name
+                return false;
+        }
+
         $(document).ready(function() {
             $('.JStableOuter table').scroll(function(e) { 
             
@@ -41,8 +51,9 @@
                 <p class="lead text-white">Standbasis Report for All Teacher's Attendance</p>
             </div>         
 
-    <div class="JStableOuter" >
-  <table>
+    <div class="JStableOuter">
+
+  <table id = "mytable">
     <thead>
       <tr style="top: 0px" >
         <th style="left: 0px" > Teacher Name </th>
@@ -65,12 +76,12 @@
                foreach ($teacher as $t){
         ?>
         <tr>
-            <td> <?php echo TeacherController::getTeacherName($t->tea_id). " ". ClassStreamController::getClassName($t->class_id);  ?></td>
+            <td style=" text-align: center; "> <?php echo TeacherController::getTeacherName($t->tea_id). " ". ClassStreamController::getClassName($t->class_id);  ?></td>
         <?php
                $sub = SubjectController::getSubjectAll($school);
                foreach ($sub as $s){                     
         ?>
-            <td> <?php echo SubjectController::getSubjectAttendanceTeacher($t->tea_id, $t->class_id, $s['id']); ?> </td>
+            <td style=" text-align: center; "> <?php echo SubjectController::getSubjectAttendanceTeacher($t->tea_id, $t->class_id, $s['id']); ?> </td>
 
         <?php } ?>
           

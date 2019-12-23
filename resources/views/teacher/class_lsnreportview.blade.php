@@ -17,6 +17,16 @@
     <link href="{{ asset('css/mytable.css') }}" rel="stylesheet">
   
     <script> 
+
+        function exportExcel(elem) {
+                var table = document.getElementById("mytable");
+                var html = table.outerHTML;
+                var url = 'data:application/vnd.ms-excel,' + escape(html); // Set your html table into url 
+                elem.setAttribute("href", url);
+                elem.setAttribute("download", "standbasis_class_lessonnote_report.xls"); // Choose the file name
+                return false;
+        }
+
         $(document).ready(function() {
             $('.JStableOuter table').scroll(function(e) { 
             
@@ -39,6 +49,7 @@
 	
             <div class="bg-primary text-center p-2 col-md-12">
                 <p class="lead text-white">Standbasis Report for Class': <?php echo ClassStreamController::getClassName($classid) ?>  Lessonnote Performance </p>
+                <a id="downloadLink" class="btn btn-danger" onclick="exportExcel(this)">Export to excel</a>
             </div>         
 
     <div class="JStableOuter" >
@@ -47,7 +58,8 @@
         <span> AS :  </span> <span> Assignment Score </span>
         <span> TS :  </span> <span> Test Score </span>
     </p>
-  <table>
+
+  <table id = "mytable">
     <thead>
       <tr style="top: 0px" >
         <th style="left: 0px" > Student Name </th>
@@ -70,12 +82,12 @@
                foreach ($pup as $p){
         ?>
         <tr>
-            <td> <?php echo PupilController::getPupilName($p['id']); ?></td>
+            <td style=" text-align: center; "> <?php echo PupilController::getPupilName($p['id']); ?></td>
         <?php
                $sub = SubjectController::getSubjectAll($school);
                foreach ($sub as $s){                     
         ?>
-            <td> <?php echo SubjectController::getSubjectLessonnote($p['pupil_id'], $s['id']); ?> </td>
+            <td style=" text-align: center; "> <?php echo SubjectController::getSubjectLessonnote($p['pupil_id'], $s['id']); ?> </td>
 
         <?php } ?>
           
