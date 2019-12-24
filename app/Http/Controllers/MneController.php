@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 class MneController extends Controller
 {
     
-       public function getSavedValues(Request $request, $teaid){
+       public function getSavedValues(Request $request){
         $sd = $request->input('sd');
         $ed = $request->input('ed');
         $tr = $request->input('tr');
