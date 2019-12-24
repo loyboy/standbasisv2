@@ -83,7 +83,7 @@
                                 </div>  
 
                                 <div class="form-group col-3">
-                                    <label> </label>
+                                    <label> Action:  </label>
                                     <button class="btn btn-danger" onclick="getClassData()" > Perform Search </button>
                                 </div>
                         </div>
@@ -105,7 +105,7 @@
 
       </tr>
         <tr> 
-            <td colspan=""> 
+            <td colspan="10"> 
                 <b> Start date: </b> <span id="stid"> <?php  if( session()->has('searchdata') ) { echo session('searchdata.sd'); } ?>  </span> &nbsp;  &nbsp;  &nbsp;  &nbsp; &nbsp;  &nbsp; 
                 <b> End date: </b> <span id="etid">   <?php  if( session()->has('searchdata') ) { echo session('searchdata.ed'); } ?></span> &nbsp;  &nbsp;  &nbsp;  &nbsp; &nbsp;  &nbsp; 
                 <b> Term: </b> <span id="trid">  <?php  if( session()->has('searchdata') ) { echo session('searchdata.tr'); } ?></span> 
