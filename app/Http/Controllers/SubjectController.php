@@ -32,7 +32,7 @@ class SubjectController extends Controller
     } 
 
     // You may add other parameters to granulate the search.......like term and year
-    public static function getSubjectAttendance($pupid, $subid){ 
+    public static function getSubjectAttendance($pupid, $subid, $dstartdate = "", $denddate = "", $dterm = ""){ 
         
         $subject = Subject::where('id',$subid)->first(); 
 
@@ -42,16 +42,26 @@ class SubjectController extends Controller
 
         $term = Term::where('school_id',$pupil->school_id)->latest('id')->first();
 
-        $startdate = $term->resumedate;
-        $enddate = date('Y-m-d');
-        $termval =  intval($term->term);
-
-          //no. of times present 
-          $results = DB::select(" SELECT COUNT(ATT_ID) AS present FROM rowcalls WHERE _STATUS = 1 AND PUP_ID = :pupid AND ATT_ID IN ( SELECT id FROM attendances WHERE _date <= :endd AND _date >= :startd AND _desc LIKE :des AND sub_class_id IN (SELECT id FROM subjectclasses WHERE sub_id = :sub)  ) " , [ "endd" => $enddate , "startd" => $startdate, "pupid" => $pupid, "des" => '%'.$theterm[$termval].'%' , "sub" => $subid ] ); 
-          
-          //total no. of times attendance was taken 
-          $results2 = DB::select(" SELECT COUNT(a.id) AS total FROM attendances a JOIN rowcalls r ON r.ATT_ID = a.id WHERE a.sub_class_id IN (SELECT id FROM subjectclasses WHERE sub_id = :sub) AND a._date <= :endd AND a._date >= :startd AND r.PUP_ID = :pupid AND a._desc LIKE :des" , [ "endd" => $enddate , "startd" => $startdate, "pupid" => $pupid ,  "des" => '%'.$theterm[$termval].'%', "sub" => $subid  ] ); 
+        if ($dstartdate === "" || $denddate === "" || $dterm === ""){
+            $startdate = $term->resumedate;
+            $enddate = date('Y-m-d');
+            $termval =  intval($term->term);
+            //no. of times present 
+            $results = DB::select(" SELECT COUNT(ATT_ID) AS present FROM rowcalls WHERE _STATUS = 1 AND PUP_ID = :pupid AND ATT_ID IN ( SELECT id FROM attendances WHERE _date <= :endd AND _date >= :startd AND _desc LIKE :des AND sub_class_id IN (SELECT id FROM subjectclasses WHERE sub_id = :sub)  ) " , [ "endd" => $enddate , "startd" => $startdate, "pupid" => $pupid, "des" => '%'.$theterm[$termval].'%' , "sub" => $subid ] ); 
             
+            //total no. of times attendance was taken ,
+            $results2 = DB::select(" SELECT COUNT(a.id) AS total FROM attendances a JOIN rowcalls r ON r.ATT_ID = a.id WHERE a.sub_class_id IN (SELECT id FROM subjectclasses WHERE sub_id = :sub) AND a._date <= :endd AND a._date >= :startd AND r.PUP_ID = :pupid AND a._desc LIKE :des" , [ "endd" => $enddate , "startd" => $startdate, "pupid" => $pupid ,  "des" => '%'.$theterm[$termval].'%', "sub" => $subid  ] ); 
+        } else {
+            $startdate = $dstartdate;
+            $enddate = $denddate;
+            $termval =  intval($dterm);
+            //no. of times present 
+            $results = DB::select(" SELECT COUNT(ATT_ID) AS present FROM rowcalls WHERE _STATUS = 1 AND PUP_ID = :pupid AND ATT_ID IN ( SELECT id FROM attendances WHERE _date <= :endd AND _date >= :startd AND _desc LIKE :des AND sub_class_id IN (SELECT id FROM subjectclasses WHERE sub_id = :sub)  ) " , [ "endd" => $enddate , "startd" => $startdate, "pupid" => $pupid, "des" => '%'.$theterm[$termval].'%' , "sub" => $subid ] ); 
+            
+            //total no. of times attendance was taken 
+            $results2 = DB::select(" SELECT COUNT(a.id) AS total FROM attendances a JOIN rowcalls r ON r.ATT_ID = a.id WHERE a.sub_class_id IN (SELECT id FROM subjectclasses WHERE sub_id = :sub) AND a._date <= :endd AND a._date >= :startd AND r.PUP_ID = :pupid AND a._desc LIKE :des" , [ "endd" => $enddate , "startd" => $startdate, "pupid" => $pupid ,  "des" => '%'.$theterm[$termval].'%', "sub" => $subid  ] ); 
+        }
+
             $perf = 0;
             $present = 0;//no. of times present
             $total = 0;//total times attendance taken

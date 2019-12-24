@@ -55,10 +55,46 @@
                 <a id="downloadLink" class="btn btn-danger" onclick="exportExcel(this)">Export to excel</a>
             </div>         
 
-    <div class="JStableOuter" >
+            <div class="JStableOuter" >
+
+                    <div class="row"> 
+                        <div class="container"> 
+                        <div class="row col-12" style="margin-left: 4px; ">
+                                <div class="form-group col-3">
+                                    <label> Start Date: </label>
+                                    <input type="date" name="mydate" class="form-control" id="thedate" value="">
+                                </div>
+                                
+                                
+                                <div class="form-group col-3">
+                                    <label> End Date: </label>
+                                    <input type="date" name="mydate2" class="form-control" id="thedate2" value="<?php echo date('Y-m-d'); ?>">
+                                </div>  
+                                
+                            
+                                <div class="form-group col-3">
+                                    <label> Term: </label>
+                                    <select class="form-control"  name="head_year" id="theterm">
+                                        <option value="">Select.. </option>
+                                        <option value="1"> 1st Term </option>
+                                        <option value="2"> 2nd Term </option>
+                                        <option value="3"> 3rd Term </option>
+                                    </select>
+                                </div>  
+
+                                <div class="form-group col-3">
+                                    <button class="btn btn-warning" onclick="getClassData()" > Perform Search </button>
+                                </div>
+                        </div>
+                    </div>
  
   <table id = "mytable">
     <thead>
+      <tr> <td colspan=""> <h2> Search Parameters: </h2> <br> 
+      <b> Start date: </b> <span id="stid"> </span> <br> 
+      <b> End date: </b> <span id="etid"> </span> <br>
+      <b> Term: </b> <span id="trid"> </span> <br>
+      </td> </tr>
       <tr style="top: 0px" >
         <th style="left: 0px" > Student Name </th>
         <?php
@@ -103,15 +139,22 @@
             <td style=" text-align: center; " > <?php echo PupilController::getPupilName($p['id']); ?></td>
         <?php
                $sub = SubjectController::getSubjectAll($school);
-               foreach ($sub as $s){                     
-        ?>
-            <td style=" text-align: center; " > <?php echo SubjectController::getSubjectAttendance($p['pupil_id'], $s['id']); ?> </td>
+               foreach ($sub as $s){  
 
-        <?php } ?>
+        ?>
+
+        <?php  if(session()->has('searchdata')) { ?>
+            
+            <td style=" text-align: center; " > <?php echo SubjectController::getSubjectAttendance($p['pupil_id'], $s['id'],session('searchdata.sd'),session('searchdata.ed'), session('searchdata.tr') ); ?> </td>
+
+        <?php } else {  ?>
+        
+            <td style=" text-align: center; " > <?php echo SubjectController::getSubjectAttendance($p['pupil_id'], $s['id'] ); ?> </td>
+
+        <?php } } ?>
           
         </tr>
-        <?php } ?>  
-      
+        <?php } ?>       
 
 
     </tbody>
@@ -119,6 +162,55 @@
 </div>
 
     </div>
+
+    <script>
+        let teacher = {{ Auth::user()->teacher_id }};
+        let token = '{{ Auth::user()->api_token }}';    
+    
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', '/terms_getDate/'+teacher);
+        xhr.responseType = 'json';
+        let formData = new FormData();
+        formData.append("api_token", token);
+        xhr.send(formData);
+
+        xhr.onload = function() {
+                let responseObj = xhr.response;
+              
+                console.log("First date Data: " + responseObj.data);              
+                document.getElementById('thedate').value = responseObj.data.date;
+                var headyear = document.querySelector('#theterm');
+                console.log("The head year: " + headyear);
+                headyear.value = responseObj.data.term;
+        }
+
+        function getClassData(){
+            let sd = document.querySelector('#thedate');
+            let ed = document.querySelector('#thedate2');
+            let tr = document.querySelector('#theterm');
+
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/mne_setValues');
+            xhr.responseType = 'json';
+            let formData = new FormData();
+            formData.append("api_token", token);
+            formData.append("sd", sd.value);
+            formData.append("ed", ed.value);
+            formData.append("tr", tr.value);
+            xhr.send(formData);
+
+            xhr.onload = function() {
+                console.log("Seen data inside of Class data ");
+                document.querySelector('#stid').innerHTML = sd.value;
+                document.querySelector('#etid').innerHTML = ed.value;
+                document.querySelector('#trid').innerHTML = tr.value;
+
+                setTimeout(function(){ location.reload(); }, 500);
+            }
+        }
+
+
+    </script>
 
     </body>
 

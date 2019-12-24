@@ -195,3 +195,6 @@ Route::Resource('att_performances', 'AttPerfController');
 Route::Resource('lsn_performances', 'LsnPerfController');
 
 Route::Resource('school_policies', 'SchoolpolicyController');
+
+Route::Resource('mne', 'MneController');
+Route::post('/mne_setValues', 'MneController@getSavedValues');

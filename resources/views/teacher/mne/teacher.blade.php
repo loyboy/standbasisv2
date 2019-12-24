@@ -18,32 +18,32 @@
                 </div>
                 <div class="gx-card-body">
                    <!-- content -->
-                <div class="row"> 
-                    <div class="container"> 
-                     <div class="row col-12" style="margin-left: 4px; ">
-                             <div class="form-group col-4">
-                                <label> Start Date: </label>
-                                <input type="date" name="mydate" class="form-control" id="thedate" value="">
-                            </div>
+                    <div class="row"> 
+                        <div class="container"> 
+                        <div class="row col-12" style="margin-left: 4px; ">
+                                <div class="form-group col-4">
+                                    <label> Start Date: </label>
+                                    <input type="date" name="mydate" class="form-control" id="thedate" value="">
+                                </div>
+                                
+                                
+                                <div class="form-group col-4">
+                                    <label> End Date: </label>
+                                    <input type="date" name="mydate2" class="form-control" id="thedate2" value="<?php echo date('Y-m-d'); ?>">
+                                </div>  
+                                
                             
-                            
-                             <div class="form-group col-4">
-                                <label> End Date: </label>
-                                <input type="date" name="mydate2" class="form-control" id="thedate2" value="<?php echo date('Y-m-d'); ?>">
-                            </div>  
-                            
-                           
-                             <div class="form-group col-4">
-                                <label> Term: </label>
-                                 <select class="form-control"  name="head_year" id="theterm">
-                                    <option value="">Select.. </option>
-                                    <option value="1"> 1st Term </option>
-                                    <option value="2"> 2nd Term </option>
-                                    <option value="3"> 3rd Term </option>
-                                 </select>
-                            </div>  
-                     </div>
-                </div>
+                                <div class="form-group col-4">
+                                    <label> Term: </label>
+                                    <select class="form-control"  name="head_year" id="theterm">
+                                        <option value="">Select.. </option>
+                                        <option value="1"> 1st Term </option>
+                                        <option value="2"> 2nd Term </option>
+                                        <option value="3"> 3rd Term </option>
+                                    </select>
+                                </div>  
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="row">
@@ -63,7 +63,7 @@
                                     <td class='_toolbar'><a>Teacher</a> <br/> <button class="btn btn-info" id="vtteacher_but" onClick="myFunctionTea()"> View Report </button> </td>
                                    
                                     <td class='_toolbar'><a>Class</a> 
-                                    <br/>
+                                     <br/>
                                      <select class="mymneselectclass" name="state" style="padding: 15px;">
                                     
                                      </select>
