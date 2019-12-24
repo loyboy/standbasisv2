@@ -83,18 +83,15 @@
                                 </div>  
 
                                 <div class="form-group col-3">
-                                    <button class="btn btn-warning" onclick="getClassData()" > Perform Search </button>
+                                    <label> </label>
+                                    <button class="btn btn-danger" onclick="getClassData()" > Perform Search </button>
                                 </div>
                         </div>
                     </div>
  
   <table id = "mytable">
     <thead>
-      <tr> <td colspan=""> 
-      <b> Start date: </b> <span id="stid"> <?php  if( session()->has('searchdata') ) { echo session('searchdata.sd'); } ?>  </span> <br> 
-      <b> End date: </b> <span id="etid">   <?php  if( session()->has('searchdata') ) { echo session('searchdata.ed'); } ?></span> <br>
-      <b> Term: </b> <span id="trid">  <?php  if( session()->has('searchdata') ) { echo session('searchdata.tr'); } ?></span> <br>
-      </td> </tr>
+     
       <tr style="top: 0px" >
         <th style="left: 0px" > Student Name </th>
         <?php
@@ -107,6 +104,13 @@
         <?php } ?>
 
       </tr>
+        <tr> 
+            <td colspan=""> 
+                <b> Start date: </b> <span id="stid"> <?php  if( session()->has('searchdata') ) { echo session('searchdata.sd'); } ?>  </span> &nbsp;  &nbsp;  &nbsp;  &nbsp; &nbsp;  &nbsp; 
+                <b> End date: </b> <span id="etid">   <?php  if( session()->has('searchdata') ) { echo session('searchdata.ed'); } ?></span> &nbsp;  &nbsp;  &nbsp;  &nbsp; &nbsp;  &nbsp; 
+                <b> Term: </b> <span id="trid">  <?php  if( session()->has('searchdata') ) { echo session('searchdata.tr'); } ?></span> 
+            </td>
+        </tr>
      <!-- <tr style="top: 0px" >
         <th style="left: 0px" ></th>
         <th> <p> $16,417,480 </p> </th>
@@ -201,7 +205,7 @@
 
             xhr.onload = function() {
                 console.log("Seen data inside of Class data ");
-                setTimeout(function(){ location.reload(); }, 500);
+                setTimeout(function(){ location.reload(); },200);
             }
         }
 
