@@ -147,7 +147,7 @@
 
         ?>
 
-        <?php  if(session()->has('searchdata')) { ?>
+        <?php  if(session()->has('searchdata.sd')) { ?>
             
             <td style=" text-align: center; " > <?php echo SubjectController::getSubjectAttendance($p['pupil_id'], $s['id'],session('searchdata.sd'),session('searchdata.ed'), session('searchdata.tr') ); ?> </td>
 
