@@ -90,10 +90,10 @@
  
   <table id = "mytable">
     <thead>
-      <tr> <td colspan=""> <h2> Search Parameters: </h2> <br> 
-      <b> Start date: </b> <span id="stid"> </span> <br> 
-      <b> End date: </b> <span id="etid"> </span> <br>
-      <b> Term: </b> <span id="trid"> </span> <br>
+      <tr> <td colspan=""> 
+      <b> Start date: </b> <span id="stid"> <?php  if( session()->has('searchdata') ) { echo session('searchdata.sd'); } ?>  </span> <br> 
+      <b> End date: </b> <span id="etid">   <?php  if( session()->has('searchdata') ) { echo session('searchdata.ed'); } ?></span> <br>
+      <b> Term: </b> <span id="trid">  <?php  if( session()->has('searchdata') ) { echo session('searchdata.tr'); } ?></span> <br>
       </td> </tr>
       <tr style="top: 0px" >
         <th style="left: 0px" > Student Name </th>
@@ -201,10 +201,6 @@
 
             xhr.onload = function() {
                 console.log("Seen data inside of Class data ");
-                document.querySelector('#stid').innerHTML = sd.value;
-                document.querySelector('#etid').innerHTML = ed.value;
-                document.querySelector('#trid').innerHTML = tr.value;
-
                 setTimeout(function(){ location.reload(); }, 500);
             }
         }
