@@ -58,8 +58,8 @@
             <div class="JStableOuter" >
 
                     <div class="row"> 
-                        <div class="container"> 
-                        <div class="row col-12" style="margin-left: 5%; ">
+                        <div class="container" style="padding: 2%;"> 
+                        <div class="row col-12" style=" ">
                                 <div class="form-group col-3">
                                     <label> Start Date: </label>
                                     <input type="date" name="mydate" class="form-control" id="thedate" value="">
@@ -84,11 +84,12 @@
 
                                 <div class="form-group col-3">
                                     <label> Action:  </label>
-                                    <button class="btn btn-danger" onclick="getClassData()" > Perform Search </button>
+                                    <button class="btn btn-danger btn-block" onclick="getClassData()" > Perform Search </button>
                                 </div>
                         </div>
                         
-                        <div class="row col-12" style="margin-left: 5%; "> 
+                        <div class="row col-6" style=""> 
+                        <label> Seacrh Student Name:  </label>
                             <input type="text" class="form-control" id="mySearch" onkeyup="mySearch()" placeholder="Search for Student names...">
                         </div> 
                     </div>
