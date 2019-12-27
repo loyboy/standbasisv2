@@ -146,7 +146,7 @@
                $pup = PupilController::getAllPupilsInClass($classid);
                foreach ($pup as $p){
         ?>
-        <tr>
+        <tr class="myrow">
             <td style=" text-align: center; " > <?php echo PupilController::getPupilName($p['id']); ?></td>
         <?php
                $sub = SubjectController::getSubjectAll($school);
@@ -222,7 +222,7 @@
             input = document.getElementById("mySearch");
             filter = input.value.toUpperCase();
             table = document.getElementById("mytable");
-            tr = table.getElementsByTagName("tr");
+            tr = table.getElementsByClassName("myrow");
 
             // Loop through all table rows, and hide those who don't match the search query
             for (i = 0; i < tr.length; i++) {
