@@ -28,24 +28,7 @@
         }
     
         $(document).ready(function() {
-            let thedate = $('#thedate').val();
-            let thedate2 = $('#thedate2').val();
-            let theterm = $('#theterm').val(); 
-            var thetermval = "";
-
-            if (Number(theterm) === 1){
-                thetermval = "1st Term";
-            }
-            else if (Number(theterm) === 2){
-                thetermval = "2nd Term";
-            }
-            else if (Number(theterm) === 3){
-                thetermval = "3rd Term";
-            }
-            
-            $('#stid').html(thedate); 
-            $('#etid').html(thedate2);
-            $('#trid').html(theterm); 
+          
 
             $('.JStableOuter table').scroll(function(e) { 
             
@@ -211,6 +194,25 @@
                 var headyear = document.querySelector('#theterm');
                 console.log("The head year: " + headyear);
                 headyear.value = responseObj.data.term;
+
+                let thedate = $('#thedate').val();
+                let thedate2 = $('#thedate2').val();
+                let theterm = $('#theterm').val(); 
+                var thetermval = "";
+
+                if (Number(theterm) === 1){
+                    thetermval = "1st Term";
+                }
+                else if (Number(theterm) === 2){
+                    thetermval = "2nd Term";
+                }
+                else if (Number(theterm) === 3){
+                    thetermval = "3rd Term";
+                }
+                
+                $('#stid').html(thedate); 
+                $('#etid').html(thedate2);
+                $('#trid').html(thetermval); 
         }
 
         function getClassData(){
