@@ -209,10 +209,17 @@
                 else if (Number(theterm) === 3){
                     thetermval = "3rd Term";
                 }
+
+                if ($('#stid').html() === "" ){
+                    $('#stid').html(thedate); 
+                }
+                if ($('#etid').html() === "" ){
+                    $('#etid').html(thedate2); 
+                }
+                if ($('#trid').html() === "" ){
+                    $('#trid').html(thetermval); 
+                }
                 
-                $('#stid').html(thedate); 
-                $('#etid').html(thedate2);
-                $('#trid').html(thetermval); 
         }
 
         function getClassData(){
