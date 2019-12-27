@@ -59,7 +59,7 @@
 
                     <div class="row"> 
                         <div class="container"> 
-                        <div class="row col-12" style="margin-left: 4px; ">
+                        <div class="row col-12" style="margin-left: 5%; ">
                                 <div class="form-group col-3">
                                     <label> Start Date: </label>
                                     <input type="date" name="mydate" class="form-control" id="thedate" value="">
@@ -87,6 +87,10 @@
                                     <button class="btn btn-danger" onclick="getClassData()" > Perform Search </button>
                                 </div>
                         </div>
+                        
+                        <div class="row col-12" style="margin-left: 5%; "> 
+                            <input type="text" class="form-control" id="mySearch" onkeyup="mySearch()" placeholder="Search for Student names...">
+                        </div> 
                     </div>
  
   <table id = "mytable">
@@ -206,6 +210,28 @@
             xhr.onload = function() {
                 console.log("Seen data inside of Class data ");
                 setTimeout(function(){ location.reload(); },200);
+            }
+        }
+
+        function mySearch() {
+            // Declare variables
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("mySearch");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("mytable");
+            tr = table.getElementsByTagName("tr");
+
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+                }
             }
         }
 
