@@ -28,6 +28,24 @@
         }
     
         $(document).ready(function() {
+            let thedate = $('#thedate').val();
+            let thedate2 = $('#thedate2').val();
+            let theterm = $('#theterm').val(); 
+            var thetermval = "";
+
+            if (Number(theterm) === 1){
+                thetermval = "1st Term";
+            }
+            else if (Number(theterm) === 2){
+                thetermval = "2nd Term";
+            }
+            else if (Number(theterm) === 3){
+                thetermval = "3rd Term";
+            }
+            
+            $('#stid').val(thedate); 
+            $('#etid').val(thedate2);
+            $('#trid').val(theterm); 
 
             $('.JStableOuter table').scroll(function(e) { 
             
@@ -87,7 +105,7 @@
                         </div>
                         
                         <div class="row col-6" style=""> 
-                        <label> Seacrh Student Name:  </label>
+                        <label> Search Student Name:  </label>
                             <input type="text" class="form-control" id="mySearch" onkeyup="mySearch()" placeholder="Search for Student names...">
                         </div> 
                     </div>        
