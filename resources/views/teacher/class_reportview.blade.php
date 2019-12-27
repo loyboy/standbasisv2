@@ -53,11 +53,9 @@
                 <p class="lead text-white">Standbasis Report for Class': <?php echo ClassStreamController::getClassName($classid) ?>  Attendance</p>
                 <br>
                 <a id="downloadLink" class="btn btn-danger" onclick="exportExcel(this)">Export to excel</a>
-            </div>         
+            </div> 
 
-            <div class="JStableOuter" >
-
-                    <div class="row"> 
+              <div class="row" style="border: 1px solid #000; border-radius: 3px; "> 
                         <div class="container" style="padding: 2%;"> 
                         <div class="row col-12" style=" ">
                                 <div class="form-group col-3">
@@ -92,7 +90,11 @@
                         <label> Seacrh Student Name:  </label>
                             <input type="text" class="form-control" id="mySearch" onkeyup="mySearch()" placeholder="Search for Student names...">
                         </div> 
-                    </div>
+                    </div>        
+
+            <div class="JStableOuter" >
+
+                  
  
   <table id = "mytable">
     <thead>
