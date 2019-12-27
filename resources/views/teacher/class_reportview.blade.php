@@ -210,13 +210,13 @@
                     thetermval = "3rd Term";
                 }
 
-                if ($('#stid').html() === "" ){
+                if ($('#stid').contents().length == 0){
                     $('#stid').html(thedate); 
                 }
-                if ($('#etid').html() === "" ){
+                if ($('#etid').contents().length == 0){
                     $('#etid').html(thedate2); 
                 }
-                if ($('#trid').html() === "" ){
+                if ($('#trid').contents().length == 0){
                     $('#trid').html(thetermval); 
                 }
                 
