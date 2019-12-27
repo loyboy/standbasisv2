@@ -43,9 +43,9 @@
                 thetermval = "3rd Term";
             }
             
-            $('#stid').val(thedate); 
-            $('#etid').val(thedate2);
-            $('#trid').val(theterm); 
+            $('#stid').html(thedate); 
+            $('#etid').html(thedate2);
+            $('#trid').html(theterm); 
 
             $('.JStableOuter table').scroll(function(e) { 
             
