@@ -156,7 +156,7 @@
                $pup = PupilController::getAllPupilsInClass($classid);
                foreach ($pup as $p){
         ?>
-        <tr>
+        <tr class="myrow">
             <td style=" text-align: center; "> <?php echo PupilController::getPupilName($p['id']); ?></td>
         <?php
                $sub = SubjectController::getSubjectAll($school);

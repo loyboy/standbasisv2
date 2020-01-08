@@ -122,7 +122,7 @@
                $teacher = TeacherController::getAllTeachersinSchool($school);
                foreach ($teacher as $t){
         ?>
-        <tr>
+        <tr class="myrow">
             <td style=" text-align: center; "> <?php echo TeacherController::getTeacherName($t->tea_id). " ". ClassStreamController::getClassName($t->class_id);  ?></td>
         <?php
                $sub = SubjectController::getSubjectAll($school);
