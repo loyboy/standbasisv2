@@ -169,7 +169,7 @@ class AttendanceController extends Controller
            $thetimeid = $timesch->timetable->id;
          
           //Get the subjects this teacher teaches
-            $tea_subjects = $this->getTeacherSubject($user->teacher_id, $theclassid, $theday);
+            $tea_subjects = $this->getTeacherSubject($user->teacher_id, $theclassid, $theday,  $thetimeid );
             
             if (!empty($tea_subjects)){
                 foreach($tea_subjects as $ts){ 
@@ -226,13 +226,12 @@ class AttendanceController extends Controller
            $thetimeid = $timesch->timetable->id;
          
           //Get the subjects this teacher teaches
-            $tea_subjects = $this->getTeacherSubject($user->teacher_id, $theclassid, $theday);
+            $tea_subjects = $this->getTeacherSubject($user->teacher_id, $theclassid, $theday, $thetimeid );
             if (!empty($tea_subjects)){
                 foreach($tea_subjects as $ts){ 
                         $timeobj = Timetable::findOrFail($ts->TIME_ID);                   
                         $thetime2 = $timeobj->_time; //Expected time of Class
-                        $thetime2 = strtotime($thetime2);
-                        
+                        $thetime2 = strtotime($thetime2);                        
                         
                         //allow 1 hour before his time i.e 0 - 60 mins allowance
                         if ( (($thetime - $thetime2)/60) >= 0 && ($thetime - $thetime2)/60 <= 60 ){
@@ -243,16 +242,24 @@ class AttendanceController extends Controller
                            //Get term
                            //Get Enrollment information
                             $datablock = array();
+                            $attid = '';
+                            $todaydate = date('Y-m-d');
                             $teacher = Teacher::findOrFail($ts->TEA_ID); 
                             $subclass = Subjectclass::findOrFail($ts->subclass);
                             $term = Term::where('_status',1)->where('school_id',$teacher->school_id)->first();
                             $enrolment = Enrollment::where('term_id',$term->id)->where('class_id',$ts->CLASS_ID)->get();
+                            $attendance = Attendance::where('sub_class_id',$subclass->id)->where('time_id', $thetimeid)->where('term', $term->id)->where('_date','LIKE', '%'.$todaydate.'%')->first();
+                            
+                            if ($attendance !== null){
+                                $attid = $attendance->id;
+                            }
+
                             foreach ($enrolment as $enrol){
                                 $datablock[] = array("PupilName" => $enrol->pupil->fname." ".$enrol->pupil->lname, "PupilID" => $enrol->pupil->id, "Present"=> 1, "Comment" => "No excuse", "EnrollmentID" => $enrol->id);
                             }
                             $data['status'] = "Success";
                             $data['message'] = "Yes, your class has already begun";
-                            $data['data'] = array("Teacher" => $teacher->fname." ".$teacher->lname, "ExpTime" => $timeobj->_time, "Class" => $subclass->classstream->title, "Subject" => $subclass->subject->name, "SubClassID"  =>  $subclass->id, "TimeID" => $thetimeid, "Term" => $term->term, "TermID" => $term->id, "Pupils" => $datablock);
+                            $data['data'] = array("Attid"=>  $attid, "Teacher" => $teacher->fname." ".$teacher->lname, "ExpTime" => $timeobj->_time, "Class" => $subclass->classstream->title, "Subject" => $subclass->subject->name, "SubClassID"  =>  $subclass->id, "TimeID" => $thetimeid, "Term" => $term->term, "TermID" => $term->id, "Pupils" => $datablock);
                             return response()->json($data);
                         }
                         else{
@@ -311,6 +318,128 @@ class AttendanceController extends Controller
             $expecttime = $timetable->_time;
             $expectedtime = strtotime($expecttime);
             $actualtime = strtotime(date('H:i:s'));
+
+            if ( ( ($actualtime - $expectedtime) / 60) >= 0 && ($actualtime - $expectedtime)/60 <= 10 ){
+                $policy = 1;
+            }
+            if ($base64 !== ""){
+                $attendance->image = $base64;
+                $fully = 1;// Presense of Image
+            }
+            $qua =  ($policy + $fully )/2 ;//Quality of Attendacne
+            $perf =  (($policy + $fully + $qua )/3) * 100; // Performance of Attendance
+
+            $attendance->_done = 1;
+            $attendance->_date = date('Y-m-d H:i:s');           
+
+            $totalpresent = 0; $totalabsent = 0; $totalpupil = 0;
+            foreach($pupils as $p){
+                
+                if (intval($p->Present) !== 0){
+                    $totalpresent++;
+                }
+                else{
+                    $totalabsent++;
+                }
+                $totalpupil++;
+                Rowcall::create([
+                    'att_id' =>  $attendance->id,
+                    'pup_id' => $p->PupilID,
+                    'pupil_name' => $p->PupilName,
+                    '_status' => $p->Present,
+                    'remark' => $p->Comment                   
+                ]);
+            }
+
+            $sch = $attendance->subclass->teacher->school_id;
+            
+            $principal = User::where('_type', 1)->whereHas('teacher', function (Builder $query) use ($sch) {
+                $query->where('school_id', '=', $sch);
+            })->first();
+
+            $flag = ($totalpresent/$totalpupil) * 100;
+            //owner now is the teacher --Put this to track his performance after taking this attendance
+            AttPerformance::create([
+                'att_id' =>  $attendance->id,
+                'policy' => $policy,
+                'fully' => $fully,
+                'qua' => $qua,
+                'flag' => $flag ,
+                'perf' => $perf                  
+            ]);
+
+            if ($principal !== null){
+                $expected = strtotime( "+12 hours", strtotime ( date('d-m-Y H:i') ) ); 
+                $action = 0;
+                //owner now is the head/principal --Put this so that we track his response time
+                AttActivity::create([
+                    'att_id' =>  $attendance->id,
+                    'owner' => $principal->teacher_id,
+                    'ownertype' => 'Principal',
+                    'expected' => $expected,
+                    'slip' => 0                   
+                ]);              
+            }
+
+            $attendance->save();
+            $data['status'] = "Success";
+            $data['message'] = "Attendance has been submitted succesfully.";
+            return response()->json($data);
+        }
+        else{
+            $data['status'] = "Failed";
+            $data['message'] = "That Attendance has been taken already/You are taking it at the wrong time.";
+            return response()->json($data);
+        } 
+
+    } catch (Exception $e) {
+        $data['status'] = "Failed";
+        $data['message'] = $e->getMessage();
+        return response()->json($data);
+    }
+/*
+        $data['status'] = "Failed";
+        $data['message'] = $pupils;
+        return response()->json($data);*/
+
+    }
+
+        /**
+     * Custom method for submiting an attendance if from Offline
+     * @return \Illuminate\Http\Response
+     */
+    public function submitAttendanceOffline(Request $request)
+    {
+        //$request->all()
+        $subclass = $request->get('subclass');
+        $timeid = $request->get('timeid');
+        $termid = $request->get('termid');
+        $dateuse = $request->get('dateuse');
+        $attid = $request->get('attid');
+        $pupils = json_decode($request->get('pupilsdata'));
+        $base64 = "";
+        if ( $request->file('image') !== null) {
+            //$data = ;
+            $type = 'png';
+            $base64 = "data:image/" . $type . ";base64,". base64_encode(file_get_contents($request->file('image')));    
+        }      
+
+        $mydate = $dateuse;
+        try {
+       // $attendance = Attendance::where('sub_class_id',$subclass)->where('_done',0)->where('term',$termid)->where('time_id',$timeid)->where('_date','LIKE',$mydate)->first();
+        $attendance = Attendance::findOrFail($attid); 
+        
+        if ($attendance !== null){
+            $policy = 0;///if it matches the policy of the school
+            $fully = 0;///if it has come with the tables + photo 
+            $qua = 0;///if it has met policy + fully to the very last
+            $flag = 0;///if the no. of students present is ok
+            $perf = 0;///the total of done + policY + fully + qua
+           
+            $timetable = TimeTable::findOrFail($timeid); 
+            $expecttime = $timetable->_time;
+            $expectedtime = strtotime($expecttime);
+            $actualtime = strtotime( date('H:i:s', strtotime($mydate)) );
 
             if ( ( ($actualtime - $expectedtime) / 60) >= 0 && ($actualtime - $expectedtime)/60 <= 10 ){
                 $policy = 1;
@@ -933,13 +1062,14 @@ class AttendanceController extends Controller
      * 
      * Get teacher teaching subjects 
      */
-    private function getTeacherSubject($tea_id, $classid, $dayz){
+    private function getTeacherSubject($tea_id, $classid, $dayz, $timez){
         // timetable.affected must never be null for the query to run well
         $teasubjects = DB::select( 
-        "SELECT s.CLASS_ID, s.ID as subclass, t.TIME_ID, s.TEA_ID, s.DELEGATED FROM subjectclasses s JOIN timetable_sches t ON t.SUB_CLASS = s.ID WHERE s.DELEGATED = 0 AND s.TEA_ID = :tea AND s.CLASS_ID = :cls AND t.TIME_ID IN (SELECT id FROM timetables ts WHERE ts._day = :dayz AND ts.affected NOT LIKE :tea2 ) 
+        "SELECT s.CLASS_ID, s.ID as subclass, t.TIME_ID, s.TEA_ID, s.DELEGATED FROM subjectclasses s JOIN timetable_sches t ON t.SUB_CLASS = s.ID WHERE s.DELEGATED = 0 AND s.TEA_ID = :tea AND s.CLASS_ID = :cls AND t.TIME_ID IN (SELECT id FROM timetables ts WHERE ts._day = :dayz AND ts.id = :tid AND ts.affected NOT LIKE :tea2 ) 
             UNION 
-        SELECT s.CLASS_ID, s.ID as subclass, t.TIME_ID, s.TEA_ID, s.DELEGATED FROM subjectclasses s JOIN timetable_sches t ON t.SUB_CLASS = s.ID WHERE s.DELEGATED = :tea3 AND s.CLASS_ID = :cls2 AND t.TIME_ID IN (SELECT id FROM timetables ts WHERE ts._day = :dayz2 AND ts.affected NOT LIKE :tea4 ) " 
-        , [ "tea" => $tea_id , "tea2" => '%'.$tea_id.',%', "tea3" => $tea_id, "tea4" => '%'.$tea_id.',%', "dayz" => $dayz, "dayz2" => $dayz, "cls" => $classid, "cls2" => $classid ] );
+        SELECT s.CLASS_ID, s.ID as subclass, t.TIME_ID, s.TEA_ID, s.DELEGATED FROM subjectclasses s JOIN timetable_sches t ON t.SUB_CLASS = s.ID WHERE s.DELEGATED = :tea3 AND s.CLASS_ID = :cls2 AND t.TIME_ID IN (SELECT id FROM timetables ts WHERE ts._day = :dayz2  AND ts.id = :tid2 AND ts.affected NOT LIKE :tea4 ) " 
+        , 
+        [ "tea" => $tea_id , "tea2" => '%'.$tea_id.',%', "tea3" => $tea_id, "tea4" => '%'.$tea_id.',%', "dayz" => $dayz, "dayz2" => $dayz, "cls" => $classid, "cls2" => $classid, "tid" => $timez, "tid2" => $timez ] );
         return $teasubjects;
     }
 }

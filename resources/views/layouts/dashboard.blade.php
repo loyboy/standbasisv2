@@ -833,6 +833,11 @@ table.dataTable thead > tr > td.sorting {
 
     <!--Load JQuery-->
     <script src="{{ asset('node_modules/jquery/dist/jquery.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pouchdb@7.1.1/dist/pouchdb.min.js"> </script>
+    <script src="https://github.com/pouchdb/pouchdb/releases/download/7.1.1/pouchdb.find.js"> </script>
+    <script> 
+        var dbobject = new PouchDB('standbasis');
+    </script>
     @yield('myscript')
     <script>  
     $(document).ready(function() { 

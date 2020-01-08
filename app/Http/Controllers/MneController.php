@@ -20,6 +20,19 @@ class MneController extends Controller
           );
           return response()->json($mymsg);
        }
+
+       public function getSavedValuesLsn(Request $request){
+        $sd = $request->input('sd');
+        $ed = $request->input('ed');
+        $tr = $request->input('tr');
+        session()->flash('searchdata.sd', $sd);
+        session()->flash('searchdata.ed', $ed);
+        session()->flash('searchdata.tr', $tr);
+          $mymsg = array(
+            'done'=> 1         
+          );
+          return response()->json($mymsg);
+       }
        //////////////////////////////////////////////TEACHER
        public function loadteachermne_student_gen(Request $request){
          

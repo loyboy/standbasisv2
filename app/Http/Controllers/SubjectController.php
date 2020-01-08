@@ -79,7 +79,7 @@ class SubjectController extends Controller
     }
 
     //lessonnote 
-    public static function getSubjectLessonnote($pupid, $subid){ 
+    public static function getSubjectLessonnote($pupid, $subid,$dsweek = "", $deweek = "", $dterm = ""){ 
         
         $subject = Subject::where('id',$subid)->first(); 
 
@@ -89,12 +89,11 @@ class SubjectController extends Controller
 
         $term = Term::where('school_id',$pupil->school_id)->latest('id')->first();
 
-        $startdate = $term->resumedate;
-        $enddate = date('Y-m-d');
-        $termval =  intval($term->term);
-        
-        //AND l._SUBMISSION <= :dat AND l._SUBMISSION >= :dat2
-        $resultclw =  DB::select(" SELECT IFNULL(AVG(s.perf),0) as perf FROM scores s WHERE s.enrol_id = :pup AND s.ass_id IN ( SELECT a.id FROM assessments a JOIN lessonnote_managements l ON l.lsn_id = a.lsn_id JOIN lessonnotes ln ON ln.id = a.lsn_id WHERE a._TYPE = :typ AND l._APPROVAL != :appr AND ln.SUB_ID = :sub )  ",
+        if ($dsweek === "" || $deweek === "" || $dterm === ""){
+           
+
+            //AND l._SUBMISSION <= :dat AND l._SUBMISSION >= :dat2
+        $resultclw =  DB::select(" SELECT IFNULL(AVG(s.perf),0) as perf FROM scores s WHERE s.enrol_id = :pup AND s.ass_id IN ( SELECT a.id FROM assessments a JOIN lessonnote_managements l ON l.lsn_id = a.lsn_id JOIN lessonnotes ln ON ln.id = a.lsn_id WHERE a._TYPE = :typ AND l._APPROVAL != :appr AND ln.SUB_ID = :sub  )  ",
         [ "pup" => $pupid, "typ" => "CW", "appr" => "1970-10-10 00:00:00" , "sub" => $subid ]);
          
         $resulthmwk =  DB::select(" SELECT IFNULL(AVG(s.perf),0) as perf FROM scores s WHERE s.enrol_id = :pup AND s.ass_id IN ( SELECT a.id FROM assessments a JOIN lessonnote_managements l ON l.lsn_id = a.lsn_id JOIN lessonnotes ln ON ln.id = a.lsn_id WHERE a._TYPE = :typ AND l._APPROVAL != :appr AND ln.SUB_ID = :sub )  ",
@@ -113,11 +112,38 @@ class SubjectController extends Controller
             if ($resulttest[0] !== null){
                     $test = intval($resulttest[0]->perf);
                 }
+        }
+        else{
+
+            //AND l._SUBMISSION <= :dat AND l._SUBMISSION >= :dat2
+        $resultclw =  DB::select(" SELECT IFNULL(AVG(s.perf),0) as perf FROM scores s WHERE s.enrol_id = :pup AND s.ass_id IN ( SELECT a.id FROM assessments a JOIN lessonnote_managements l ON l.lsn_id = a.lsn_id JOIN lessonnotes ln ON ln.id = a.lsn_id WHERE a._TYPE = :typ AND l._APPROVAL != :appr AND ln.SUB_ID = :sub AND ln.PERIOD >= :per AND ln.PERIOD <= :per2 AND ln.TERM_ID = :term )  ",
+        [ "pup" => $pupid, "typ" => "CW", "appr" => "1970-10-10 00:00:00" , "sub" => $subid, "per" => dsweek , "per2" => deweek, "term" => $dterm  ]);
+         
+        $resulthmwk =  DB::select(" SELECT IFNULL(AVG(s.perf),0) as perf FROM scores s WHERE s.enrol_id = :pup AND s.ass_id IN ( SELECT a.id FROM assessments a JOIN lessonnote_managements l ON l.lsn_id = a.lsn_id JOIN lessonnotes ln ON ln.id = a.lsn_id WHERE a._TYPE = :typ AND l._APPROVAL != :appr AND ln.SUB_ID = :sub AND ln.PERIOD >= :per AND ln.PERIOD <= :per2 AND ln.TERM_ID = :term)  ",
+        [ "pup" => $pupid, "typ" => "AS", "appr" => "1970-10-10 00:00:00" , "sub" => $subid , "per" => dsweek , "per2" => deweek, "term" => $dterm ]);
+       
+        $resulttest =  DB::select(" SELECT IFNULL(AVG(s.perf),0) as perf FROM scores s WHERE s.enrol_id = :pup AND s.ass_id IN ( SELECT a.id FROM assessments a JOIN lessonnote_managements l ON l.lsn_id = a.lsn_id JOIN lessonnotes ln ON ln.id = a.lsn_id WHERE a._TYPE = :typ AND l._APPROVAL != :appr AND ln.SUB_ID = :sub AND ln.PERIOD >= :per AND ln.PERIOD <= :per2 AND ln.TERM_ID = :term)  ",
+        [ "pup" => $pupid, "typ" => "TS", "appr" => "1970-10-10 00:00:00" , "sub" => $subid, "per" => dsweek , "per2" => deweek, "term" => $dterm  ]);
+       
+            $clw = 0; $hmwork = 0; $test = 0;
+            if ($resultclw[0] !== null){
+                   $clw = intval($resultclw[0]->perf);
+                }
+            if ($resulthmwk[0] !== null){
+                    $hmwork = intval($resulthmwk[0]->perf);
+                 }  
+            if ($resulttest[0] !== null){
+                    $test = intval($resulttest[0]->perf);
+                }
+
+        }
+        
+        
       
             return " CW: ". $clw . "% <br> ". " HW:  ". $hmwork . "% <br>" . " TS:  ". $test. "% ";
     }
     //
-    public static function getSubjectAttendanceTeacher($teaid, $classid, $subid){ 
+    public static function getSubjectAttendanceTeacher($teaid, $classid, $subid,  $dstartdate = "", $denddate = "", $dterm = ""){ 
         
         $subject = Subject::where('id',$subid)->first(); 
 
@@ -126,6 +152,8 @@ class SubjectController extends Controller
         $teacher = Teacher::where('id', $teaid)->first();
 
         $term = Term::where('school_id',$teacher->school_id)->latest('id')->first();
+
+        if ($dstartdate === "" || $denddate === "" || $dterm === ""){
 
         $startdate = $term->resumedate;
         $enddate = date('Y-m-d');
@@ -136,7 +164,21 @@ class SubjectController extends Controller
           
           //total no. of times attendance was taken 
           $results2 = DB::select(" SELECT COUNT(a.id) AS total FROM attendances a WHERE a.sub_class_id IN (SELECT id FROM subjectclasses WHERE sub_id = :sub AND tea_id = :tea AND class_id = :cls ) AND a._date <= :endd AND a._date >= :startd AND a._desc LIKE :dess" , [ "endd" => $enddate , "startd" => $startdate, "tea" => $teaid ,  "dess" => '%'.$theterm[$termval].'%', "sub" => $subid, "cls" => $classid  ] ); 
-            
+        }
+        
+        else{
+
+            $startdate = $dstartdate;
+            $enddate = $denddate;
+            $termval =  intval($dterm);
+
+               //no. of times present 
+          $results = DB::select(" SELECT COUNT(a.id) AS present FROM attendances a WHERE a.sub_class_id IN (SELECT id FROM subjectclasses WHERE sub_id = :sub AND tea_id = :tea AND class_id = :cls ) AND a._date <= :endd AND a._date >= :startd AND a._desc LIKE :dess AND a._done = 1" , [ "endd" => $enddate , "startd" => $startdate,  "tea" => $teaid , "dess" => '%'.$theterm[$termval].'%' , "sub" => $subid, "cls" => $classid ] ); 
+          
+          //total no. of times attendance was taken 
+          $results2 = DB::select(" SELECT COUNT(a.id) AS total FROM attendances a WHERE a.sub_class_id IN (SELECT id FROM subjectclasses WHERE sub_id = :sub AND tea_id = :tea AND class_id = :cls ) AND a._date <= :endd AND a._date >= :startd AND a._desc LIKE :dess" , [ "endd" => $enddate , "startd" => $startdate, "tea" => $teaid ,  "dess" => '%'.$theterm[$termval].'%', "sub" => $subid, "cls" => $classid  ] ); 
+
+        }
             $perf = 0;
             $present = 0;//no. of times present
             $total = 0;//total times attendance taken
@@ -151,6 +193,71 @@ class SubjectController extends Controller
             }
       
             return $perf === 0 ? "---" : intval($perf)." %";
+    }
+
+    //lessonnote 
+    public static function getSubjectLessonnoteTeacher($pupid, $subid,$dsweek = "", $deweek = "", $dterm = ""){ 
+        
+        $subject = Subject::where('id',$subid)->first(); 
+
+        $theterm = array(1 => '1st Term', 2 => '2nd Term', 3 => '3rd Term');
+
+        $pupil = Pupil::where('id', $pupid)->first();
+
+        $term = Term::where('school_id',$pupil->school_id)->latest('id')->first();
+
+        if ($dsweek === "" || $deweek === "" || $dterm === ""){
+           
+
+            //AND l._SUBMISSION <= :dat AND l._SUBMISSION >= :dat2
+        $resultclw =  DB::select(" SELECT IFNULL(AVG(s.perf),0) as perf FROM scores s WHERE s.enrol_id = :pup AND s.ass_id IN ( SELECT a.id FROM assessments a JOIN lessonnote_managements l ON l.lsn_id = a.lsn_id JOIN lessonnotes ln ON ln.id = a.lsn_id WHERE a._TYPE = :typ AND l._APPROVAL != :appr AND ln.SUB_ID = :sub  )  ",
+        [ "pup" => $pupid, "typ" => "CW", "appr" => "1970-10-10 00:00:00" , "sub" => $subid ]);
+         
+        $resulthmwk =  DB::select(" SELECT IFNULL(AVG(s.perf),0) as perf FROM scores s WHERE s.enrol_id = :pup AND s.ass_id IN ( SELECT a.id FROM assessments a JOIN lessonnote_managements l ON l.lsn_id = a.lsn_id JOIN lessonnotes ln ON ln.id = a.lsn_id WHERE a._TYPE = :typ AND l._APPROVAL != :appr AND ln.SUB_ID = :sub )  ",
+        [ "pup" => $pupid, "typ" => "AS", "appr" => "1970-10-10 00:00:00" , "sub" => $subid ]);
+       
+        $resulttest =  DB::select(" SELECT IFNULL(AVG(s.perf),0) as perf FROM scores s WHERE s.enrol_id = :pup AND s.ass_id IN ( SELECT a.id FROM assessments a JOIN lessonnote_managements l ON l.lsn_id = a.lsn_id JOIN lessonnotes ln ON ln.id = a.lsn_id WHERE a._TYPE = :typ AND l._APPROVAL != :appr AND ln.SUB_ID = :sub )  ",
+        [ "pup" => $pupid, "typ" => "TS", "appr" => "1970-10-10 00:00:00" , "sub" => $subid ]);
+       
+            $clw = 0; $hmwork = 0; $test = 0;
+            if ($resultclw[0] !== null){
+                   $clw = intval($resultclw[0]->perf);
+                }
+            if ($resulthmwk[0] !== null){
+                    $hmwork = intval($resulthmwk[0]->perf);
+                 }  
+            if ($resulttest[0] !== null){
+                    $test = intval($resulttest[0]->perf);
+                }
+        }
+        else{
+
+            //AND l._SUBMISSION <= :dat AND l._SUBMISSION >= :dat2
+        $resultclw =  DB::select(" SELECT IFNULL(AVG(s.perf),0) as perf FROM scores s WHERE s.enrol_id = :pup AND s.ass_id IN ( SELECT a.id FROM assessments a JOIN lessonnote_managements l ON l.lsn_id = a.lsn_id JOIN lessonnotes ln ON ln.id = a.lsn_id WHERE a._TYPE = :typ AND l._APPROVAL != :appr AND ln.SUB_ID = :sub AND ln.PERIOD >= :per AND ln.PERIOD <= :per2 AND ln.TERM_ID = :term )  ",
+        [ "pup" => $pupid, "typ" => "CW", "appr" => "1970-10-10 00:00:00" , "sub" => $subid, "per" => dsweek , "per2" => deweek, "term" => $dterm  ]);
+         
+        $resulthmwk =  DB::select(" SELECT IFNULL(AVG(s.perf),0) as perf FROM scores s WHERE s.enrol_id = :pup AND s.ass_id IN ( SELECT a.id FROM assessments a JOIN lessonnote_managements l ON l.lsn_id = a.lsn_id JOIN lessonnotes ln ON ln.id = a.lsn_id WHERE a._TYPE = :typ AND l._APPROVAL != :appr AND ln.SUB_ID = :sub AND ln.PERIOD >= :per AND ln.PERIOD <= :per2 AND ln.TERM_ID = :term)  ",
+        [ "pup" => $pupid, "typ" => "AS", "appr" => "1970-10-10 00:00:00" , "sub" => $subid , "per" => dsweek , "per2" => deweek, "term" => $dterm ]);
+       
+        $resulttest =  DB::select(" SELECT IFNULL(AVG(s.perf),0) as perf FROM scores s WHERE s.enrol_id = :pup AND s.ass_id IN ( SELECT a.id FROM assessments a JOIN lessonnote_managements l ON l.lsn_id = a.lsn_id JOIN lessonnotes ln ON ln.id = a.lsn_id WHERE a._TYPE = :typ AND l._APPROVAL != :appr AND ln.SUB_ID = :sub AND ln.PERIOD >= :per AND ln.PERIOD <= :per2 AND ln.TERM_ID = :term)  ",
+        [ "pup" => $pupid, "typ" => "TS", "appr" => "1970-10-10 00:00:00" , "sub" => $subid, "per" => dsweek , "per2" => deweek, "term" => $dterm  ]);
+       
+            $clw = 0; $hmwork = 0; $test = 0;
+            if ($resultclw[0] !== null){
+                   $clw = intval($resultclw[0]->perf);
+                }
+            if ($resulthmwk[0] !== null){
+                    $hmwork = intval($resulthmwk[0]->perf);
+                 }  
+            if ($resulttest[0] !== null){
+                    $test = intval($resulttest[0]->perf);
+                }
+
+        }
+        
+        
+      
+            return " CW: ". $clw . "% <br> ". " HW:  ". $hmwork . "% <br>" . " TS:  ". $test. "% ";
     }
 
 ////////////////////////////////////////////////////////////////////////////

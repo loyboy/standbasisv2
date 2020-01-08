@@ -117,6 +117,7 @@ Route::post('/attendances_getTimeofAtt/{token}/class/{classid}', 'AttendanceCont
 Route::post('/attendances_getSubClass/{teaid}', 'AttendanceController@getSubjectClass');
 Route::post('/attendances_getSubClassWithTime/{teaid}', 'AttendanceController@getSubjectClassWithTime');
 Route::post('/attendances_submitAtt', 'AttendanceController@submitAttendance');
+Route::post('/attendances_submitAttOffline', 'AttendanceController@submitAttendanceOffline');
 Route::post('/attendances_viewAtt/{teaid}', 'AttendanceController@viewAttendance');
 Route::post('/attendances_viewAttAll/{teaid}', 'AttendanceController@viewAttendanceAll');
 //Route::post('/attendances_viewAtt/{teaid}', 'AttendanceController@viewAttendanceSubject');

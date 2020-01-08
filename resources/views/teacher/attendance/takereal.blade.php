@@ -107,7 +107,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>  
+                    </div>  
         </div>
 
     </div>
@@ -175,6 +175,7 @@
             let subclassid =  responseObj.data.SubClassID;
             let timeid =  responseObj.data.TimeID;
             let termid =  responseObj.data.TermID;
+            let attid =  responseObj.data.Attid;
 
             let pupils = responseObj.data.Pupils;
             var i = 0;
@@ -192,7 +193,7 @@
             }
 
             var tablebody = document.getElementById('tbody1');
-            var htmltoadd = " <tr><td colspan='3'> <input type='hidden' id='picblob' name='picblob' value='' /> <input type='hidden' id='subclass' name='subclass' value='"+ subclassid + "' /> <input type='hidden' id='timeid' name='timeid' value='"+ timeid + "' /> <input type='hidden' id='termid' name='termid' value='"+ termid + "' /> </td> </tr>  ";
+            var htmltoadd = " <tr><td colspan='3'> <input type='hidden' id='picblob' name='picblob' value='' /> <input type='hidden' id='subclass' name='subclass' value='"+ subclassid + "' /> <input type='hidden' id='timeid' name='timeid' value='"+ timeid + "' /> <input type='hidden' id='termid' name='termid' value='"+ termid + "' /> <input type='hidden' id='attval' name='attval' value='"+ attid + "' /> </td> </tr>  ";
             htmltoadd += "<tr> <td colspan='3'> <input class='col-md-12 col-sm-12 btn btn-danger btn-block' type='button' onclick='showdialogcam()' value='Click here to Snap Attendance Image' /> </td> </tr>";
             htmltoadd += "<tr> <td colspan='3'> <button type='button' name='sattend' id='sattendbut' onclick='submitAttendance()' class='btn btn-block btn-primary'>Click here to Save Attendance...</button> </td> </tr>";
             tablebody.insertAdjacentHTML( 'beforeend', htmltoadd);
@@ -241,10 +242,28 @@
             return new Blob([ab], { type: 'image/png' });
         }
 
-        function submitAttendance(){
+        async function checkNetConnection(){
+            var xhr = new XMLHttpRequest();
+            var file = "https://standbasislive.com/Standbasislogo.png";          
+            xhr.open('HEAD', file , false);
+            try {
+            xhr.send();
+            if (xhr.status >= 200 && xhr.status < 304) {
+            return true;
+            } else {
+            return false;
+            }
+            } catch (e) {
+            return false;
+            }
+        }
+
+        async function submitAttendance(){
+            let datenow = "{{ date('Y-m-d H:i:s') }}";
             let pupilsdata = convertTable();
             let formData = new FormData();
             
+            let att = $("#attval").val();
             let sc = $("#subclass").val(); 
             let td = $("#timeid").val();
             let tm = $("#termid").val();
@@ -258,22 +277,94 @@
                     var blob = b64toBlob(pic);
                     formData.append("image", blob);
             }
-            $.ajax({
+
+            ///if there is no Internet
+            let ifinternet = await checkNetConnection();
+            
+            if (ifinternet){
+                
+                $.ajax({
                 url: '/attendances_submitAtt', 
                 type: "POST", 
                 cache: false,
                 contentType: false,
                 processData: false,
                 data: formData 
-                }).done(function(e){
+                }).done(function(e){                
                     alert(e.message);
-            }).fail(function(e){
-                // Report that there is a problem!
-                    alert(e.responseText);
-            });
+                }).fail(function(e){
+                    // Report that there is a problem!
+                        alert(e.responseText);
+                });
+
+            } else {
+                    var offlineblob = '';
+                    var offlineb64 = '';
+                    if (pic !== ""){
+                        offlineblob = b64toBlob(pic);   
+                        var reader = new window.FileReader();
+                        reader.readAsDataURL(offlineblob);
+                        reader.onloadend = function () {
+                            offlineb64 = reader.result;
+                        }               
+                    }                    
+                    
+                    var attendanceOffline = {
+                        _id: new Date().toISOString(),
+                        _attachments: {
+                            'attendance.png': {
+                            content_type: 'image/png',
+                            data: offlineb64
+                            }
+                        },
+                        table: 'attendances',
+                        table_id: att,
+                        subclass: sc,
+                        timeid: td,
+                        termid: tm,
+                        dateuse: datenow,
+                        pupilsdata: pupilsdata,
+                        sent : 0
+                    };
+                    dbobject.find({
+                        selector: {table_id: att},
+                        fields: ['_id', 'subclass']
+
+                        }).then(function (result) {
+                          
+                          // alert('You already saved this Attendance Offline, so you cannot save it again')
+                          if (result.docs.length <= 0){
+                            dbobject.put(attendanceOffline, function callback(err, result) {
+                                if (!err) {
+                                console.log('Successfully stored attendance within PouchDB!');
+                                alert('Saved for Offline purpose')
+                                }
+                            });
+                          }
+                          else{
+                                alert('It has already found a Match, You have saved this Attendance Already')
+                          }
+                        
+
+                        }).catch(function (err) {
+
+                          /* */
+                            alert(err)
+                    });
+                  
+               //     dbobject.putAttachment(attendanceOffline._id, 'meowth.png', blob, 'image/png')
+
+                   
+            }                 
+          
+
+            
         }
 
-        $(document).ready(function() { 
+      
+        $(document).ready(function() {           
+           // showTodos();
+         
             $(".presentform").on('change', function() {
                 var inputid = $( this ).parent().parent().parent().find(".excusedform").attr('id');
                 console.log("exuseform "+ inputid);
@@ -392,7 +483,7 @@
             min: 480,
             ideal: 1080,
             max: 1440
-            }  , facingMode: { exact: "environment" }   } }).then(function(stream) {
+            }  , facingMode: { exact: "user" }   } }).then(function(stream) {
                     video.srcObject=stream;
                     localstream = stream;
                     video.play();

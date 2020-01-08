@@ -35,6 +35,47 @@
                                 </form>
                             </div>
                         </div>
+
+                       
+                        <div class="gx-card">
+                                <div class="gx-card-header">
+                                    <h3 class="card-heading">Upload Offline Attendance Data</h3>
+                                    <p class="sub-heading">View Your Offline Information</p>
+                                </div>
+                                <div class="gx-card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-uppercase" scope="col"> Parameter</th>
+                                                    <th class="text-uppercase" scope="col"> Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <th scope="row">No. of Offline Data Not Sent</th>
+                                                <td id="td11"></td>
+                                              
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Date when Last Attendance was Taken</th>
+                                                <td id="td12"></td>
+                                               
+                                            </tr>
+
+                                            <tr>
+                                                
+                                                <td colspan="2" > <button id="updatebut" class="btn btn-block btn-success" onclick="updatedataincloud()">  Upload Data to Database  </button> </td>
+                                               
+                                            </tr>
+                                          
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                   
+
                     </div>
                 </div>
 
@@ -101,6 +142,143 @@
 
     }
 
+  
+
+</script>
+@endsection
+
+@section('myscript')
+<script> 
+   let dd = "{{ date('H:i:s', strtotime('2020-01-20')) }}";
+     const delay = ms => new Promise(res => setTimeout(res, ms));
+     
+     function b64toBlob(dataURI) {
+            var byteString = atob(dataURI);
+            var ab = new ArrayBuffer(byteString.length);
+            var ia = new Uint8Array(ab);
+            for (var i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+            return new Blob([ab], { type: 'image/png' });
+    }
+
+    function updatedata1(val) {
+        //
+        $('#td11').html(val);
+        console.log('Update the data OFFLINE DATA');
+    }
+    function updatedata2(val) {
+        //
+        $('#td12').html(val);
+        console.log('Update the data date');
+    }
+
+     function updatedataincloud() {
+        var finished = false;
+        document.getElementById('loading').style.display = 'block';
+        dbobject.allDocs({include_docs: true, descending: true},async function(err, doc) {  
+
+            for (let datarow of doc.rows){
+                console.log("Upload to cloud: "+datarow.doc.sent);
+               if (datarow.doc.sent === 0){               
+                           
+                            let formData = new FormData();
+                            
+                            let att = datarow.doc.table_id;
+                            let dateuse = datarow.doc.dateuse;
+                            let sc = datarow.doc.subclass; 
+                            let td = datarow.doc.timeid;
+                            let tm = datarow.doc.termid;
+                            let pupdata = datarow.doc.pupilsdata;
+                            let pic = null;
+                       /*     dbobject.getAttachment(datarow.doc._id, 'attendance.png', function(err, blob_buffer) {
+                                if (err) {
+                                    return console.log(err);
+                                } else {
+                                    console.log("Blob buffer: " + JSON.strigify(blob_buffer) );
+                                    if (blob_buffer){
+                                        pic = b64toBlob(blob_buffer);
+                                    }
+                                }
+                            }); */
+                          //  await delay(400)
+                            formData.append("attid", att);
+                            formData.append("dateuse", dateuse);
+                            formData.append("subclass", sc);
+                            formData.append("timeid", td);
+                            formData.append("termid", tm);
+                            formData.append("pupilsdata", pupdata);
+                            if (pic){                       
+                                formData.append("image", pic);
+                            }
+
+                        let doc = {
+                            sent: 1,
+                            _rev: datarow.doc._rev,
+                            _id: datarow.doc._id
+                            }
+
+                            $.ajax({
+                            url: '/attendances_submitAttOffline', 
+                            type: "POST", 
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            data: formData 
+                            }).done(function(e){
+
+                                dbobject.put(doc);
+
+                                alert(e.message);
+                            }).fail(function(e){
+                                // Report that there is a problem!
+                                    alert(e.responseText);
+                            });
+                            alert("You have successfully updated all the Attendance information");
+                           
+                        }
+                        else {
+                            break;
+                        }
+                    }
+                });
+                document.getElementById('loading').style.display = 'none';
+             
+
+        
+    }
+
+   
+
+    $(document).ready( async function() { 
+        //get the number of Data not sent yet...
+        var getdata = 0;
+        var getdate = '';
+
+        dbobject.allDocs({include_docs: true, descending: true}, function(err, doc) {
+            getdate =  new Date(doc.rows[0].doc._id).toLocaleString('en-GB');  
+            console.log('The date'+ getdate);
+            for (let datarow of doc.rows){
+                console.log("Data row: "+ datarow.doc.sent)
+                if (datarow.doc.sent === 0){                   
+                    getdata++;
+                }
+            }
+        });
+
+        await delay(800)
+
+        updatedata1(getdata);
+        updatedata2(getdate);
+      
+    });
+
+    function showTodos() {
+                dbobject.allDocs({include_docs: true, descending: true}, function(err, doc) {
+                    console.log(doc.rows);
+                });
+    }
+    showTodos();
 </script>
 @endsection
 
