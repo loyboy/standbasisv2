@@ -89,10 +89,10 @@
                                 </div>
                         </div>
                         
-                        <div class="row col-6" style=""> 
+                     <!--   <div class="row col-6" style=""> 
                         <label> Search Student Name:  </label>
                             <input type="text" class="form-control" id="mySearch" onkeyup="mySearch()" placeholder="Search for Student names...">
-                        </div> 
+                        </div> -->
             </div>
             <?php
              $school = "";
