@@ -101,13 +101,16 @@ Route::get('/treportlsngen', function () {
     return view('teacher.teacher_lsnreportview');
 })->middleware('auth');
 
+Route::get('/reports', function () {
+    return view('teacher.reports');
+});
+
 Route::get('/logoutuser', function () {
    Auth::logout();
    return redirect('/login');
 });
 
 Auth::routes();
-
 
 Route::Resource('schools', 'SchoolController');
 

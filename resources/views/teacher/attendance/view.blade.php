@@ -87,7 +87,7 @@
         xhr2.responseType = 'json';
         let formData2 = new FormData();
         formData2.append("api_token", token);
-        xhr2.send(formData2);
+        xhr2.send();
 
         xhr2.onload = function() {
             let responseObj = xhr2.response;

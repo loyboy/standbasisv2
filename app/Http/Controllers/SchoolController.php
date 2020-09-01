@@ -14,6 +14,11 @@ class SchoolController extends Controller
     $this->middleware('apiuser', ['only' => ['show']]);
     $this->middleware('apisuperuser', ['only' => ['store','update','destroy']]);
 }
+ /*** Helper Functions */
+    public static function getSchoolName($schid){ //Helpher One
+        $sch = School::where('id',$schid)->first();        
+        return  $sch->name;
+    }
     /**
      * Display a listing of the resource.
      *

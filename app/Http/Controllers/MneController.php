@@ -10,8 +10,10 @@ class MneController extends Controller
     
        public function getSavedValues(Request $request){
         $sd = $request->input('sd');
+        $sch = $request->input('sch');
         $ed = $request->input('ed');
         $tr = $request->input('tr');
+        session()->flash('searchdata.sch', $sch);
         session()->flash('searchdata.sd', $sd);
         session()->flash('searchdata.ed', $ed);
         session()->flash('searchdata.tr', $tr);
@@ -23,9 +25,11 @@ class MneController extends Controller
 
        public function getSavedValuesLsn(Request $request){
         $sd = $request->input('sd');
+        $sch = $request->input('sch');
         $ed = $request->input('ed');
         $tr = $request->input('tr');
         session()->flash('searchdata.sd', $sd);
+        session()->flash('searchdata.sch', $sch);
         session()->flash('searchdata.ed', $ed);
         session()->flash('searchdata.tr', $tr);
           $mymsg = array(
