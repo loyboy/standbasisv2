@@ -103,14 +103,16 @@
                { 
                   $sd =  session('searchdata.sd'); $ed =  session('searchdata.ed');  $term = session('searchdata.tr'); $school = session('searchdata.sch'); 
                } 
-               $subjects = SubjectController::getSubjectAll($school);
+               if ($school !== ''){
+                   $subjects = SubjectController::getSubjectAll($school);
+               }
             ?>
       <table class="c25">
          <tbody>
             <tr class="c70">
                <td class="c9 c84" colspan="17" rowspan="1">
                   <p class="c1"><span class="c51 c40 c20"></span></p>
-                  <p class="c30"><span class="c40 c20">[<?php SchoolController::getSchoolName($school) ?>] Teacher Performance Record for the period: <?php echo $sd; ?> to <?php echo $ed; ?></span></p>
+                  <p class="c30"><span class="c40 c20">[<?php if ($school !== ''){ SchoolController::getSchoolName($school); } ?>] Teacher Performance Record for the period: <?php echo $sd; ?> to <?php echo $ed; ?></span></p>
                   <p class="c1"><span class="c4"></span></p>
                </td>
             </tr>
@@ -143,12 +145,13 @@
                   <p class="c52"><span class="c7">Class Taught</span></p>
                </td>
                <?php
+                  if ($school !== ''){
                   foreach ($subjects as $s){
                ?>
                   <td class="c85" colspan="8" rowspan="1">
                      <p class="c6"><span class="c7"> <?php echo $s['name']; ?></span></p>
                   </td>
-               <?php } ?>
+               <?php } } ?>
              <!--  <td class="c41" colspan="9" rowspan="1">
                   <p class="c6"><span class="c7">Subject 2</span></p>
                </td>
@@ -163,6 +166,7 @@
             </tr>
             <tr class="c83">
                <?php
+                  if ($school !== ''){
                   foreach ($subjects as $s){
                ?>
                <td class="c15" colspan="1" rowspan="1">
@@ -192,7 +196,7 @@
                   <p class="c6"><span class="c2">Terminal Exam Performance</span></p>
                   <p class="c6 c58"><span class="c2"></span></p>
                </td>
-               <?php } ?>
+               <?php } } ?>
                <!--
                <td class="c15" colspan="1" rowspan="1">
                   <p class="c6"><span class="c2">Attendance Performance</span></p>
