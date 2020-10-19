@@ -95,7 +95,7 @@
                                     <a href="/tmneview" class="gx-btn gx-flat-btn gx-btn-primary gx-btn-sm  ml-2 ml-xl-3 my-sm-0 mr-0">M&E</a>                               
                                 @endif
                                     <div class="ml-3 ml-xl-5 d-none d-md-block">
-                                       <p style="padding: 0 0 0 30%;"> <img alt="Standbasis Teacher" src="http://via.placeholder.com/150x150" class="rounded-circle size-40"/> </p>
+                                       <p style="padding: 0 0 0 30%;"> <img alt="Standbasis Teacher" src="https://via.placeholder.com/150x150" class="rounded-circle size-40"/> </p>
                                         <label> <b> Welcome, User </b> </label>
                                     </div>
 

@@ -109,7 +109,7 @@
                                     </div>
 
                                     <img class="user-avatar size-80 mb-3"
-                                         src="http://via.placeholder.com/150x150" alt="Team Member">
+                                         src="https://via.placeholder.com/150x150" alt="Team Member">
                                     <div class="gx-card-hd-content">
                                         <h4 class="mb-0">Chris Harris</h4>
                                         <p class="sub-heading mb-0">Graphic Designer</p>
@@ -149,7 +149,7 @@
                                         <tbody>
                                         <tr>
                                             <td class="size-60">
-                                                <img alt="Domnic Brown" src="http://via.placeholder.com/150x150"
+                                                <img alt="Domnic Brown" src="https://via.placeholder.com/150x150"
                                                      class="user-avatar">
                                             </td>
                                             <td>
@@ -165,7 +165,7 @@
 
                                         <tr>
                                             <td class="size-60">
-                                                <img alt="Michael Dolgov" src="http://via.placeholder.com/150x150"
+                                                <img alt="Michael Dolgov" src="https://via.placeholder.com/150x150"
                                                      class="user-avatar">
                                             </td>
                                             <td>
@@ -181,7 +181,7 @@
 
                                         <tr>
                                             <td class="size-60">
-                                                <img alt="Ron Doe" src="http://via.placeholder.com/150x150"
+                                                <img alt="Ron Doe" src="https://via.placeholder.com/150x150"
                                                      class="user-avatar">
                                             </td>
                                             <td>

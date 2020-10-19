@@ -399,7 +399,7 @@ table.dataTable thead > tr > td.sorting {
                                 <div class="messages-list">
                                     <ul class="list-unstyled">
                                         <li class="media">
-                                            <img alt="stella-johnson" src="http://via.placeholder.com/150x150"
+                                            <img alt="stella-johnson" src="https://via.placeholder.com/150x150"
                                                  class="size-40 mr-2 user-avatar">
                                             <div class="media-body align-self-center">
                                                 <p class="sub-heading mb-0">Stella Johnson has recently posted an
@@ -412,7 +412,7 @@ table.dataTable thead > tr > td.sorting {
                                         </li>
 
                                         <li class="media">
-                                            <img alt="domnic-harris" src="http://via.placeholder.com/150x150"
+                                            <img alt="domnic-harris" src="https://via.placeholder.com/150x150"
                                                  class="size-40 mr-2 user-avatar">
                                             <div class="media-body align-self-center">
                                                 <p class="sub-heading mb-0">Alex Brown has shared Martin Guptil's
@@ -425,7 +425,7 @@ table.dataTable thead > tr > td.sorting {
                                         </li>
 
                                         <li class="media">
-                                            <img alt="domnic-brown" src="http://via.placeholder.com/150x150"
+                                            <img alt="domnic-brown" src="https://via.placeholder.com/150x150"
                                                  class="size-40 mr-2 user-avatar">
                                             <div class="media-body align-self-center">
                                                 <p class="sub-heading mb-0">Domnic Brown has sent you a group invitation
@@ -438,7 +438,7 @@ table.dataTable thead > tr > td.sorting {
                                         </li>
 
                                         <li class="media">
-                                            <img alt="john-smith" src="http://via.placeholder.com/150x150"
+                                            <img alt="john-smith" src="https://via.placeholder.com/150x150"
                                                  class="size-40 mr-2 user-avatar">
                                             <div class="media-body align-self-center">
                                                 <p class="sub-heading mb-0">John Smith has birthday today</p>
@@ -450,7 +450,7 @@ table.dataTable thead > tr > td.sorting {
                                         </li>
 
                                         <li class="media">
-                                            <img alt="jimmy-jo" src="http://via.placeholder.com/150x150"
+                                            <img alt="jimmy-jo" src="https://via.placeholder.com/150x150"
                                                  class="size-40 mr-2 user-avatar">
                                             <div class="media-body align-self-center">
                                                 <p class="sub-heading mb-0">Chris has updated his profile picture</p>
@@ -483,7 +483,7 @@ table.dataTable thead > tr > td.sorting {
                                     <ul class="list-unstyled">
                                         <li class="media">
                                             <div class="user-thumb">
-                                                <img alt="Domnic Brown" src="http://via.placeholder.com/150x150"
+                                                <img alt="Domnic Brown" src="https://via.placeholder.com/150x150"
                                                      class="rounded-circle size-40 user-avatar">
                                                 <span class="badge badge-danger rounded-circle">5</span>
                                             </div>
@@ -511,7 +511,7 @@ table.dataTable thead > tr > td.sorting {
 
                                         <li class="media">
                                             <div class="user-thumb">
-                                                <img alt="John Smith" src="http://via.placeholder.com/150x150"
+                                                <img alt="John Smith" src="https://via.placeholder.com/150x150"
                                                      class="rounded-circle size-40 user-avatar">
                                                 <span class="badge badge-danger rounded-circle"></span>
                                             </div>
@@ -538,7 +538,7 @@ table.dataTable thead > tr > td.sorting {
 
                                         <li class="media">
                                             <div class="user-thumb">
-                                                <img alt="John Smith" src="http://via.placeholder.com/150x150"
+                                                <img alt="John Smith" src="https://via.placeholder.com/150x150"
                                                      class="size-40 rounded-circle user-avatar">
                                                 <span class="badge badge-danger rounded-circle">8</span>
                                             </div>
@@ -567,7 +567,7 @@ table.dataTable thead > tr > td.sorting {
 
                                         <li class="media">
                                             <div class="user-thumb">
-                                                <img alt="alex dolgove" src="http://via.placeholder.com/150x150"
+                                                <img alt="alex dolgove" src="https://via.placeholder.com/150x150"
                                                      class="size-40 rounded-circle user-avatar">
                                                 <span class="badge badge-danger rounded-circle"></span>
                                             </div>
@@ -597,7 +597,7 @@ table.dataTable thead > tr > td.sorting {
 
                                         <li class="media">
                                             <div class="user-thumb">
-                                                <img alt="Domnic Harris" src="http://via.placeholder.com/150x150"
+                                                <img alt="Domnic Harris" src="https://via.placeholder.com/150x150"
                                                      class="size-40 rounded-circle user-avatar">
 
                                                 <span class="badge badge-danger rounded-circle">3</span>
