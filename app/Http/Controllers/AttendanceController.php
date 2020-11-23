@@ -19,6 +19,7 @@ use App\AttActivity;
 use App\AttPerformance;
 use App\Pupil;
 use App\AttComment;
+use App\SchoolPolicy;
 use Illuminate\Support\Facades\Auth;
 
 class AttendanceController extends Controller
@@ -319,7 +320,11 @@ class AttendanceController extends Controller
             $expectedtime = strtotime($expecttime);
             $actualtime = strtotime(date('H:i:s'));
 
-            if ( ( ($actualtime - $expectedtime) / 60) >= 0 && ($actualtime - $expectedtime)/60 <= 10 ){
+            $schpolicyid = $attendance->subclass->teacher->school_id;
+
+            $schpolicytime = SchoolPolicy::where('sch_id',$schpolicyid)->first();
+
+            if ( ( ($actualtime - $expectedtime) / 60) >= 0 && ($actualtime - $expectedtime)/60 <= intval($schpolicytime->late) ){
                 $policy = 1;
             }
             if ($base64 !== ""){
