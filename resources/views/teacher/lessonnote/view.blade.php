@@ -104,7 +104,7 @@
                 }
 
                 cell4.innerHTML =  mycell4;
-                cell5.innerHTML = `<strong> <a class="btn btn-success" href="{{ asset('storage/LessonNote/${teacher}/Template/${datarow.Filez}') }}" >  View File </a> </strong> <br>`;                 
+                cell5.innerHTML = `<strong> <a class="btn btn-success" href="{{ asset('storage/${teacher}/Template/${datarow.Filez}') }}" >  View File </a> </strong> <br>`;                 
               
                 i++;
             }

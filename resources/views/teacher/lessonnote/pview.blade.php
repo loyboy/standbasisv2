@@ -161,7 +161,7 @@ $.ajax({
                     { "orderable": false }
                 ]     
             });
-
+            attend = attend.reverse();
             for ( let datarow of attend ){ 
                // var tablex = document.getElementById('tbody1').insertRow(i);
                // tablex.empty();
@@ -203,7 +203,7 @@ $.ajax({
                 }
 
                 cell5 =  mycell4;
-                cell6 = `<td> <strong> <a class="btn btn-success" href="{{ asset('storage/LessonNote/${datarow.TeacherID}/Template/${datarow.Filez}') }}" >  View File </a> </strong> <br> </td>`;                 
+                cell6 = `<td> <strong> <a class="btn btn-success" href="{{ asset('storage/${datarow.TeacherID}/Template/${datarow.Filez}') }}" >  View File </a> </strong> <br> </td>`;                 
               
                 cell7 = "<td> <strong>"+ datarow.Cycle + "</strong> </td>";
                 var newRow = "<tr>" + cell0 + cell1 + cell2 + cell3 + cell4 + cell7 + cell5 + cell6 + "</tr>";
