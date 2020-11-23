@@ -36,7 +36,7 @@
                             </div>
                         </div>
 
-                       
+                       <!--
                         <div class="gx-card">
                                 <div class="gx-card-header">
                                     <h3 class="card-heading">Upload Offline Attendance Data</h3>
@@ -73,10 +73,11 @@
                                         </table>
                                     </div>
                                 </div>
-                            </div>
-                   
+                        </div>  -->                 
 
                     </div>
+
+
                 </div>
 
     </div>
