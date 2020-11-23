@@ -293,71 +293,7 @@
                         alert(e.responseText);
                 });
 
-            ///if there is no Internet
-           /* let ifinternet = await checkNetConnection();
-            
-            if (ifinternet){
-                
-             
-
-            } else {
-                    var offlineblob = '';
-                    var offlineb64 = '';
-                    if (pic !== ""){
-                        offlineblob = b64toBlob(pic);   
-                        var reader = new window.FileReader();
-                        reader.readAsDataURL(offlineblob);
-                        reader.onloadend = function () {
-                            offlineb64 = reader.result;
-                        }               
-                    }                    
-                    
-                    var attendanceOffline = {
-                        _id: new Date().toISOString(),
-                        _attachments: {
-                            'attendance.png': {
-                            content_type: 'image/png',
-                            data: offlineb64
-                            }
-                        },
-                        table: 'attendances',
-                        table_id: att,
-                        subclass: sc,
-                        timeid: td,
-                        termid: tm,
-                        dateuse: datenow,
-                        pupilsdata: pupilsdata,
-                        sent : 0
-                    };
-                    dbobject.find({
-                        selector: {table_id: att},
-                        fields: ['_id', 'subclass']
-
-                        }).then(function (result) {
-                          
-                          // alert('You already saved this Attendance Offline, so you cannot save it again')
-                          if (result.docs.length <= 0){
-                            dbobject.put(attendanceOffline, function callback(err, result) {
-                                if (!err) {
-                                console.log('Successfully stored attendance within PouchDB!');
-                                alert('Saved for Offline purpose')
-                                }
-                            });
-                          }
-                          else{
-                                alert('It has already found a Match, You have saved this Attendance Already')
-                          }
-                        
-
-                        }).catch(function (err) {
-
-                          /* */
-                         //   alert(err)
-                 //   });
-                  
-               //     dbobject.putAttachment(attendanceOffline._id, 'meowth.png', blob, 'image/png')
-*/
-                   
+           
         }                    
         
         $(document).ready(function() {           
@@ -494,3 +430,5 @@
     } //, facingMode: { exact: "environment" }
     </script>
 @endsection
+
+
