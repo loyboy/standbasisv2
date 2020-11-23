@@ -53,7 +53,7 @@
                             </tr>
                             </thead>
                             <tbody id="tbody1" style="overflow: scroll; ">
-                                <tr> <td colspan="6" style="text-align: center;"> Attendance data will display here...  </td> </tr>
+                                <tr> <td colspan="7" style="text-align: center;"> Attendance data will display here...  </td> </tr>
                             </tbody>
                         </table>
 

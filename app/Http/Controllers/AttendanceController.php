@@ -157,7 +157,7 @@ class AttendanceController extends Controller
         //i usee token here to add some security to the request
         $user = User::where('api_token', $apitoken)->first();
 
-        if ($user->teacher_id !== null && $user->_type === 8){
+        if ($user->teacher_id != null && $user->_type == 8){
              //the day
            $theday = intval(date('N'));
            //the time
@@ -214,7 +214,7 @@ class AttendanceController extends Controller
             }
         }
 
-        else if ($user->teacher_id !== null && $user->_type === 0){// Make sure it is a teacher
+        else if ($user->teacher_id != null && $user->_type == 0){// Make sure it is a teacher
             //the day
            $theday = intval(date('N'));
            //the time

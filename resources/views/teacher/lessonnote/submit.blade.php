@@ -65,7 +65,7 @@
                                     <div class="card text-right">
                                         <div class="card-header bg-primary text-white">Don't have a Template Yet?</div>
                                         <div class="card-body">
-                                            <h3 class="card-title">Download It  <a href="{{ asset('storage/LessonNote/lsntemplate.docx') }}" class="btn btn-light">Here</a></h3>
+                                            <h3 class="card-title">Download It  <a href="{{ asset('storage/lsntemplate.docx') }}" class="btn btn-light">Here</a></h3>
                                             <h1 class="card-subtitle"> <b>  OR  </b> </h1>
                                             <p class="card-text">Complete the form on your Left Hand side</p>
                                            
