@@ -258,7 +258,7 @@
             }
         }
 
-        async function submitAttendance(){
+        function submitAttendance(){
             let datenow = "{{ date('Y-m-d H:i:s') }}";
             let pupilsdata = convertTable();
             let formData = new FormData();
@@ -358,13 +358,8 @@
                //     dbobject.putAttachment(attendanceOffline._id, 'meowth.png', blob, 'image/png')
 */
                    
-            }               
-          
-
-            
+        }                    
         
-
-      
         $(document).ready(function() {           
            // showTodos();
          
