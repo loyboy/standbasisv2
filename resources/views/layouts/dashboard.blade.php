@@ -176,7 +176,7 @@ table.dataTable thead > tr > td.sorting {
                 <ul class="nav-menu">
                     
                    <li class="nav-header"> <a href="/"> Main </a> </li>
-                   @if (Auth::check() && ( Auth::user()->_type === 0 || Auth::user()->_type === 8 ) )
+                   @if (Auth::check() && ( Auth::user()->_type == 0 || Auth::user()->_type == 8 ) )
                         <li class="menu open">
                             <a href="javascript:void(0)">
                                 <i class="zmdi zmdi-view-dashboard zmdi-hc-fw"></i>
@@ -213,7 +213,7 @@ table.dataTable thead > tr > td.sorting {
                         </li>
                     @endif
 
-                    @if (Auth::check() && ( Auth::user()->_type === 6 ) )
+                    @if (Auth::check() && ( Auth::user()->_type == 6 ) )
                         <li class="menu open">
                             <a href="javascript:void(0)">
                                 <i class="zmdi zmdi-view-dashboard zmdi-hc-fw"></i>
@@ -236,7 +236,7 @@ table.dataTable thead > tr > td.sorting {
                         </li>
                     @endif
                     
-                    @if (Auth::check() && Auth::user()->_type === 1)
+                    @if (Auth::check() && Auth::user()->_type == 1)
                         <li class="menu open">
                             <a href="javascript:void(0)">
                                 <i class="zmdi zmdi-view-dashboard zmdi-hc-fw"></i>
@@ -272,7 +272,7 @@ table.dataTable thead > tr > td.sorting {
                         </li>
                     @endif
 
-                    @if (Auth::check() && Auth::user()->_type === 2)
+                    @if (Auth::check() && Auth::user()->_type == 2)
                         <li class="menu open">
                             <a href="javascript:void(0)">
                                 <i class="zmdi zmdi-hc-fw zmdi-view-compact"></i>
@@ -285,7 +285,7 @@ table.dataTable thead > tr > td.sorting {
                         </li>
                     @endif
 
-                    @if (Auth::check() && Auth::user()->_type === 3)
+                    @if (Auth::check() && Auth::user()->_type == 3)
                         <li class="menu open">
                             <a href="javascript:void(0)">
                                 <i class="zmdi zmdi-hc-fw zmdi-view-compact"></i>
@@ -635,23 +635,23 @@ table.dataTable thead > tr > td.sorting {
 
                         <a class="dropdown-toggle no-arrow d-inline-block" href="#" role="button" id="userInfo"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                @if (Auth::user()->_type === 0)
+                                @if (Auth::user()->_type == 0)
                                     <img class="user-avatar border-0 size-40"  src="{{ asset('images/letterT.png') }}" width="150" height="150" alt="User">
                                 @endif
 
-                                @if (Auth::user()->_type === 1)
+                                @if (Auth::user()->_type == 1)
                                     <img class="user-avatar border-0 size-40"  src="{{ asset('images/letterP.jpg') }}" width="150" height="150" alt="User">
                                 @endif
 
-                                @if (Auth::user()->_type === 2)
+                                @if (Auth::user()->_type == 2)
                                     <img class="user-avatar border-0 size-40"  src="{{ asset('images/letterA.png') }}" width="150" height="150" alt="User">
                                 @endif
 
-                                @if (Auth::user()->_type === 3)
+                                @if (Auth::user()->_type == 3)
                                     <img class="user-avatar border-0 size-40"  src="{{ asset('images/letterG.png') }}" width="150" height="150" alt="User">
                                 @endif
                            
-                                @if (Auth::user()->_type === 6)
+                                @if (Auth::user()->_type == 6)
                                     <img class="user-avatar border-0 size-40"  src="{{ asset('images/letterG.png') }}" width="150" height="150" alt="User">
                                 @endif
                         </a>
@@ -659,45 +659,45 @@ table.dataTable thead > tr > td.sorting {
                        
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userInfo">
                                 <div class="user-profile">
-                                @if (Auth::user()->_type === 0 || Auth::user()->_type === 8 )
+                                @if (Auth::user()->_type == 0 || Auth::user()->_type == 8 )
                                     <img class="user-avatar border-0 size-40"  src="{{ asset('images/letterT.png') }}"  width="150" height="150" alt="User">
                                 @endif
 
-                                @if (Auth::user()->_type === 1)
+                                @if (Auth::user()->_type == 1)
                                     <img class="user-avatar border-0 size-40"  src="{{ asset('images/letterP.jpg') }}"  width="150" height="150" alt="User">
                                 @endif
 
-                                @if (Auth::user()->_type === 2)
+                                @if (Auth::user()->_type == 2)
                                     <img class="user-avatar border-0 size-40"  src="{{ asset('images/letterA.png') }}"  width="150" height="150" alt="User">
                                 @endif
 
-                                @if (Auth::user()->_type === 3)
+                                @if (Auth::user()->_type == 3)
                                     <img class="user-avatar border-0 size-40"  src="{{ asset('images/letterG.png') }}"  width="150" height="150" alt="User">
                                 @endif
 
-                                @if (Auth::user()->_type === 6)
+                                @if (Auth::user()->_type == 6)
                                     <img class="user-avatar border-0 size-40"  src="{{ asset('images/letterG.png') }}"  width="150" height="150" alt="User">
                                 @endif
                                         
                                     <div class="user-detail ml-2">
                                         <h4 class="user-name mb-0">{{ Auth::user()->name }}</h4>
-                                        @if (Auth::user()->_type === 0)
+                                        @if (Auth::user()->_type == 0)
                                             <small>Teacher</small>
                                         @endif
-                                        @if (Auth::user()->_type === 8)
+                                        @if (Auth::user()->_type == 8)
                                             <small class="danger">Test Teacher</small>
                                         @endif
-                                        @if (Auth::user()->_type === 6)
+                                        @if (Auth::user()->_type == 6)
                                             <small class="danger">Parent/Guardian</small>
                                         @endif
                                         
-                                        @if (Auth::user()->_type === 1)
+                                        @if (Auth::user()->_type == 1)
                                             <small>Principal</small>
                                         @endif
-                                        @if (Auth::user()->_type === 2)
+                                        @if (Auth::user()->_type == 2)
                                             <small>Administrator</small>
                                         @endif
-                                        @if (Auth::user()->_type === 3)
+                                        @if (Auth::user()->_type == 3)
                                             <small>School Owner</small>
                                         @endif
                                         
@@ -717,15 +717,15 @@ table.dataTable thead > tr > td.sorting {
 
         <!-- Main Content -->
         <div class="gx-main-content">
-                @if (Auth::check() && ( Auth::user()->_type === 0 || Auth::user()->_type === 9 || Auth::user()->_type === 8 ) )
+                @if (Auth::check() && ( Auth::user()->_type == 0 || Auth::user()->_type == 9 || Auth::user()->_type == 8 ) )
                     @yield('teacher')
-                @elseif (Auth::check() && Auth::user()->_type === 6 )
+                @elseif (Auth::check() && Auth::user()->_type == 6 )
                     @yield('parent')
-                @elseif (Auth::check() && Auth::user()->_type === 1 )
+                @elseif (Auth::check() && Auth::user()->_type == 1 )
                     @yield('principal')
-                @elseif (Auth::check() && Auth::user()->_type === 2)
+                @elseif (Auth::check() && Auth::user()->_type == 2)
                     @yield('admin')
-                @elseif (Auth::check() && Auth::user()->_type === 3)
+                @elseif (Auth::check() && Auth::user()->_type == 3)
                     @yield('owner')
                 @else
                     @yield('content')
