@@ -278,12 +278,7 @@
                     formData.append("image", blob);
             }
 
-            ///if there is no Internet
-            let ifinternet = await checkNetConnection();
-            
-            if (ifinternet){
-                
-                $.ajax({
+            $.ajax({
                 url: '/attendances_submitAtt', 
                 type: "POST", 
                 cache: false,
@@ -292,10 +287,18 @@
                 data: formData 
                 }).done(function(e){                
                     alert(e.message);
+                    
                 }).fail(function(e){
                     // Report that there is a problem!
                         alert(e.responseText);
                 });
+
+            ///if there is no Internet
+           /* let ifinternet = await checkNetConnection();
+            
+            if (ifinternet){
+                
+             
 
             } else {
                     var offlineblob = '';
@@ -349,17 +352,17 @@
                         }).catch(function (err) {
 
                           /* */
-                            alert(err)
-                    });
+                         //   alert(err)
+                 //   });
                   
                //     dbobject.putAttachment(attendanceOffline._id, 'meowth.png', blob, 'image/png')
-
+*/
                    
-            }                 
+            }               
           
 
             
-        }
+        
 
       
         $(document).ready(function() {           
