@@ -153,18 +153,18 @@ class PupilController extends Controller
             $tea = Teacher::findOrFail($teaid);
             $datablock= array();
             $subclass = SubjectClass::where('tea_id',$teaid)->get();
-            $term = Term::where('school_id',$tea->school_id)->where('_status',1)->first();
+           /* $term = Term::where('school_id',$tea->school_id)->where('_status',1)->first();
 
             foreach ($subclass as $sc){ 
                 $enrol = Enrollment::where('class_id',$sc->class_id)->where('term_id',$term->term)->get();
                 foreach ($enrol as $en){
                     $datablock[] = array("PupilName" => $en->pupil->fname." ".$en->pupil->lname, "PupilId" => $en->pupil->id, "ClassID" => $en->classtream->id , "ClassName" => $en->classtream->title );
                 }
-            }
+            }*/
 
             $data['status'] = "Success";
             $data['message'] = "Pupil data is good";
-            $data['data'] = $datablock;
+            $data['data'] = $subclass;
             return response()->json($data);
         } catch (Exception $e) {
                 $data['status'] = "Error";
