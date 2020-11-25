@@ -182,8 +182,7 @@
 </script>
 @endsection
 
-@include  ('modals/student')
-@include  ('modals/teacher')
+@include  ('modals/modal')
 
 @section('myscript')
     <script>

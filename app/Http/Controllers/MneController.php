@@ -324,7 +324,7 @@ class MneController extends Controller
 
         private function getteacherName($tea){
             $tea_name = "";    
-            $name = DB::select("SELECT CONCAT(lname,' ',fname) as myname FROM teachers WHERE tea_id = :id " , [ "id" => $tea ] ); //get 
+            $name = DB::select("SELECT CONCAT(lname,' ',fname) as myname FROM teachers WHERE id = :id " , [ "id" => $tea ] ); //get 
             foreach($name as $n){
             $tea_name = $n->myname;  
             }   
@@ -333,7 +333,7 @@ class MneController extends Controller
         
          private function getStudentName($pup_id){
             $tea_cl = "";
-            $name = DB::select(" SELECT CONCAT(fname,' ',lname) AS stuname FROM pupils WHERE pup_id = :pupid  " , [ "pupid" => $pup_id ] ); 
+            $name = DB::select(" SELECT CONCAT(fname,' ',lname) AS stuname FROM pupils WHERE id = :pupid  " , [ "pupid" => $pup_id ] ); 
             foreach($name as $n){
               $tea_cl = $n->stuname;  
             }   
