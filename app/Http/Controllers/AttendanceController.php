@@ -722,6 +722,8 @@ class AttendanceController extends Controller
          $att5 = array(); //incomplete attendances
        
          if ($mydate !== ""){
+
+             $capturedate =  date('d-m-Y H:i:s');
              $att = Attendance::where('_date', 'LIKE', "%".$mydate."%")->where('term', '=', $term->term)->where('_done', '=', 0)->count();
              
              $att2 = DB::select(
@@ -731,8 +733,7 @@ class AttendanceController extends Controller
                 INNER JOIN subjectclasses c ON c.id = s.sub_class_id
                 WHERE c.tea_id IN ( SELECT id FROM teachers WHERE school_id = :sch ) AND t.policy = 0  AND s._date LIKE :dat AND s._done = 1          
                 " , 
-                [ "sch" =>  $teacher->school_id, "dat" => "%".$mydate."%" ] );
-
+                [ "sch" =>  $teacher->school_id, "dat" => "%".$mydate."%"  ] ); 
                 $att3 = Attendance::where('_date', 'LIKE', "%".$mydate."%")->where('term', '=', $term->term)->where('_done', '=', -1)->count();
 
                 $att4 = DB::select(
