@@ -343,7 +343,7 @@ class MneController extends Controller
           
           $results = DB::select(" SELECT ( SELECT CONCAT(fname,' ',lname) FROM pupils WHERE id = :pupid2 ) AS stuname, 
           ( SELECT class_id FROM enrollments WHERE id = :pupid3 ) AS clsid FROM rowcalls
-           WHERE _status = 1 AND pupil_id = :pupid 
+           WHERE _status = 1 AND pup_id = :pupid 
            AND att_id IN ( SELECT id FROM attendances WHERE term = :term )
            " , [ "pupid" => $pup, "pupid2" => $pup, "pupid3" => $enrol ,  "term" => $term ] ); 
          
