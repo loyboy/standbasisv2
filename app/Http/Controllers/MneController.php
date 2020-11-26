@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Pupil;
+use App\Teacher;
+use App\SubjectClass;
+use Illuminate\Support\Facades\DB;
 
 class MneController extends Controller
 {
