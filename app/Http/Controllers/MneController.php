@@ -359,8 +359,8 @@ class MneController extends Controller
                       AND s.ass_id 
                       IN ( SELECT e.id FROM assessments e JOIN lessonnote_managements l 
                       ON l.lsn_id = e.lsn_id 
-                      WHERE e._type = :typ AND l.term_id = :term AND l._approval != :appr AND l._submission <= :dat AND l._submission >= :dat2 
-                      AND l.lsn_id IN ( SELECT id FROM lessonnotes WHERE sub_id = :sub AND tea_id = :tea ) ) ",
+                      WHERE e._type = :typ AND l._approval != :appr AND l._submission <= :dat AND l._submission >= :dat2 
+                      AND l.lsn_id IN ( SELECT id FROM lessonnotes WHERE sub_id = :sub AND tea_id = :tea AND term_id = :term ) ) ",
 
                   [ "pup" => $enrol, "tea" => $tea, "dat" => $d, "dat2" => $d2, "typ" => $type, "appr" => "1970-10-10 00:00:00" , "sub" => $s, "term" => $term ]);
               }
