@@ -151,8 +151,8 @@ class MneController extends Controller
            ); */
 
            $mymsg = array(
-            '_att1'=> $theattend           
-           
+            '_att1'=> $theattend ,         
+            '_att11'=> $theattendsub,
         ); 
          
            
@@ -253,9 +253,10 @@ class MneController extends Controller
          
           if ( $typeofuser === "teacher"  ){              
               //no. of times present 
-                $results = DB::select(" SELECT IFNULL(COUNT(r.att_id),0) AS present FROM rowcalls r JOIN attendances a 
+                $results = DB::select(" SELECT IFNULL(COUNT(r.att_id),0) AS present FROM rowcalls r 
+                JOIN attendances a 
                 ON a.id = r.att_id
-                WHERE r._status = 1 AND r.pupil_id = :pupid AND 
+                WHERE r._status = 1 AND r.pup_id = :pupid AND 
                 AND a.sub_class_id IN ( SELECT id FROM subjectclasses WHERE tea_id = :tea AND sub_id = :sub ) 
                 AND a.term = :term AND a._date <= :dat AND a._date >= :dat2 " ,
                 [ "dat" => $d , "dat2" => $d2, "pupid" => $pup, "tea" => $tea, "term" => $term, "sub" => $s ] ); 
@@ -265,7 +266,7 @@ class MneController extends Controller
               JOIN rowcall r 
               ON r.att_id = a.id 
               WHERE a._date <= :dat AND a._date >= :dat2 AND a.sub_class_id IN ( SELECT id FROM subjectclasses WHERE tea_id = :tea AND sub_id = :sub ) 
-              AND r.pupil_id = :pupid AND a.term = :term " , [ "tea" => $tea, "dat" => $d, "dat2" => $d2, "pupid" => $pup, "term" => $term, "sub" => $s ] ); 
+              AND r.pup_id = :pupid AND a.term = :term " , [ "tea" => $tea, "dat" => $d, "dat2" => $d2, "pupid" => $pup, "term" => $term, "sub" => $s ] ); 
           }  
 
            if ( $typeofuser === "principal" ){
