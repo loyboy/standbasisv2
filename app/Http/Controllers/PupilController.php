@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Pupil;
 use App\Teacher;
-use App\SubjectClass;
+use App\Subjectclass;
 use App\Enrollment;
 use App\Term;
 
@@ -153,15 +153,15 @@ class PupilController extends Controller
         try{
             $tea = Teacher::findOrFail($teaid);
             $datablock= array();
-            $subclass = SubjectClass::where('tea_id',$teaid)->get();
-           /* $term = Term::where('school_id',$tea->school_id)->where('_status',1)->first();
+            $subclass = Subjectclass::where('tea_id',$teaid)->get();
+            $term = Term::where('school_id',$tea->school_id)->where('_status',1)->first();
 
             foreach ($subclass as $sc){ 
                 $enrol = Enrollment::where('class_id',$sc->class_id)->where('term_id',$term->term)->get();
                 foreach ($enrol as $en){
                     $datablock[] = array("PupilName" => $en->pupil->fname." ".$en->pupil->lname, "PupilId" => $en->pupil->id, "ClassID" => $en->classtream->id , "ClassName" => $en->classtream->title );
                 }
-            }*/
+            }
 
             $data['status'] = "Success";
             $data['message'] = "Pupil data is good";
