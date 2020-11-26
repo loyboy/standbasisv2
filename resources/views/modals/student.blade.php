@@ -1,6 +1,6 @@
 <!-- View MNE Student page -->
 <div class="modal fade" id="getmnestudent" tabindex="2" role="dialog" style="font-family: 'Trebuchet MS'; ">
-        <div class="modal-dialog modal-xl">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-danger">
                     <h4 class="modal-title" id=""> MNE Student Result Page <i class="fa"></i></h4>
