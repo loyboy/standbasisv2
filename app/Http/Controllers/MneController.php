@@ -268,7 +268,7 @@ class MneController extends Controller
                 
                 //total no. of times attendance was taken 
               $results2 = DB::select(" SELECT IFNULL(COUNT(a.att_id),0) AS total FROM attendances a 
-              JOIN rowcall r 
+              JOIN rowcalls r 
               ON r.att_id = a.id 
               WHERE a._date <= :dat AND a._date >= :dat2 AND a.sub_class_id IN ( SELECT id FROM subjectclasses WHERE tea_id = :tea AND sub_id = :sub ) 
               AND r.pup_id = :pupid AND a.term = :term " , [ "tea" => $tea, "dat" => $d, "dat2" => $d2, "pupid" => $pup, "term" => $term, "sub" => $s ] ); 
