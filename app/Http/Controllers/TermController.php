@@ -127,7 +127,7 @@ class TermController extends Controller
      * Gt the current Term date of resumption
      * @return \Illuminate\Http\Response
      */
-    public function getTermDate($teaid)
+    public function getTermDate(Request $request, $teaid)
     {
         try{
         $datablock = array();

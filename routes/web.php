@@ -174,7 +174,7 @@ Route::post('/pupils_getClassForTeacher/{teaid}', 'PupilController@getClassForTe
 Route::post('/pupils_getClass/{clsid}', 'PupilController@getAllPupilsInClass');
 
 Route::Resource('terms', 'TermController');
-Route::post('/terms_getDate/{schid}', 'TermController@getTermDate');
+Route::post('/terms_getDate/{teaid}', 'TermController@getTermDate');
 
 Route::Resource('enrollments', 'EnrolmentController');
 
