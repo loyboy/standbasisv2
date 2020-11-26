@@ -150,8 +150,10 @@ class PupilController extends Controller
      */
     public function getPupilForTeacher($teaid)
     {
+        session(['teacher.teacher_id' => intval($teaid)]);
         try{
             $tea = Teacher::findOrFail($teaid);
+            session(['general.school_id' => $tea->school->id ]);
             $datablock= array();
             $subclass = Subjectclass::where('tea_id',$teaid)->get();
             $term = Term::where('school_id',$tea->school_id)->where('_status',1)->first();
@@ -159,7 +161,7 @@ class PupilController extends Controller
             foreach ($subclass as $sc){ 
                 $enrol = Enrollment::where('class_id',$sc->class_id)->where('term_id',$term->term)->get();
                 foreach ($enrol as $en){
-                    $datablock[] = array("PupilName" => $en->pupil->fname." ".$en->pupil->lname, "PupilId" => $en->pupil->id, "ClassID" => $en->classtream->id , "ClassName" => $en->classtream->title );
+                    $datablock[] = array("PupilName" => $en->pupil->fname." ".$en->pupil->lname, "PupilId" => $en->pupil->id, "Enrolid" => $en->id, "ClassID" => $en->classtream->id , "ClassName" => $en->classtream->title );
                 }
             }
 
@@ -182,8 +184,10 @@ class PupilController extends Controller
      */
     public function getClassForTeacher($teaid)
     {
+        session(['teacher.teacher_id' => intval($teaid) ]);
         try{
             $tea = Teacher::findOrFail($teaid);
+            session(['general.school_id' => $tea->school->id ]);
             $datablock= array();
            // $subclass = SubjectClass::where('tea_id',$teaid)->get();
             $term = Term::where('school_id',$tea->school_id)->where('_status',1)->first();

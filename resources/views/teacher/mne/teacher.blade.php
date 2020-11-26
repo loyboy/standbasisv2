@@ -123,12 +123,12 @@
         formData2.append("api_token", token);
         xhr2.send(formData2);
 
-      /*  let xhr3 = new XMLHttpRequest();
+       let xhr3 = new XMLHttpRequest();
         xhr3.open('POST', '/pupils_getClassForTeacher/'+teacher);
         xhr3.responseType = 'json';
         let formData3 = new FormData();
         formData3.append("api_token", token);
-        xhr3.send(formData3);*/
+        xhr3.send(formData3);
 
         document.getElementById('loading').style.display = 'block';
 
@@ -141,10 +141,16 @@
                 }
                 console.log("First comment Data: " + responseObj.data);
                 document.getElementById('loading').style.display = 'none';
-                document.getElementById('thedate').value = responseObj.data.date;
+                
+               /* document.getElementById('thedate').value = responseObj.data.date;
                 var headyear = document.querySelector('#theterm');
                 console.log("The head year: " + headyear);
-                headyear.value = responseObj.data.term;
+                headyear.value = responseObj.data.term;*/
+                var selectinput3 = document.querySelector('#theterm');
+                $termval = array( 1 => "1ST TERM" , 2 => "2ND TERM", 3 => "3RD TERM");
+               for ( let datarow of responseObj.data ){ 
+                    selectinput3.options[selectinput3.options.length] = new Option (  $termval[ intval(datarow.Term) ] , datarow.Termid + ";" + intval(datarow.Term) );         
+               }
         }
 
         xhr2.onload = function() {
@@ -157,11 +163,11 @@
                 var selectinput = document.querySelector('.mymneselectstudent');
                
                 for ( let datarow of responseObj.data ){ 
-                    selectinput.options[selectinput.options.length] = new Option( datarow.PupilName+ " >> " + datarow.ClassName , datarow.PupilId );         
+                    selectinput.options[selectinput.options.length] = new Option( datarow.PupilName+ " >> " + datarow.ClassName , datarow.Enrolid + ';' + datarow.PupilId );         
                 }
 
         }
-/*
+
         xhr3.onload = function() {
                 let responseObj = xhr3.response;
                 if (responseObj.status === "Failed"){
@@ -175,7 +181,7 @@
                     selectinput2.options[selectinput2.options.length] = new Option( datarow.ClassName, datarow.ClassId );         
                 }
 
-        }*/
+        }
 
         
     
@@ -345,7 +351,7 @@
                                    var clsname = JSON.parse(JSON.stringify(data));
                                     console.log(clsname._att1b);
                                    $('#Ttab1mne1').html(""); $('#Ttab1mne2').html(""); $('#Ttab1mne3').html("");$('#Ttab1mne4').html("");$('#Ttab1mne5').html("");$('#Ttab1mne6').html(""); 
-                                   $('#Ttab1mne7').html("");     $('#Ttab1mne8').html("");
+                                   $('#Ttab1mne7').html("");  $('#Ttab1mne8').html("");
                                    
                                    var tbody = $('#tabbody2');
                                    if (tbody.children().length > 0) {

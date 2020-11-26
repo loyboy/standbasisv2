@@ -130,10 +130,14 @@ class TermController extends Controller
     public function getTermDate($teaid)
     {
         try{
+        $datablock = array();
         $tea = Teacher::findOrFail($teaid);
-        $term = Term::where('school_id',$tea->school_id)->where('_status',1)->first();
+        $terms = Term::where('school_id',$tea->school_id)->get();
+        foreach($terms as $t){
+            $datablock[] = array("Term" => $t->term , "Termid" => $t->id );
+        }
         $data['status'] = "Success";
-        $data['data'] = array( "date" => $term->resumedate, "term" => $term->term );
+        $data['data'] =  $datablock;
         return response()->json($data);
         } catch (Exception $e) {
             $data['status'] = "Error";

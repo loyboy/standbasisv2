@@ -52,18 +52,32 @@ class MneController extends Controller
         
         $tea =  $request->input('tea'); //teacher ID
          
-        $term = $request->input('term'); //Term of the school
-       // $termval = array("1st Term" => 1, "2nd Term" => 2, "3rd Term" => 3);
-        $termval2 = intval($term);
+        $term = explode(';', $request->input('term') ); //Term ID of the school
+        $termval = array( 1 => "1ST TERM" , 2 => "2ND TERM", 3 => "3RD TERM");
+        
+        $termid = intval( $term[0] );  $termname = intval( $term[1] );
          
-        $valofreq = $request->input('stu'); //Student ID
+        $valofreq = explode(';', $request->input('stu') ); //Student ID + EnrolID
+
+        $enrolid = intval($valofreq[0]); $pupid = intval($valofreq[1]);
         
          ////////////////////////////////////////////ATTENDANCE
          //no. of times present 
-         $results = DB::select(" SELECT IFNULL(COUNT(ATT_ID),0) AS present, ( SELECT CONCAT(fname,' ',lname) FROM pupil WHERE id = :pupid2 ) AS stuname, ( SELECT class_id FROM enrollments WHERE pupil_id = :pupid3 AND term_id = :term ) AS clsid FROM rowcalls WHERE _STATUS = 1 AND PUP_ID = :pupid AND ATT_ID IN ( SELECT ATT_ID FROM attendances WHERE _date <= :dat AND _date >= :dat2 AND tea_id = :tea AND _desc LIKE :des ) " , [ "dat" => $dateofreq , "dat2" => $dateofreq2, "pupid" => $valofreq, "pupid2" => $valofreq, "pupid3" => $valofreq, "tea" => $tea, "des" => '%'.$term.'%', "term" => $termval2  ] ); 
+         $results = DB::select(" SELECT IFNULL(COUNT(att_id),0) AS present, 
+         ( SELECT CONCAT(fname,' ',lname) FROM pupils WHERE id = :pupid2 ) AS stuname, 
+         ( SELECT class_id FROM enrollments WHERE id = :pupid3 AND term_id = :term ) AS clsid 
+         FROM rowcalls 
+         WHERE _status = 1 AND pup_id = :pupid AND att_id IN 
+         ( SELECT id FROM attendances WHERE _date <= :dat AND _date >= :dat2 AND tea_id = :tea AND _desc LIKE :des ) " ,
+         [ "dat" => $dateofreq , "dat2" => $dateofreq2, "pupid" => $pupid, "pupid2" => $pupid , "pupid3" =>$enrolid, "tea" => $tea, "des" => '%'.$termval[$termname].'%', "term" => $termid  ] ); 
          
          //total no. of times attendance was taken 
-         $results2 = DB::select(" SELECT IFNULL(COUNT(a.ATT_ID),0) AS total FROM attendances a JOIN rowcalls r ON r.ATT_ID = a.ATT_ID WHERE a._date <= :dat AND a._date >= :dat2 AND a.tea_id = :teaid AND r.PUP_ID = :pupid AND a._desc LIKE :des" , ["teaid" => $tea, "dat" => $dateofreq,"dat2" => $dateofreq2, "pupid" => $valofreq ,  "des" => '%'.$term.'%' ] ); 
+         $results2 = DB::select(" SELECT IFNULL(COUNT(a.id),0) AS total
+         FROM attendances a 
+         JOIN rowcalls r 
+         ON r.att_id = a.id 
+         WHERE a._date <= :dat AND a._date >= :dat2 AND a.sub_class_id IN ( SELECT id FROM subjectclasses WHERE tea_id = :tea ) AND r.pup_id = :pupid AND a._desc LIKE :des " ,
+          ["tea" => $tea, "dat" => $dateofreq,"dat2" => $dateofreq2, "pupid" => $pupid ,  "des" =>  '%'.$termval[$termname].'%' ] ); 
            
            $present = 0;//no. of times present
            $nameofstu = "";//name of student
@@ -73,11 +87,11 @@ class MneController extends Controller
            if ($results != null){    
            foreach ($results as $r){ $present = $r->present; $nameofstu = $r->stuname; $clsid = $r->clsid; } 
            }
-           else { $perf = 0; $nameofstu = $this->getStudentName($valofreq); $clsid = $this->getStudentClassID($valofreq);  }
-            if ($results2 != null){   
-           foreach ($results2 as $r){ $total = $r->total; }
-            }
-             else { $perf = 0; $nameofstu = $this->getStudentName($valofreq); $clsid = $this->getStudentClassID($valofreq);  }
+           else { $perf = 0; $nameofstu = $this->getStudentName($pupid); $clsid = $this->getStudentClassID($pupid,$termid );  }
+          if ($results2 != null){   
+              foreach ($results2 as $r){ $total = $r->total; }
+          }
+           else { $perf = 0; $nameofstu = $this->getStudentName($pupid); $clsid = $this->getStudentClassID($pupid,$termid);  }
            
            if ($present == 0 && $total == 0){ $perf = 0; } 
            else{ $perf = (intval($present)/intval($total)) * 100; }
@@ -92,27 +106,27 @@ class MneController extends Controller
               
            );
        
-           $theattendsub = $this->getTypeAttendanceS($valofreq,$dateofreq,$dateofreq2,$term);
+           $theattendsub = $this->getTypeAttendanceS($pupid,$dateofreq,$dateofreq2,$termid);
            ////////////////////////////////////////////END ATTENDANCE
           
            ////////////////////////////////////////////EXAMINATIONS
-           $theclw = $this->getTypeAssessmentG('CW',$valofreq,$dateofreq,$dateofreq2);
+           $theclw = $this->getTypeAssessmentG('CW',$enrolid , $pupid, $dateofreq,$dateofreq2,$termid );
              
-           $theclwsub =  $this->getTypeAssessmentS('CW',$valofreq,$dateofreq,$dateofreq2);
+           $theclwsub =  $this->getTypeAssessmentS('CW', $enrolid , $pupid, $dateofreq, $dateofreq2, $termid );
            
-           $theass = $this->getTypeAssessmentG('AS',$valofreq,$dateofreq,$dateofreq2);
+           $theass = $this->getTypeAssessmentG('AS',$enrolid , $pupid, $dateofreq, $dateofreq2, $termid );
            
-           $theasssub = $this->getTypeAssessmentS('AS',$valofreq,$dateofreq,$dateofreq2);
+           $theasssub = $this->getTypeAssessmentS('AS',$enrolid , $pupid, $dateofreq,$dateofreq2,$termid );
            
-           $thetest = $this->getTypeAssessmentG('TS',$valofreq,$dateofreq,$dateofreq2);
+           $thetest = $this->getTypeAssessmentG('TS',$enrolid , $pupid, $dateofreq,$dateofreq2,$termid);
            
-           $thetestsub = $this->getTypeAssessmentS('TS',$valofreq,$dateofreq,$dateofreq2);
+           $thetestsub = $this->getTypeAssessmentS('TS',$enrolid , $pupid, $dateofreq,$dateofreq2,$termid);
            
-           $themidterm = $this->getTypeAssessmentG('MT',$valofreq,$dateofreq,$dateofreq2);
+           $themidterm = $this->getTypeAssessmentG('MT',$enrolid , $pupid, $dateofreq,$dateofreq2,$termid);
            
-           $themidtermsub = $this->getTypeAssessmentS('MT',$valofreq,$dateofreq,$dateofreq2);
+           $themidtermsub = $this->getTypeAssessmentS('MT',$enrolid , $pupid, $dateofreq,$dateofreq2,$termid);
            
-           $theterminal = $this->getTypeAssessmentG('TE',$valofreq,$dateofreq,$dateofreq2);
+           $theterminal = $this->getTypeAssessmentG('TE',$enrolid , $pupid, $dateofreq,$dateofreq2,$termid);
              
            ///////////////////////////////////////////END EXAMINATIONS
            
@@ -140,20 +154,34 @@ class MneController extends Controller
 
     /////////////////////////////////////////////////////////////////STUDENT
     
-    private function getTypeAssessmentG($type, $v, $d, $d2){
+    private function getTypeAssessmentG($type, $enrol, $pup, $d, $d2 , $term){
          
         if (Auth::user()->_type === 0){
-         $resultsclw = DB::select(" SELECT IFNULL(AVG(s.perf),0) as perf FROM scores s WHERE s.enrol_id = :pup AND s.ass_id IN ( SELECT ID FROM assessments e JOIN lessonnote_managements l ON l.lsn_id = e.lsn_id WHERE e._TYPE = :typ AND l._APPROVAL != :appr AND l._SUBMISSION <= :dat AND l._SUBMISSION >= :dat2 AND l.TEA_ID = :tea )  ",
-        [ "pup" => $v, "tea" => session('teacher.teacher_id'), "dat" => $d, "dat2" => $d2, "typ" => $type , "appr" => "1970-10-10 00:00:00" ]);
-         }
+            $resultsclw = DB::select(" SELECT IFNULL(AVG(s.perf),0) as perf FROM scores s 
+            WHERE s.enrol_id = :pup 
+            AND s.ass_id IN ( SELECT id FROM assessments e JOIN lessonnote_managements l 
+            ON l.lsn_id = e.lsn_id 
+            WHERE e._type = :typ AND l._approval != :appr AND l._submission <= :dat AND l._submission >= :dat2 AND l.lsn_id IN ( SELECT id FROM lessonnotes WHERE tea_id = :tea AND term_id = :term ) ) ",
+            
+            [ "pup" => $enrol, "tea" => session('teacher.teacher_id'), "dat" => $d, "dat2" => $d2, "typ" => $type , "appr" => "1970-10-10 00:00:00",  "term" => $term ]);
+        }
+
         if ( Auth::user()->_type === 1 ){
-         $resultsclw = DB::select(" SELECT IFNULL(AVG(s._PERFORMANCE),0) as perf FROM score s WHERE s.pupil_id = :pup AND s.exam_id IN ( SELECT EXAM_ID FROM exam e JOIN lessonnote l ON l.LSN_ID = e.LSN_ID WHERE e._TYPE = :typ AND l._APPROVAL != :appr AND l._SUBMISSION <= :dat AND l._SUBMISSION >= :dat2 AND l.school_sch_id = :sch )  ",
-        [ "pup" => $v, "sch" => session('general.school_id'), "dat" => $d, "dat2" => $d2, "typ" => $type , "appr" => "1970-10-10 00:00:00" ]);
+          $resultsclw = DB::select(" SELECT IFNULL(AVG(s.perf),0) as perf FROM scores s 
+          WHERE s.enrol_id = :pup 
+          AND s.exam_id IN 
+          ( SELECT EXAM_ID FROM exams e JOIN lessonnotes l ON l.LSN_ID = e.LSN_ID WHERE e._TYPE = :typ AND l._APPROVAL != :appr AND l._SUBMISSION <= :dat AND l._SUBMISSION >= :dat2 AND l.school_sch_id = :sch )  ",
+          [ "pup" => $v, "sch" => session('general.school_id'), "dat" => $d, "dat2" => $d2, "typ" => $type , "appr" => "1970-10-10 00:00:00" ]);
              
          }
         
          //
-          $results = DB::select(" SELECT ( SELECT CONCAT(fname,' ',lname) FROM pupils WHERE id = :pupid2 ) AS stuname, ( SELECT CLASS_ID FROM enrollments WHERE pupil_id = :pupid3 ) AS clsid FROM rowcalls WHERE _STATUS = 1 AND PUPIL_ID = :pupid " , [ "pupid" => $v, "pupid2" => $v, "pupid3" => $v  ] ); 
+          $results = DB::select(" SELECT 
+          ( SELECT CONCAT(fname,' ',lname) FROM pupils WHERE id = :pupid2 ) AS stuname, 
+          ( SELECT class_id FROM enrollments WHERE pupil_id = :pupid3 ) AS clsid FROM rowcalls 
+          WHERE _status = 1 AND pupil_id = :pupid 
+          AND att_id IN ( SELECT id FROM attendances WHERE term = :term )
+          " , [ "pupid" => $pup, "pupid2" =>$pup, "pupid3" => $pup, "term" => $term ] ); 
           
             $clsid = null;//class id
             $nameofstu = "";//name of student
@@ -162,12 +190,12 @@ class MneController extends Controller
               if ($results != null){    
             foreach ($results as $r){ $nameofstu = $r->stuname; $clsid = $r->clsid; } 
             }
-            else { $nameofstu = $this->getStudentName($v); $clsid = $this->getStudentClassID($v);  }
+            else { $nameofstu = $this->getStudentName($pup); $clsid = $this->getStudentClassID($pup,$term);  }
              
              if ($resultsclw != null){   
             foreach ($resultsclw as $r){ $perf = $r->perf; }
              }
-              else { $perf = 0; $nameofstu = $this->getStudentName($v); $clsid = $this->getStudentClassID($v);  }
+              else { $perf = 0; $nameofstu = $this->getStudentName($pup); $clsid = $this->getStudentClassID($pup,$term);  }
               
              $clsname = $this->getClassName($clsid);
             
@@ -181,7 +209,7 @@ class MneController extends Controller
             return $mymsg;
      }
      
-    private function getTypeAttendanceS($v, $d, $d2, $t){
+    private function getTypeAttendanceS($pup, $d, $d2, $term){
          
          $sub = array();  
          $subnames = array();
@@ -190,18 +218,18 @@ class MneController extends Controller
         
           if (Auth::user()->_type === 0){
           //1st get subject of student by teacher attendance
-          $resultsubject = DB::select(" SELECT DISTINCT a.SUB_ID as subid FROM subjectclasses a JOIN enrollments p ON a.CLASS_ID = p.CLASS_ID WHERE a.TEA_ID = :tea AND p.PUPIL_ID = :pup ",[ "tea" => $tea, "pup" => $v ]);
+          $resultsubject = DB::select(" SELECT DISTINCT a.sub_id as subid FROM subjectclasses a JOIN enrollments p ON a.class_id = p.class_id WHERE a.tea_id = :tea AND p.pupil_id = :pup  AND p.term_id = :term" ,[ "tea" => $tea, "pup" => $pup , "term" => $term ]);
           }
           if (Auth::user()->_type === 1){
-           $resultsubject = DB::select(" SELECT DISTINCT a.SUB_ID as subid FROM subjectclasses a JOIN enrollments p ON a.CLASS_ID = p.CLASS_ID WHERE p.PUPIL_ID = :pup ",[ "pup" => $v ]);
+           $resultsubject = DB::select(" SELECT DISTINCT a.sub_id as subid FROM subjectclasses a JOIN enrollments p ON a.class_id = p.class_id WHERE p.pupil_id = :pup ",[ "pup" => $pup ]);
              
           }
           if (Auth::user()->_type === 2){
-           $resultsubject = DB::select(" SELECT DISTINCT a.SUB_ID as subid FROM subjectclasses a JOIN enrollments p ON a.CLASS_ID = p.CLASS_ID WHERE p.PUPIL_ID = :pup  ",[ "pup" => $v ]);
+           $resultsubject = DB::select(" SELECT DISTINCT a.sub_id as subid FROM subjectclasses a JOIN enrollments p ON a.class_id = p.class_id WHERE p.pupil_id = :pup  ",[ "pup" => $pup ]);
              
           }
            if (Auth::user()->_type === 3){
-           $resultsubject = DB::select(" SELECT DISTINCT a.SUB_ID as subid FROM subjectclasses a JOIN enrollments p ON a.CLASS_ID = p.CLASS_ID WHERE p.PUPIL_ID = :pup ",[ "pup" => $v ]);
+           $resultsubject = DB::select(" SELECT DISTINCT a.sub_id as subid FROM subjectclasses a JOIN enrollments p ON a.class_id = p.class_id WHERE p.pupil_id = :pup ",[ "pup" => $pup ]);
              
           }
           foreach ($resultsubject as $r){ 
@@ -217,11 +245,21 @@ class MneController extends Controller
           if (Auth::user()->_type === 0){
               
          //no. of times present 
-          $results = DB::select(" SELECT IFNULL(COUNT(ATT_ID),0) AS present FROM rowcalls WHERE _STATUS = 1 AND PUPIL_ID = :pupid AND ATT_ID IN ( SELECT ATT_ID FROM attendance WHERE _datetime <= :dat AND _datetime >= :dat2 AND tea_id = :tea AND _desc LIKE :des AND sub_id = :sub ) " , [ "dat" => $d , "dat2" => $d2, "pupid" => $v, "tea" => $tea, "des" => '%'.$t.'%', "sub" => $s ] ); 
+          $results = DB::select(" SELECT IFNULL(COUNT(r.att_id),0) AS present FROM rowcalls r JOIN attendances a 
+           ON a.id = r.att_id
+           WHERE r._status = 1 AND r.pupil_id = :pupid AND 
+           AND a.sub_class_id IN ( SELECT id FROM subjectclasses WHERE tea_id = :tea AND sub_id = :sub ) 
+           AND a.term = :term AND a._date <= :dat AND a._date >= :dat2 " ,
+          [ "dat" => $d , "dat2" => $d2, "pupid" => $pup, "tea" => $tea, "term" => $term, "sub" => $s ] ); 
           
           //total no. of times attendance was taken 
-         $results2 = DB::select(" SELECT IFNULL(COUNT(a.ATT_ID),0) AS total FROM attendance a JOIN rowcall r ON r.ATT_ID = a.ATT_ID WHERE a._datetime <= :dat AND a._datetime >= :dat2 AND a.tea_id = :teaid AND r.PUPIL_ID = :pupid AND a._desc LIKE :des AND a.SUB_ID = :sub " , [ "teaid" => $tea, "dat" => $d, "dat2" => $d2, "pupid" => $v, "des" => '%'.$t.'%', "sub" => $s ] ); 
+         $results2 = DB::select(" SELECT IFNULL(COUNT(a.att_id),0) AS total FROM attendances a 
+         JOIN rowcall r 
+         ON r.att_id = a.id 
+         WHERE a._date <= :dat AND a._date >= :dat2 AND a.sub_class_id IN ( SELECT id FROM subjectclasses WHERE tea_id = :tea AND sub_id = :sub ) 
+         AND r.pupil_id = :pupid AND a.term = :term " , [ "tea" => $tea, "dat" => $d, "dat2" => $d2, "pupid" => $pup, "term" => $term, "sub" => $s ] ); 
           }  
+
            if (session('head.head_id') || session('supervisor.sup_id') || session('ministry.min_id') ){
           //no. of times present 
           $results = DB::select(" SELECT IFNULL(COUNT(ATT_ID),0) AS present FROM rowcall WHERE _STATUS = 1 AND PUPIL_ID = :pupid AND ATT_ID IN ( SELECT ATT_ID FROM attendance WHERE _datetime <= :dat AND _datetime >= :dat2 AND school_sch_id = :sch AND _desc LIKE :des AND sub_id = :sub ) " , [ "dat" => $d , "dat2" => $d2, "pupid" => $v, "sch" => session('general.school_id'), "des" => '%'.$t.'%', "sub" => $s ] ); 
@@ -265,7 +303,7 @@ class MneController extends Controller
          return $mymsg;
     } 
      
-    private function getTypeAssessmentS($type, $v, $d, $d2){
+    private function getTypeAssessmentS($type, $enrol, $pup,  $d, $d2, $term){
          
          $sub = array();  
          $subnames = array();
@@ -276,12 +314,11 @@ class MneController extends Controller
          $clsid = null;
         if (session('teacher.teacher_id')){
           //1st get subject of student by teacher attendance
-          $resultsubject = DB::select(" SELECT DISTINCT a.SUB_ID as subid FROM attendance a JOIN pupil p ON a.CLASS_ID = p.CLASS_ID WHERE a.TEA_ID = :tea AND p.PUP_ID = :pup ",[ "tea" => $tea, "pup" => $v ]);
+          $resultsubject = DB::select(" SELECT DISTINCT a.sub_id as subid FROM subjectclasses a JOIN enrollments p ON a.class_id = p.class_id WHERE a.tea_id = :tea AND p.pupil_id = :pup AND p.term_id = :term ",[ "tea" => $tea, "pup" => $pup, "term" => $term ]);
         }
         
         if (session('head.head_id') || session('supervisor.sup_id') || session('ministry.min_id') ){
-         $resultsubject = DB::select(" SELECT DISTINCT a.SUB_ID as subid FROM attendance a JOIN pupil p ON a.CLASS_ID = p.CLASS_ID WHERE p.PUP_ID = :pup ",[ "pup" => $v ]);
-             
+         $resultsubject = DB::select(" SELECT DISTINCT a.SUB_ID as subid FROM attendances a JOIN pupil p ON a.CLASS_ID = p.CLASS_ID WHERE p.PUP_ID = :pup ",[ "pup" => $v ]);             
         }
           foreach ($resultsubject as $r){ 
               $subn = $r->subid;
@@ -289,7 +326,11 @@ class MneController extends Controller
               $subnames[$subn] = $this->getSubjectName($subn);
           }  
           
-          $results = DB::select(" SELECT ( SELECT CONCAT(_FNAME,' ',_LNAME) FROM pupil WHERE pup_id = :pupid2 ) AS stuname, ( SELECT CLASS_ID FROM pupil WHERE pup_id = :pupid3 ) AS clsid FROM rowcall WHERE _STATUS = 1 AND PUPIL_ID = :pupid " , [ "pupid" => $v, "pupid2" => $v, "pupid3" => $v  ] ); 
+          $results = DB::select(" SELECT ( SELECT CONCAT(fname,' ',lname) FROM pupils WHERE id = :pupid2 ) AS stuname, 
+          ( SELECT class_id FROM pupils WHERE id = :pupid3 ) AS clsid FROM rowcalls
+           WHERE _status = 1 AND pupil_id = :pupid 
+           AND att_id IN ( SELECT id FROM attendances WHERE term = :term )
+           " , [ "pupid" => $pup, "pupid2" => $pup, "pupid3" => $pup ,  "term" => $term ] ); 
          
           foreach ($results as $r){ $nameofstu = $r->stuname; $clsid = $r->clsid; } 
           $i = 0;
@@ -297,14 +338,20 @@ class MneController extends Controller
           
          //load perfomance of student per subject offered......
         foreach ($sub as $s) {
+
               if (session('teacher.teacher_id')){
-            $resultarray[$s] =  DB::select(" SELECT IFNULL(AVG(s._PERFORMANCE),0) as perf FROM score s WHERE s.pupil_id = :pup AND s.exam_id IN ( SELECT EXAM_ID FROM exam e JOIN lessonnote l ON l.LSN_ID = e.LSN_ID WHERE e._TYPE = :typ AND l._APPROVAL != :appr AND l._SUBMISSION <= :dat AND l._SUBMISSION >= :dat2 AND l.SUB_ID = :sub AND l.TEA_ID = :tea )  ",
-            [ "pup" => $v, "tea" => $tea, "dat" => $d, "dat2" => $d2, "typ" => $type, "appr" => "1970-10-10 00:00:00" , "sub" => $s ]);
+                  $resultarray[$s] =  DB::select(" SELECT IFNULL(AVG(s.perf),0) as perf FROM scores s WHERE s.enrol_id = :pup
+                      AND s.ass_id 
+                      IN ( SELECT id FROM assessments e JOIN lessonnotes l 
+                      ON l.id = e.lsn_id 
+                      WHERE e._type = :typ AND l.term_id = :term AND l._approval != :appr AND l._submission <= :dat AND l._submission >= :dat2 
+                      AND l.sub_id = :sub AND l.tea_id = :tea )  ",
+                  [ "pup" => $pup, "tea" => $tea, "dat" => $d, "dat2" => $d2, "typ" => $type, "appr" => "1970-10-10 00:00:00" , "sub" => $s, "term" => $term ]);
               }
               
                if (session('head.head_id') || session('supervisor.sup_id') || session('ministry.min_id') ){
-                   $resultarray[$s] =  DB::select(" SELECT IFNULL(AVG(s._PERFORMANCE),0) as perf FROM score s WHERE s.pupil_id = :pup AND s.exam_id IN ( SELECT EXAM_ID FROM exam e JOIN lessonnote l ON l.LSN_ID = e.LSN_ID WHERE e._TYPE = :typ AND l._APPROVAL != :appr AND l._SUBMISSION <= :dat AND l._SUBMISSION >= :dat2 AND l.SUB_ID = :sub AND l.school_sch_id = :sch )  ",
-            [ "pup" => $v, "sch" => session('general.school_id'), "dat" => $d, "dat2" => $d2, "typ" => $type, "appr" => "1970-10-10 00:00:00" , "sub" => $s ]);
+                   $resultarray[$s] =  DB::select(" SELECT IFNULL(AVG(s._PERFORMANCE),0) as perf FROM scores s WHERE s.pupil_id = :pup AND s.exam_id IN ( SELECT EXAM_ID FROM exam e JOIN lessonnotes l ON l.LSN_ID = e.LSN_ID WHERE e._TYPE = :typ AND l._APPROVAL != :appr AND l._SUBMISSION <= :dat AND l._SUBMISSION >= :dat2 AND l.SUB_ID = :sub AND l.school_sch_id = :sch )  ",
+            [ "pup" => $pup, "sch" => session('general.school_id'), "dat" => $d, "dat2" => $d2, "typ" => $type, "appr" => "1970-10-10 00:00:00" , "sub" => $s ]);
             
                }
              
@@ -364,7 +411,7 @@ class MneController extends Controller
         
          private function getClassID($cls_name,$sch){
             $tea_id = "";
-            $name = DB::select("SELECT CLS_ID as myid FROM class_streams WHERE title = :tit AND school_id = :sch " , [ "tit" => $cls_name, "sch" => $sch ] ); 
+            $name = DB::select("SELECT id as myid FROM class_streams WHERE title = :tit AND school_id = :sch " , [ "tit" => $cls_name, "sch" => $sch ] ); 
             foreach($name as $n){
               $tea_id = $n->myid;  
             }   
