@@ -256,10 +256,15 @@ class MneController extends Controller
                 $results = DB::select(" SELECT IFNULL(COUNT(r.att_id),0) AS present FROM rowcalls r 
                 JOIN attendances a 
                 ON a.id = r.att_id
-                WHERE r._status = 1 AND r.pup_id = :pupid AND 
+                WHERE r._status = 1 AND r.pup_id = :pupid 
                 AND a.sub_class_id IN ( SELECT id FROM subjectclasses WHERE tea_id = :tea AND sub_id = :sub ) 
                 AND a.term = :term AND a._date <= :dat AND a._date >= :dat2 " ,
                 [ "dat" => $d , "dat2" => $d2, "pupid" => $pup, "tea" => $tea, "term" => $term, "sub" => $s ] ); 
+
+              /*  SELECT IFNULL(COUNT(r.att_id),0) AS present FROM rowcalls r JOIN attendances a ON a.id = r.att_id 
+                WHERE r._status = 1 AND r.pup_id = 5 
+                AND a.sub_class_id IN ( SELECT id FROM subjectclasses WHERE tea_id = 10 AND sub_id = 7 ) 
+                AND a.term = 1 AND a._date <= "2020-11-26" AND a._date >= "2020-11-20"*/
                 
                 //total no. of times attendance was taken 
               $results2 = DB::select(" SELECT IFNULL(COUNT(a.att_id),0) AS total FROM attendances a 
