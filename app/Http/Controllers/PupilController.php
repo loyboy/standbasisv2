@@ -188,7 +188,7 @@ class PupilController extends Controller
             $term = Term::where('school_id',$tea->school_id)->where('_status',1)->first();
 
             //foreach ($subclass as $sc){ 
-                $enrol = DB::select("SELECT ANY_VALUE(cs.title) as title, su.class_id  FROM subjectclasses su 
+                $enrol = DB::select("SELECT cs.title as title, su.class_id  FROM subjectclasses su 
                 INNER JOIN class_streams cs ON su.class_id = cs.id 
                 INNER JOIN subjects s ON s.id = su.sub_id
                 WHERE su.tea_id = :tea
