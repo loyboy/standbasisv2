@@ -164,8 +164,9 @@ class PupilController extends Controller
             }
 
             $data['status'] = "Success";
-            $data['message'] = "Pupil data is good";
+            $data['message'] = "Pupil data is good xxx";
             $data['data'] = $subclass;
+            
             return response()->json($data);
         } catch (Exception $e) {
                 $data['status'] = "Error";
