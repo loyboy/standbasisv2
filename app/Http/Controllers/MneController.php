@@ -357,10 +357,11 @@ class MneController extends Controller
               if ( $typeofuser === "teacher" ){
                   $resultarray[$s] =  DB::select(" SELECT IFNULL(AVG(s.perf),0) as perf FROM scores s WHERE s.enrol_id = :pup
                       AND s.ass_id 
-                      IN ( SELECT e.id FROM assessments e JOIN lessonnotes l 
-                      ON l.id = e.lsn_id 
+                      IN ( SELECT e.id FROM assessments e JOIN lessonnote_managements l 
+                      ON l.lsn_id = e.lsn_id 
                       WHERE e._type = :typ AND l.term_id = :term AND l._approval != :appr AND l._submission <= :dat AND l._submission >= :dat2 
-                      AND l.sub_id = :sub AND l.tea_id = :tea )  ",
+                      AND l.lsn_id IN ( SELECT id FROM lessonnotes WHERE sub_id = :sub AND tea_id = :tea ) ) ",
+
                   [ "pup" => $enrol, "tea" => $tea, "dat" => $d, "dat2" => $d2, "typ" => $type, "appr" => "1970-10-10 00:00:00" , "sub" => $s, "term" => $term ]);
               }
               
