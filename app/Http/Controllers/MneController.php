@@ -186,10 +186,10 @@ class MneController extends Controller
          //
           $results = DB::select(" SELECT 
           ( SELECT CONCAT(fname,' ',lname) FROM pupils WHERE id = :pupid2 ) AS stuname, 
-          ( SELECT class_id FROM enrollments WHERE pupil_id = :pupid3 ) AS clsid FROM rowcalls 
-          WHERE _status = 1 AND pupil_id = :pupid 
+          ( SELECT class_id FROM enrollments WHERE id = :pupid3 ) AS clsid FROM rowcalls 
+          WHERE _status = 1 AND pup_id = :pupid 
           AND att_id IN ( SELECT id FROM attendances WHERE term = :term )
-          " , [ "pupid" => $pup, "pupid2" =>$pup, "pupid3" => $pup, "term" => $term ] ); 
+          " , [ "pupid" => $pup, "pupid2" =>$pup, "pupid3" => $enrol, "term" => $term ] ); 
           
             $clsid = null;//class id
             $nameofstu = "";//name of student
@@ -342,10 +342,10 @@ class MneController extends Controller
           }  
           
           $results = DB::select(" SELECT ( SELECT CONCAT(fname,' ',lname) FROM pupils WHERE id = :pupid2 ) AS stuname, 
-          ( SELECT class_id FROM pupils WHERE id = :pupid3 ) AS clsid FROM rowcalls
+          ( SELECT class_id FROM enrollments WHERE id = :pupid3 ) AS clsid FROM rowcalls
            WHERE _status = 1 AND pupil_id = :pupid 
            AND att_id IN ( SELECT id FROM attendances WHERE term = :term )
-           " , [ "pupid" => $pup, "pupid2" => $pup, "pupid3" => $pup ,  "term" => $term ] ); 
+           " , [ "pupid" => $pup, "pupid2" => $pup, "pupid3" => $enrol ,  "term" => $term ] ); 
          
           foreach ($results as $r){ $nameofstu = $r->stuname; $clsid = $r->clsid; } 
           $i = 0;
@@ -361,7 +361,7 @@ class MneController extends Controller
                       ON l.id = e.lsn_id 
                       WHERE e._type = :typ AND l.term_id = :term AND l._approval != :appr AND l._submission <= :dat AND l._submission >= :dat2 
                       AND l.sub_id = :sub AND l.tea_id = :tea )  ",
-                  [ "pup" => $pup, "tea" => $tea, "dat" => $d, "dat2" => $d2, "typ" => $type, "appr" => "1970-10-10 00:00:00" , "sub" => $s, "term" => $term ]);
+                  [ "pup" => $enrol, "tea" => $tea, "dat" => $d, "dat2" => $d2, "typ" => $type, "appr" => "1970-10-10 00:00:00" , "sub" => $s, "term" => $term ]);
               }
               
                if (session('head.head_id') || session('supervisor.sup_id') || session('ministry.min_id') ){
