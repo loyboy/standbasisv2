@@ -123,12 +123,12 @@
         formData2.append("api_token", token);
         xhr2.send(formData2);
 
-    /*   let xhr3 = new XMLHttpRequest();
+       let xhr3 = new XMLHttpRequest();
         xhr3.open('POST', '/pupils_getClassForTeacher/'+teacher);
         xhr3.responseType = 'json';
         let formData3 = new FormData();
         formData3.append("api_token", token);
-        xhr3.send(formData3);*/
+        xhr3.send(formData3);
 
         document.getElementById('loading').style.display = 'block';
 
@@ -149,7 +149,7 @@
                 var selectinput3 = document.querySelector('#theterm');
                 var termval =  { '1' : "1ST TERM" , '2' : "2ND TERM", '3' : "3RD TERM" };
                for ( let datarow of responseObj.data ){ 
-                    selectinput3.options[selectinput3.options.length] = new Option (  termval[ datarow.Term ] , datarow.Termid + ";" + intval(datarow.Term) );         
+                    selectinput3.options[selectinput3.options.length] = new Option (  termval[ datarow.Term ] , datarow.Termid + ";" + NUmber(datarow.Term) );         
                }
         }
 
@@ -168,7 +168,7 @@
 
         }
 
-       /* xhr3.onload = function() {
+        xhr3.onload = function() {
                 let responseObj = xhr3.response;
                 if (responseObj.status === "Failed"){
                     alert(responseObj.message);
@@ -181,7 +181,7 @@
                     selectinput2.options[selectinput2.options.length] = new Option( datarow.ClassName, datarow.ClassId );         
                 }
 
-        } */
+        } 
 
         
     
