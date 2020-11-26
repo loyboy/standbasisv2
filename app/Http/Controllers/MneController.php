@@ -113,29 +113,29 @@ class MneController extends Controller
            ////////////////////////////////////////////END ATTENDANCE
           
            ////////////////////////////////////////////EXAMINATIONS
-        /*   $theclw = $this->getTypeAssessmentG('CW',$enrolid , $pupid, $dateofreq,$dateofreq2,$termid );
+          $theclw = $this->getTypeAssessmentG('CW', $tea, $enrolid , $pupid, $dateofreq,$dateofreq2,$termid );
              
-           $theclwsub =  $this->getTypeAssessmentS('CW', $enrolid , $pupid, $dateofreq, $dateofreq2, $termid );
+           $theclwsub =  $this->getTypeAssessmentS('CW', $tea, $enrolid , $pupid, $dateofreq, $dateofreq2, $termid );
            
-           $theass = $this->getTypeAssessmentG('AS',$enrolid , $pupid, $dateofreq, $dateofreq2, $termid );
+           $theass = $this->getTypeAssessmentG('AS', $tea, $enrolid , $pupid, $dateofreq, $dateofreq2, $termid );
            
-           $theasssub = $this->getTypeAssessmentS('AS',$enrolid , $pupid, $dateofreq,$dateofreq2,$termid );
+           $theasssub = $this->getTypeAssessmentS('AS', $tea, $enrolid , $pupid, $dateofreq,$dateofreq2,$termid );
            
-           $thetest = $this->getTypeAssessmentG('TS',$enrolid , $pupid, $dateofreq,$dateofreq2,$termid);
+           $thetest = $this->getTypeAssessmentG('TS', $tea, $enrolid , $pupid, $dateofreq,$dateofreq2,$termid);
            
-           $thetestsub = $this->getTypeAssessmentS('TS',$enrolid , $pupid, $dateofreq,$dateofreq2,$termid);
+           $thetestsub = $this->getTypeAssessmentS('TS', $tea, $enrolid , $pupid, $dateofreq,$dateofreq2,$termid);
            
-           $themidterm = $this->getTypeAssessmentG('MT',$enrolid , $pupid, $dateofreq,$dateofreq2,$termid);
+           $themidterm = $this->getTypeAssessmentG('MT', $tea, $enrolid , $pupid, $dateofreq,$dateofreq2,$termid);
            
-           $themidtermsub = $this->getTypeAssessmentS('MT',$enrolid , $pupid, $dateofreq,$dateofreq2,$termid);
+           $themidtermsub = $this->getTypeAssessmentS('MT', $tea, $enrolid , $pupid, $dateofreq,$dateofreq2,$termid);
            
-           $theterminal = $this->getTypeAssessmentG('TE',$enrolid , $pupid, $dateofreq,$dateofreq2,$termid); */
+           $theterminal = $this->getTypeAssessmentG('TE', $tea, $enrolid , $pupid, $dateofreq,$dateofreq2,$termid); 
              
            ///////////////////////////////////////////END EXAMINATIONS
            
            /** **/
            
-         /*  $mymsg = array(
+          $mymsg = array(
                '_att1'=> $theattend,
                '_att11'=> $theattendsub,
                '_att2' => $theclw,
@@ -148,12 +148,12 @@ class MneController extends Controller
                '_att9' => $themidtermsub,
                '_att10' => $theterminal
               
-           ); */
+           ); 
 
-           $mymsg = array(
+         /*  $mymsg = array(
             '_att1'=> $theattend ,         
             '_att11'=> $theattendsub,
-        ); 
+        ); */
          
            
             return response()->json($mymsg);
@@ -162,7 +162,7 @@ class MneController extends Controller
 
     /////////////////////////////////////////////////////////////////STUDENT
     
-    private function getTypeAssessmentG($type, $enrol, $pup, $d, $d2 , $term, $typeofuser ){
+    private function getTypeAssessmentG ( $type, $teaid, $enrol, $pup, $d, $d2 , $term, $typeofuser ){
          
         if ( $typeofuser === "teacher" ){
             $resultsclw = DB::select(" SELECT IFNULL(AVG(s.perf),0) as perf FROM scores s 
@@ -171,7 +171,7 @@ class MneController extends Controller
             ON l.lsn_id = e.lsn_id 
             WHERE e._type = :typ AND l._approval != :appr AND l._submission <= :dat AND l._submission >= :dat2 AND l.lsn_id IN ( SELECT id FROM lessonnotes WHERE tea_id = :tea AND term_id = :term ) ) ",
             
-            [ "pup" => $enrol, "tea" => session('teacher.teacher_id'), "dat" => $d, "dat2" => $d2, "typ" => $type , "appr" => "1970-10-10 00:00:00",  "term" => $term ]);
+            [ "pup" => $enrol, "tea" => $teaid, "dat" => $d, "dat2" => $d2, "typ" => $type , "appr" => "1970-10-10 00:00:00",  "term" => $term ]);
         }
 
         if ($typeofuser === "principal" ){
@@ -318,12 +318,12 @@ class MneController extends Controller
          return $mymsg;
     } 
      
-    private function getTypeAssessmentS($type, $enrol, $pup,  $d, $d2, $term){
+    private function getTypeAssessmentS($type, $teaid, $enrol, $pup,  $d, $d2, $term){
          
          $sub = array();  
          $subnames = array();
          $resultarray = array();
-         $tea =  session('teacher.teacher_id'); 
+         $tea =  $teaid; 
          
          $nameofstu = "";//name of student
          $clsid = null;
