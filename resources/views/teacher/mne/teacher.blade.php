@@ -197,7 +197,7 @@
                var enddate = document.getElementById("thedate2").value;
                var theterm = document.getElementById("theterm").value;
                var student =  $('.mymneselectstudent').val();
-               
+               let tea = {{ Auth::user()->teacher_id }};
                
                console.log("Console ID"+ idofevent);
                
@@ -223,7 +223,7 @@
                                   url: "mneapistudentgen",//laravel controller method inside web.php
                                   dataType: "json", //expect html to be returned  
                                   data: {
-                                      mnestudentgen:1 , sdate: thedate, edate: enddate, term: theterm, stu: student
+                                      mnestudentgen:1 , sdate: thedate, edate: enddate, term: theterm, stu: student, tea: tea
                                   },
                                   success: function(data) { 
                                   //console.log(data);
@@ -299,7 +299,7 @@
                                    error: function(xmlHttpRequest, textStatus, errorThrown)
                                   { 
                                   
-                                  alert("Sorry, but check your network connection....");
+                                        alert( textStatus + " " + errorThrown );
                                   
                                   }
                           });  

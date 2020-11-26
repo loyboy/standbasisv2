@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Pupil;
 use App\Teacher;
-use App\SubjectClass;
+use App\Subjectclass;
 use Illuminate\Support\Facades\DB;
 
 class MneController extends Controller
@@ -53,8 +53,8 @@ class MneController extends Controller
         $tea =  $request->input('tea'); //teacher ID
          
         $term = $request->input('term'); //Term of the school
-        $termval = array("1st Term" => 1, "2nd Term" => 2, "3rd Term" => 3);
-        $termval2 = $termval[$term];
+       // $termval = array("1st Term" => 1, "2nd Term" => 2, "3rd Term" => 3);
+        $termval2 = intval($term);
          
         $valofreq = $request->input('stu'); //Student ID
         
