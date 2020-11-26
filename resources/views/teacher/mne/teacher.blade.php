@@ -36,10 +36,10 @@
                                 <div class="form-group col-4">
                                     <label> Term: </label>
                                     <select class="form-control"  name="head_year" id="theterm">
-                                        <option value="">Select.. </option>
+                                    <!--    <option value="">Select.. </option>
                                         <option value="1"> 1st Term </option>
                                         <option value="2"> 2nd Term </option>
-                                        <option value="3"> 3rd Term </option>
+                                        <option value="3"> 3rd Term </option>-->
                                     </select>
                                 </div>  
                         </div>
@@ -146,11 +146,11 @@
                 var headyear = document.querySelector('#theterm');
                 console.log("The head year: " + headyear);
                 headyear.value = responseObj.data.term;*/
-               /* var selectinput3 = document.querySelector('#theterm');
-                $termval = array( 1 => "1ST TERM" , 2 => "2ND TERM", 3 => "3RD TERM");
+                var selectinput3 = document.querySelector('#theterm');
+                var termval =  { '1' : "1ST TERM" , '2' : "2ND TERM", '3' : "3RD TERM" };
                for ( let datarow of responseObj.data ){ 
-                    selectinput3.options[selectinput3.options.length] = new Option (  $termval[ intval(datarow.Term) ] , datarow.Termid + ";" + intval(datarow.Term) );         
-               }*/
+                    selectinput3.options[selectinput3.options.length] = new Option (  termval[ datarow.Term ] , datarow.Termid + ";" + intval(datarow.Term) );         
+               }
         }
 
         xhr2.onload = function() {
