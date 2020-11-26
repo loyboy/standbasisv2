@@ -63,12 +63,12 @@ class MneController extends Controller
         
          ////////////////////////////////////////////ATTENDANCE
          //no. of times present 
-         $results = DB::select(" SELECT IFNULL(COUNT(att_id),0) AS present, 
+         $results = DB::select(" SELECT IFNULL(COUNT(r.att_id),0) AS present, 
          ( SELECT CONCAT(fname,' ',lname) FROM pupils WHERE id = :pupid2 ) AS stuname, 
          ( SELECT class_id FROM enrollments WHERE id = :pupid3 AND term_id = :term ) AS clsid 
-         FROM rowcalls 
-         WHERE _status = 1 AND pup_id = :pupid AND att_id IN 
-         ( SELECT id FROM attendances WHERE _date <= :dat AND _date >= :dat2 AND tea_id = :tea AND _desc LIKE :des ) " ,
+         FROM rowcalls r  JOIN attendances a 
+         ON r.att_id = a.id 
+         WHERE r._status = 1 AND r.pup_id = :pupid AND a.sub_class_id IN ( SELECT id FROM subjectclasses WHERE tea_id = :tea ) AND a._desc LIKE :des " ,
          [ "dat" => $dateofreq , "dat2" => $dateofreq2, "pupid" => $pupid, "pupid2" => $pupid , "pupid3" =>$enrolid, "tea" => $tea, "des" => '%'.$termval[$termname].'%', "term" => $termid  ] ); 
          
          //total no. of times attendance was taken 
