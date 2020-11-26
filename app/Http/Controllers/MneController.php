@@ -111,7 +111,7 @@ class MneController extends Controller
            ////////////////////////////////////////////END ATTENDANCE
           
            ////////////////////////////////////////////EXAMINATIONS
-           $theclw = $this->getTypeAssessmentG('CW',$enrolid , $pupid, $dateofreq,$dateofreq2,$termid );
+        /*   $theclw = $this->getTypeAssessmentG('CW',$enrolid , $pupid, $dateofreq,$dateofreq2,$termid );
              
            $theclwsub =  $this->getTypeAssessmentS('CW', $enrolid , $pupid, $dateofreq, $dateofreq2, $termid );
            
@@ -127,13 +127,13 @@ class MneController extends Controller
            
            $themidtermsub = $this->getTypeAssessmentS('MT',$enrolid , $pupid, $dateofreq,$dateofreq2,$termid);
            
-           $theterminal = $this->getTypeAssessmentG('TE',$enrolid , $pupid, $dateofreq,$dateofreq2,$termid);
+           $theterminal = $this->getTypeAssessmentG('TE',$enrolid , $pupid, $dateofreq,$dateofreq2,$termid); */
              
            ///////////////////////////////////////////END EXAMINATIONS
            
            /** **/
            
-           $mymsg = array(
+         /*  $mymsg = array(
                '_att1'=> $theattend,
                '_att11'=> $theattendsub,
                '_att2' => $theclw,
@@ -146,7 +146,12 @@ class MneController extends Controller
                '_att9' => $themidtermsub,
                '_att10' => $theterminal
               
-           ); 
+           ); */
+
+           $mymsg = array(
+            '_att1'=> $theattend           
+           
+        ); 
          
            
             return response()->json($mymsg);
