@@ -267,7 +267,7 @@ class MneController extends Controller
                 AND a.term = 1 AND a._date <= "2020-11-26" AND a._date >= "2020-11-20"*/
                 
                 //total no. of times attendance was taken 
-              $results2 = DB::select(" SELECT IFNULL(COUNT(a.att_id),0) AS total FROM attendances a 
+              $results2 = DB::select(" SELECT IFNULL(COUNT(r.att_id),0) AS total FROM attendances a 
               JOIN rowcalls r 
               ON r.att_id = a.id 
               WHERE a._date <= :dat AND a._date >= :dat2 AND a.sub_class_id IN ( SELECT id FROM subjectclasses WHERE tea_id = :tea AND sub_id = :sub ) 
