@@ -162,7 +162,7 @@ class MneController extends Controller
     
     private function getTypeAssessmentG($type, $enrol, $pup, $d, $d2 , $term){
          
-        if (Auth::user()->_type === 0){
+        if (session('teacher.teacher_id')){
             $resultsclw = DB::select(" SELECT IFNULL(AVG(s.perf),0) as perf FROM scores s 
             WHERE s.enrol_id = :pup 
             AND s.ass_id IN ( SELECT id FROM assessments e JOIN lessonnote_managements l 
@@ -172,7 +172,7 @@ class MneController extends Controller
             [ "pup" => $enrol, "tea" => session('teacher.teacher_id'), "dat" => $d, "dat2" => $d2, "typ" => $type , "appr" => "1970-10-10 00:00:00",  "term" => $term ]);
         }
 
-        if ( Auth::user()->_type === 1 ){
+        if ( session('head.head_id') ){
           $resultsclw = DB::select(" SELECT IFNULL(AVG(s.perf),0) as perf FROM scores s 
           WHERE s.enrol_id = :pup 
           AND s.exam_id IN 
@@ -222,22 +222,23 @@ class MneController extends Controller
          $resultarray = array();
          $tea =  session('teacher.teacher_id'); 
         
-          if (Auth::user()->_type === 0){
+          if (session('teacher.teacher_id')){
           //1st get subject of student by teacher attendance
           $resultsubject = DB::select(" SELECT DISTINCT a.sub_id as subid FROM subjectclasses a JOIN enrollments p ON a.class_id = p.class_id WHERE a.tea_id = :tea AND p.pupil_id = :pup  AND p.term_id = :term" ,[ "tea" => $tea, "pup" => $pup , "term" => $term ]);
           }
-          if (Auth::user()->_type === 1){
+         else if (Auth::user()->_type === 1){
            $resultsubject = DB::select(" SELECT DISTINCT a.sub_id as subid FROM subjectclasses a JOIN enrollments p ON a.class_id = p.class_id WHERE p.pupil_id = :pup ",[ "pup" => $pup ]);
              
           }
-          if (Auth::user()->_type === 2){
+         else if (Auth::user()->_type === 2){
            $resultsubject = DB::select(" SELECT DISTINCT a.sub_id as subid FROM subjectclasses a JOIN enrollments p ON a.class_id = p.class_id WHERE p.pupil_id = :pup  ",[ "pup" => $pup ]);
              
           }
-           if (Auth::user()->_type === 3){
+          else if (Auth::user()->_type === 3){
            $resultsubject = DB::select(" SELECT DISTINCT a.sub_id as subid FROM subjectclasses a JOIN enrollments p ON a.class_id = p.class_id WHERE p.pupil_id = :pup ",[ "pup" => $pup ]);
              
           }
+
           foreach ($resultsubject as $r){ 
               $subn = $r->subid;
               $sub[] = $subn;
