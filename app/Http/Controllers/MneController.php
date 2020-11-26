@@ -226,7 +226,7 @@ class MneController extends Controller
           //1st get subject of student by teacher attendance
           $resultsubject = DB::select(" SELECT DISTINCT a.sub_id as subid FROM subjectclasses a JOIN enrollments p ON a.class_id = p.class_id WHERE a.tea_id = :tea AND p.pupil_id = :pup  AND p.term_id = :term" ,[ "tea" => $tea, "pup" => $pup , "term" => $term ]);
           }
-         else if (Auth::user()->_type === 1){
+        /* else if (Auth::user()->_type === 1){
            $resultsubject = DB::select(" SELECT DISTINCT a.sub_id as subid FROM subjectclasses a JOIN enrollments p ON a.class_id = p.class_id WHERE p.pupil_id = :pup ",[ "pup" => $pup ]);
              
           }
@@ -237,7 +237,7 @@ class MneController extends Controller
           else if (Auth::user()->_type === 3){
            $resultsubject = DB::select(" SELECT DISTINCT a.sub_id as subid FROM subjectclasses a JOIN enrollments p ON a.class_id = p.class_id WHERE p.pupil_id = :pup ",[ "pup" => $pup ]);
              
-          }
+          }*/
 
           foreach ($resultsubject as $r){ 
               $subn = $r->subid;
