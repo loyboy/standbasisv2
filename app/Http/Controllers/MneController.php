@@ -68,8 +68,9 @@ class MneController extends Controller
          ( SELECT class_id FROM enrollments WHERE id = :pupid3 AND term_id = :term ) AS clsid 
          FROM rowcalls r  JOIN attendances a 
          ON r.att_id = a.id 
-         WHERE r._status = 1 AND r.pup_id = :pupid AND a.sub_class_id IN ( SELECT id FROM subjectclasses WHERE tea_id = :tea ) AND a._desc LIKE :des " ,
-         [ "dat" => $dateofreq , "dat2" => $dateofreq2, "pupid" => $pupid, "pupid2" => $pupid , "pupid3" =>$enrolid, "tea" => $tea, "des" => '%'.$termval[$termname].'%', "term" => $termid  ] ); 
+         WHERE r._status = 1 AND a._date <= :dat AND a._date >= :dat2
+         AND r.pup_id = :pupid AND a.sub_class_id IN ( SELECT id FROM subjectclasses WHERE tea_id = :tea ) AND a._desc LIKE :desf " ,
+         [ "dat" => $dateofreq , "dat2" => $dateofreq2, "pupid" => $pupid, "pupid2" => $pupid , "pupid3" =>$enrolid, "tea" => $tea, "desf" => '%'.$termval[$termname].'%', "term" => $termid  ] ); 
          
          //total no. of times attendance was taken 
          $results2 = DB::select(" SELECT IFNULL(COUNT(a.id),0) AS total
