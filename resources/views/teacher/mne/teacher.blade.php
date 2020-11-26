@@ -229,7 +229,7 @@
                                   url: "mneapistudentgen",//laravel controller method inside web.php
                                   dataType: "json", //expect html to be returned  
                                   data: {
-                                      _type:'teacher' , sdate: thedate, edate: enddate, term: theterm, stu: Number(student), tea: Number(tea)
+                                      _type:'teacher' , sdate: thedate, edate: enddate, term: theterm, stu: student, tea: Number(tea)
                                   },
                                   success: function(data) { 
                                   //console.log(data);
