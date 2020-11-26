@@ -251,31 +251,31 @@ class MneController extends Controller
          
         foreach ($sub as $s) {
          
-          if ( $typeofuser === "teacher"  ){
-              
-         //no. of times present 
-          $results = DB::select(" SELECT IFNULL(COUNT(r.att_id),0) AS present FROM rowcalls r JOIN attendances a 
-           ON a.id = r.att_id
-           WHERE r._status = 1 AND r.pupil_id = :pupid AND 
-           AND a.sub_class_id IN ( SELECT id FROM subjectclasses WHERE tea_id = :tea AND sub_id = :sub ) 
-           AND a.term = :term AND a._date <= :dat AND a._date >= :dat2 " ,
-          [ "dat" => $d , "dat2" => $d2, "pupid" => $pup, "tea" => $tea, "term" => $term, "sub" => $s ] ); 
-          
-          //total no. of times attendance was taken 
-         $results2 = DB::select(" SELECT IFNULL(COUNT(a.att_id),0) AS total FROM attendances a 
-         JOIN rowcall r 
-         ON r.att_id = a.id 
-         WHERE a._date <= :dat AND a._date >= :dat2 AND a.sub_class_id IN ( SELECT id FROM subjectclasses WHERE tea_id = :tea AND sub_id = :sub ) 
-         AND r.pupil_id = :pupid AND a.term = :term " , [ "tea" => $tea, "dat" => $d, "dat2" => $d2, "pupid" => $pup, "term" => $term, "sub" => $s ] ); 
+          if ( $typeofuser === "teacher"  ){              
+              //no. of times present 
+                $results = DB::select(" SELECT IFNULL(COUNT(r.att_id),0) AS present FROM rowcalls r JOIN attendances a 
+                ON a.id = r.att_id
+                WHERE r._status = 1 AND r.pupil_id = :pupid AND 
+                AND a.sub_class_id IN ( SELECT id FROM subjectclasses WHERE tea_id = :tea AND sub_id = :sub ) 
+                AND a.term = :term AND a._date <= :dat AND a._date >= :dat2 " ,
+                [ "dat" => $d , "dat2" => $d2, "pupid" => $pup, "tea" => $tea, "term" => $term, "sub" => $s ] ); 
+                
+                //total no. of times attendance was taken 
+              $results2 = DB::select(" SELECT IFNULL(COUNT(a.att_id),0) AS total FROM attendances a 
+              JOIN rowcall r 
+              ON r.att_id = a.id 
+              WHERE a._date <= :dat AND a._date >= :dat2 AND a.sub_class_id IN ( SELECT id FROM subjectclasses WHERE tea_id = :tea AND sub_id = :sub ) 
+              AND r.pupil_id = :pupid AND a.term = :term " , [ "tea" => $tea, "dat" => $d, "dat2" => $d2, "pupid" => $pup, "term" => $term, "sub" => $s ] ); 
           }  
 
            if ( $typeofuser === "principal" ){
           //no. of times present 
-          $results = DB::select(" SELECT IFNULL(COUNT(ATT_ID),0) AS present FROM rowcall WHERE _STATUS = 1 AND PUPIL_ID = :pupid AND ATT_ID IN ( SELECT ATT_ID FROM attendance WHERE _datetime <= :dat AND _datetime >= :dat2 AND school_sch_id = :sch AND _desc LIKE :des AND sub_id = :sub ) " , [ "dat" => $d , "dat2" => $d2, "pupid" => $v, "sch" => session('general.school_id'), "des" => '%'.$t.'%', "sub" => $s ] ); 
-          
-          //total no. of times attendance was taken 
-          $results2 = DB::select(" SELECT IFNULL(COUNT(a.ATT_ID),0) AS total FROM attendance a JOIN rowcall r ON r.ATT_ID = a.ATT_ID WHERE a._datetime <= :dat AND a._datetime >= :dat2 AND a.school_sch_id = :sch AND r.PUPIL_ID = :pupid AND a._desc LIKE :des AND a.SUB_ID = :sub " , [ "sch" => session('general.school_id'), "dat" => $d, "dat2" => $d2, "pupid" => $v, "des" => '%'.$t.'%', "sub" => $s ] ); 
+              $results = DB::select(" SELECT IFNULL(COUNT(ATT_ID),0) AS present FROM rowcall WHERE _STATUS = 1 AND PUPIL_ID = :pupid AND ATT_ID IN ( SELECT ATT_ID FROM attendance WHERE _datetime <= :dat AND _datetime >= :dat2 AND school_sch_id = :sch AND _desc LIKE :des AND sub_id = :sub ) " , [ "dat" => $d , "dat2" => $d2, "pupid" => $v, "sch" => session('general.school_id'), "des" => '%'.$t.'%', "sub" => $s ] ); 
+              
+              //total no. of times attendance was taken 
+              $results2 = DB::select(" SELECT IFNULL(COUNT(a.ATT_ID),0) AS total FROM attendance a JOIN rowcall r ON r.ATT_ID = a.ATT_ID WHERE a._datetime <= :dat AND a._datetime >= :dat2 AND a.school_sch_id = :sch AND r.PUPIL_ID = :pupid AND a._desc LIKE :des AND a.SUB_ID = :sub " , [ "sch" => session('general.school_id'), "dat" => $d, "dat2" => $d2, "pupid" => $v, "des" => '%'.$t.'%', "sub" => $s ] ); 
           }  
+            
             $present = 0;//no. of times present
             $nameofstu = "";//name of student
             $total = 0;//total times attendance taken
@@ -429,7 +429,7 @@ class MneController extends Controller
         
         private function getSubjectName($sub_id){
             $tea_cl = "";
-            $name = DB::select("SELECT name as myname FROM subjects WHERE sub_id = :id " , [ "id" => $sub_id ] ); 
+            $name = DB::select("SELECT name as myname FROM subjects WHERE id = :id " , [ "id" => $sub_id ] ); 
             foreach($name as $n){
               $tea_cl = $n->myname;  
             }   
