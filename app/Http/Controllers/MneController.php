@@ -44,6 +44,8 @@ class MneController extends Controller
        //////////////////////////////////////////////TEACHER
        public function loadteachermne_student_gen(Request $request){
          
+        $typeofuser = $request->input('_type');
+
         $dateofreq2 = $request->input('sdate'); //start date
         
         $dateofreq = $request->input('edate'); //end date
@@ -107,7 +109,7 @@ class MneController extends Controller
               
            );
        
-           $theattendsub = $this->getTypeAttendanceS($pupid,$dateofreq,$dateofreq2,$termid);
+           $theattendsub = $this->getTypeAttendanceS( $tea, $pupid,$dateofreq,$dateofreq2,$termid, $typeofuser);
            ////////////////////////////////////////////END ATTENDANCE
           
            ////////////////////////////////////////////EXAMINATIONS
@@ -160,9 +162,9 @@ class MneController extends Controller
 
     /////////////////////////////////////////////////////////////////STUDENT
     
-    private function getTypeAssessmentG($type, $enrol, $pup, $d, $d2 , $term){
+    private function getTypeAssessmentG($type, $enrol, $pup, $d, $d2 , $term, $typeofuser ){
          
-        if (session('teacher.teacher_id')){
+        if ( $typeofuser === "teacher" ){
             $resultsclw = DB::select(" SELECT IFNULL(AVG(s.perf),0) as perf FROM scores s 
             WHERE s.enrol_id = :pup 
             AND s.ass_id IN ( SELECT id FROM assessments e JOIN lessonnote_managements l 
@@ -172,7 +174,7 @@ class MneController extends Controller
             [ "pup" => $enrol, "tea" => session('teacher.teacher_id'), "dat" => $d, "dat2" => $d2, "typ" => $type , "appr" => "1970-10-10 00:00:00",  "term" => $term ]);
         }
 
-        if ( session('head.head_id') ){
+        if ($typeofuser === "principal" ){
           $resultsclw = DB::select(" SELECT IFNULL(AVG(s.perf),0) as perf FROM scores s 
           WHERE s.enrol_id = :pup 
           AND s.exam_id IN 
@@ -215,14 +217,14 @@ class MneController extends Controller
             return $mymsg;
      }
      
-    private function getTypeAttendanceS($pup, $d, $d2, $term){
+    private function getTypeAttendanceS($teaid, $pup, $d, $d2, $term, $typeofuser){
          
          $sub = array();  
          $subnames = array();
          $resultarray = array();
-         $tea =  session('teacher.teacher_id'); 
+         $tea =  $teaid; 
         
-          if (session('teacher.teacher_id')){
+          if ( $typeofuser === "teacher" ){
           //1st get subject of student by teacher attendance
           $resultsubject = DB::select(" SELECT DISTINCT a.sub_id as subid FROM subjectclasses a JOIN enrollments p ON a.class_id = p.class_id WHERE a.tea_id = :tea AND p.pupil_id = :pup  AND p.term_id = :term" ,[ "tea" => $tea, "pup" => $pup , "term" => $term ]);
           }
@@ -249,7 +251,7 @@ class MneController extends Controller
          
         foreach ($sub as $s) {
          
-          if (Auth::user()->_type === 0){
+          if ( $typeofuser === "teacher"  ){
               
          //no. of times present 
           $results = DB::select(" SELECT IFNULL(COUNT(r.att_id),0) AS present FROM rowcalls r JOIN attendances a 
@@ -267,7 +269,7 @@ class MneController extends Controller
          AND r.pupil_id = :pupid AND a.term = :term " , [ "tea" => $tea, "dat" => $d, "dat2" => $d2, "pupid" => $pup, "term" => $term, "sub" => $s ] ); 
           }  
 
-           if (session('head.head_id') || session('supervisor.sup_id') || session('ministry.min_id') ){
+           if ( $typeofuser === "principal" ){
           //no. of times present 
           $results = DB::select(" SELECT IFNULL(COUNT(ATT_ID),0) AS present FROM rowcall WHERE _STATUS = 1 AND PUPIL_ID = :pupid AND ATT_ID IN ( SELECT ATT_ID FROM attendance WHERE _datetime <= :dat AND _datetime >= :dat2 AND school_sch_id = :sch AND _desc LIKE :des AND sub_id = :sub ) " , [ "dat" => $d , "dat2" => $d2, "pupid" => $v, "sch" => session('general.school_id'), "des" => '%'.$t.'%', "sub" => $s ] ); 
           
