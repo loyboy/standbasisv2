@@ -450,7 +450,7 @@ class MneController extends Controller
               
            );
           
-          $theattendsub = $this->TgetTypeAttendanceS( $tea, $dateofreq,$dateofreq2, $termid, $typeofuser );
+          $theattendsub = $this->TgetTypeAttendanceS(  $valofreq, $dateofreq,$dateofreq2, $termid, $typeofuser );
           ///////////////////////////////////////////END ATTENDANCE
           
           //////////////////////////////////////////EXAMINATION
