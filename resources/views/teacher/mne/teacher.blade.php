@@ -321,7 +321,7 @@
                var thedate = document.getElementById("thedate").value;
                var enddate = document.getElementById("thedate2").value;
                var theterm = document.getElementById("theterm").value;
-               var student = document.getElementById("idtea").value;
+              // var student = document.getElementById("idtea").value;
                let tea = {{ Auth::user()->teacher_id }};
                
                console.log("Console ID"+ idofevent);
