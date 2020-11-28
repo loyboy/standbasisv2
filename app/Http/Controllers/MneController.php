@@ -226,6 +226,7 @@ class MneController extends Controller
         
           if ( $typeofuser === "teacher" ){
           //1st get subject of student by teacher attendance
+         // $resultsubject = DB::select(" SELECT DISTINCT a.sub_id as subid, a.class_id as clsid FROM subjectclasses a JOIN enrollments p ON a.class_id = p.class_id WHERE a.tea_id = :tea  AND p.term_id = :term" ,[ "tea" => 10,  "term" => 1 ]);
           $resultsubject = DB::select(" SELECT DISTINCT a.sub_id as subid FROM subjectclasses a JOIN enrollments p ON a.class_id = p.class_id WHERE a.tea_id = :tea AND p.pupil_id = :pup  AND p.term_id = :term" ,[ "tea" => $tea, "pup" => $pup , "term" => $term ]);
           }
         /* else if (Auth::user()->_type === 1){
@@ -535,11 +536,9 @@ private function TgetTypeAttendanceS($tea, $d, $d2, $term, $type){
       
       //1st get subject of student by teacher attendance
        /*$resultsubject = DB::select(" SELECT DISTINCT a.sub_id as subid, a.CLASS_ID as clsid 
-       FROM attendance a JOIN pupil p ON a.CLASS_ID = p.CLASS_ID WHERE a.TEA_ID = :tea ",[ "tea" => $tea ]);*/+
+       FROM attendance a JOIN pupil p ON a.CLASS_ID = p.CLASS_ID WHERE a.TEA_ID = :tea ",[ "tea" => $tea ]);*/
        
-       $resultsubject = DB::select(" SELECT DISTINCT a.sub_id as subid, a.class_id as clsid FROM subjectclasses a JOIN enrollments p ON a.class_id = p.class_id WHERE a.tea_id = :tea  AND p.term_id = :term" ,[ "tea" => 10,  "term" => 1 ]);
-       
-   
+       $resultsubject = DB::select(" SELECT DISTINCT a.sub_id as subid, a.class_id as clsid FROM subjectclasses a JOIN enrollments p ON a.class_id = p.class_id WHERE a.tea_id = :tea  AND p.term_id = :term" ,[ "tea" => $tea,  "term" => $term ]);
        
         $k = 0;
        foreach ($resultsubject as $r){ 
