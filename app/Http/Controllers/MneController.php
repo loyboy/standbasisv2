@@ -703,6 +703,9 @@ private function TgetTypeLsnManagementS($tea, $d, $d2, $term, $type){
          $k++;
      }  
      $i = 0;
+
+       $sch = $this->getschoolId( $tea );
+
        foreach ($sub as $s1) {
         
           foreach ($s1 as $s2 => $vd){    
