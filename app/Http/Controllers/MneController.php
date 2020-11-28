@@ -415,10 +415,9 @@ class MneController extends Controller
          
              //no. of times present 
          $results = DB::select(" SELECT IFNULL(COUNT(a.id),0) AS present, 
-         ( SELECT CONCAT(fname,' ',lname) FROM teachers WHERE id = :teaid ) AS teaname, 
-         ( SELECT class_id FROM enrollments WHERE id = :pupid3 AND term_id = :term ) AS clsid 
+         ( SELECT CONCAT(fname,' ',lname) FROM teachers WHERE id = :teaid ) AS teaname       
          FROM attendances a       
-         WHERE a._date <= :dat AND a._date >= :dat2
+         WHERE a._date <= :dat AND a._date >= :dat2 AND a.term = :term
          AND  a.sub_class_id IN ( SELECT id FROM subjectclasses WHERE tea_id = :teaid2 ) AND a._desc LIKE :desf AND a._done = 1" ,
          [ "dat" => $dateofreq , "dat2" => $dateofreq2, "teaid" => $valofreq , "teaid2" => $valofreq , "desf" => '%'.$termval[$termname].'%', "term" => $termid  ] ); 
          
