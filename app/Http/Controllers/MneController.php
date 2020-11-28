@@ -537,7 +537,7 @@ private function TgetTypeAttendanceS($tea, $d, $d2, $term, $type){
        /*$resultsubject = DB::select(" SELECT DISTINCT a.sub_id as subid, a.CLASS_ID as clsid 
        FROM attendance a JOIN pupil p ON a.CLASS_ID = p.CLASS_ID WHERE a.TEA_ID = :tea ",[ "tea" => $tea ]);*/+
        
-       $resultsubject = DB::select(" SELECT DISTINCT a.sub_id as subid, a.class_id as clsid FROM subjectclasses a JOIN enrollments p ON a.class_id = p.class_id WHERE a.tea_id = :tea  AND p.term_id = :term" ,[ "tea" => $tea,  "term" => $term ]);
+       $resultsubject = DB::select(" SELECT DISTINCT a.sub_id as subid, a.class_id as clsid FROM subjectclasses a JOIN enrollments p ON a.class_id = p.class_id WHERE a.tea_id = :tea  AND p.term_id = :term" ,[ "tea" => $tea,  "term" => 1 ]);
        
    
        
