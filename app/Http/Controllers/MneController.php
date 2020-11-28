@@ -765,7 +765,7 @@ private function TgetTypeAttManagementS($tea, $d, $d2, $term, $type){
        $i = 0;
 
        $sch = $this->getschoolId( $tea );
-       
+
        foreach ($sub as $s1) {
         
           foreach ($s1 as $s2 => $vd){
@@ -779,7 +779,7 @@ private function TgetTypeAttManagementS($tea, $d, $d2, $term, $type){
               $category = $this->getClassCategory( $cls );
   
                 $resultarray[$i][$s2] =  DB::select(" SELECT IFNULL(AVG(perf),0) AS myperf FROM att_performances
-                WHERE att_id IN (SELECT id FROM attendances WHERE _datetime <= :dat AND _datetime >= :dat2 AND term = :term 
+                WHERE att_id IN (SELECT id FROM attendances WHERE _date <= :dat AND _date >= :dat2 AND term = :term 
                 AND sub_class_id IN 
                 ( SELECT id FROM subjectclasses WHERE tea_id = :tea AND sub_id = :sub ) ) " , 
                 [ "tea" => $tea, "dat" => $d, "dat2" => $d2, "sub" => $s2,  "term" => $term ] ); 
