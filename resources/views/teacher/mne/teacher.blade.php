@@ -322,7 +322,7 @@
                var enddate = document.getElementById("thedate2").value;
                var theterm = document.getElementById("theterm").value;
                var student = document.getElementById("idtea").value;
-              
+               let tea = {{ Auth::user()->teacher_id }};
                
                console.log("Console ID"+ idofevent);
                
@@ -345,7 +345,7 @@
                                   url: "mneapiteachergen",//laravel controller method inside web.php
                                   dataType: "json", //expect html to be returned  
                                   data: {
-                                      sdate: thedate, edate: enddate, term: theterm
+                                      sdate: thedate, edate: enddate, term: theterm, tea: Number(tea), _type:'teacher' 
                                   },
                                   success: function(data) { 
                                    var clsname = JSON.parse(JSON.stringify(data));

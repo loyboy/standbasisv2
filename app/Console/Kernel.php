@@ -137,7 +137,7 @@ class Kernel extends ConsoleKernel
             }
             //END ATTENDANCE....................................................
             
-          })->everyMinute()->appendOutputTo(public_path("cron.log"));;
+          })->everyMinute()->appendOutputTo(public_path("cron.log"));
     }
 
     /**
