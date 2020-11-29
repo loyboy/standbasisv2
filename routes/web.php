@@ -135,6 +135,7 @@ Route::post('/attendances_getattcomment', 'AttendanceController@getComment');//
 //MNE
 Route::post('/mneapistudentgen', 'MneController@loadteachermne_student_gen');
 Route::post('/mneapiteachergen', 'MneController@loadteachermne_teacher_gen');
+Route::post('/mneapiclassgen', 'MneController@loadteachermne_class_gen');
 
 Route::Resource('lessonnotes', 'LessonnoteController');
 /////Custom functions for lessonnote

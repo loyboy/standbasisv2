@@ -838,6 +838,328 @@ private function TgetTypeAssessment(  $type , $tea, $d, $d2, $term){
 }
 
 
+//////CLASS
+
+public function loadteachermne_class_gen(Request $request){
+        
+  $dateofreq2 = $request->input('sdate'); //start date
+  
+  $dateofreq = $request->input('edate'); //end date
+  
+  $dateofreq = date('Y-m-d', strtotime('+1 days', strtotime($dateofreq)));//add 1 day to original date to give accuracy
+  
+  $valofreq =  $request->input('cla'); //class ID
+
+  $tea =  $request->input('tea');
+
+  $type =  $request->input('_type');
+   
+  $term = explode(';', $request->input('term') ); //Term ID of the school
+  $termval = array( 1 => "1ST TERM" , 2 => "2ND TERM", 3 => "3RD TERM");
+  
+  $termid = intval( $term[0] );  $termname = intval( $term[1] );
+  
+    ////////////////////////////////////////////ATTENDANCE
+    
+    // $results = DB::select("SELECT COUNT(ATT_ID) AS present, ( SELECT _title FROM CLASS_ WHERE cls_id = :cls2 ) AS clsname FROM rowcall WHERE _STATUS = 1 AND ATT_ID IN ( SELECT ATT_ID FROM attendance WHERE _datetime <= :dat AND _datetime >= :dat2 AND class_id = :cls AND tea_id = :tea ) " , [ "tea" => session('teacher.teacher_id'), "dat" => $dateofreq , "dat2" => $dateofreq2, "cls" => $valofreq , "cls2" => $valofreq ] ); 
+      //total no. of times attendance was taken 
+    // $results2 = DB::select(" SELECT COUNT(ATT_ID) AS total, ( SELECT COUNT(pup_id) FROM pupil WHERE class_id = :cls2 ) AS totalpupil FROM attendance WHERE _datetime <= :dat AND _datetime >= :dat2 AND class_id = :cls AND tea_id = :tea " , [ "tea" => session('teacher.teacher_id') , "cls" => $valofreq,"cls2" => $valofreq, "dat" => $dateofreq,"dat2" => $dateofreq2 ] ); //get attendance 
+   
+          //no. of times present 
+          $results = DB::select(" SELECT IFNULL(COUNT(a.id),0) AS present, 
+          ( SELECT title FROM class_streams WHERE id = :cls2 ) AS clsname       
+          FROM rowcalls r      
+          WHERE r.status = 1 AND r.att_id IN ( SELECT id FROM attendances WHERE _date <= :dat AND _date >= :dat2 AND term = :term AND  
+          sub_class_id IN ( SELECT id FROM subjectclasses WHERE tea_id = :tea AND class_id = :cls ) ) " ,
+          [ "dat" => $dateofreq , "dat2" => $dateofreq2, "tea" => $tea , "term" => $termid , "cls" => $valofreq, "cls2" => $valofreq  ] ); 
+          
+          //total no. of times attendance was taken 
+          $results2 = DB::select(" SELECT IFNULL(COUNT(a.id),0) AS total
+          ( SELECT COUNT(id) FROM enrollments WHERE class_id = :cls2 ) AS totalpupil
+          FROM attendances a  
+          WHERE a._date <= :dat 
+          AND a._date >= :dat2 
+          AND a.term = :term
+          AND a.sub_class_id IN ( SELECT id FROM subjectclasses WHERE tea_id = :tea AND class_id = :cls ) " ,
+         [ "dat" => $dateofreq, "dat2" => $dateofreq2, "tea" => $tea ,   "cls" => $valofreq, "cls2" => $valofreq, "term" => $termid  ] );     
+
+     $present = 0;//no. of times present
+     $nameofclass = "";//name of student
+     $total = 0;//total times attendance taken
+     $totalpupil = 0;
+    
+     $perf = 0;
+         
+     foreach ($results as $r){ $present = $r->present; $nameofclass = $r->clsname; } 
+     foreach ($results2 as $r){ $total = $r->total; $totalpupil = $r->totalpupil; }
+     $totalnew = $totalpupil * $total;
+      if ($present != 0 && $total != 0){
+     $perf = intval($present)/intval($totalnew) * 100;
+          
+      }
+     
+     $theattend = array(
+         '_perf'=> $perf,
+         '_name' => "Nil",
+         '_class' => $nameofclass,
+         '_datenow' => date('Y-m-d H:i:s')
+        
+     );
+    
+    $theattendsub = $this->CgetTypeAttendanceS( $valofreq, $dateofreq, $dateofreq2, $tea, $termid , $type);
+    ///////////////////////////////////////////END ATTENDANCE
+    
+    //////////////////////////////////////////EXAMINATION
+      $theclw = $this->CgetTypeAssessment('CW',$valofreq,$dateofreq,$dateofreq2, $tea, $termid , $type);
+      $thetest = $this->CgetTypeAssessment('TS',$valofreq,$dateofreq,$dateofreq2, $tea, $termid , $type);
+      $theassign = $this->CgetTypeAssessment('AS',$valofreq,$dateofreq,$dateofreq2, $tea, $termid , $type);
+     
+     //$lsnaverage = intval(($theclw->_perf + $thetest->_perf + $theassign->_perf)/3);
+     
+     $themidterm = $this->CgetTypeAssessment('MT',$valofreq,$dateofreq,$dateofreq2, $tea, $termid , $type);
+     $theterminal = $this->CgetTypeAssessment('TE',$valofreq,$dateofreq,$dateofreq2, $tea, $termid , $type);
+     //////////////////////////////////////////END EXAMINATION
+     
+     /////////////////////////////////////////EXAMINATION BY SUBJECT
+     $theclwsub = $this->CgetTypeAssessmentS('CW',$valofreq,$dateofreq,$dateofreq2, $tea, $termid , $type);
+     $thetestsub = $this->CgetTypeAssessmentS('TS',$valofreq,$dateofreq,$dateofreq2, $tea, $termid , $type);
+     $theassignsub = $this->CgetTypeAssessmentS('AS',$valofreq,$dateofreq,$dateofreq2, $tea, $termid , $type);
+     $themidtermsub = $this->CgetTypeAssessmentS('MT',$valofreq,$dateofreq,$dateofreq2, $tea, $termid , $type);
+     $theterminalsub = $this->CgetTypeAssessmentS('TE',$valofreq,$dateofreq,$dateofreq2, $tea, $termid , $type);
+     ////////////////////////////////////////
+     
+ 
+     $mymsg = array(
+         '_att1b' => $theattendsub, 
+         '_att1' => $theattend,
+         '_att2' => $theclw,
+         '_att3' => $thetest,
+         '_att4' => $theassign,
+         '_att5' => $themidterm,
+         '_att6' => $theterminal,
+         '_att7' => $theclwsub,
+         '_att8' => $thetestsub,
+         '_att9' => $theassignsub,
+         '_att10' => $themidtermsub,
+         '_att11' => $theterminalsub
+     );
+     
+      return response()->json($mymsg);
+  
+}
+
+
+  /////////////////////////////////////////////////////////////////CLASS FUNCTIONS
+    
+  private function CgetTypeAssessment($type, $v, $d, $d2,  $tea, $termid , $typeofuser){
+         
+    if ( $type === 'teacher' ){
+  
+  /*$resultsclw = DB::select(" SELECT IFNULL(AVG(s._PERFORMANCE),0) as perf FROM score s 
+  WHERE s.pupil_id IN (SELECT pup_id FROM pupil WHERE class_id = :cls) 
+  AND s.exam_id 
+  IN ( SELECT EXAM_ID FROM exam e JOIN lessonnote l ON l.LSN_ID = e.LSN_ID WHERE e._TYPE = :typ AND l.TEA_ID = :tea AND l._APPROVAL != :appr AND l._SUBMISSION <= :dat AND l._SUBMISSION >= :dat2 ) ",
+ [ "cls" => $v, "tea" => session('teacher.teacher_id'), "dat" => $d, "dat2" => $d2, "typ" => $type , "appr" => "1970-10-10 00:00:00" ]);*/
+
+
+ $resultsclw = DB::select(" SELECT IFNULL(AVG(s.perf),0) as perf FROM scores s 
+ WHERE s.enrol_id IN ( SELECT id FROM enrollments WHERE class_id = :cls ) 
+ AND s.ass_id IN ( SELECT id FROM assessments a JOIN lessonnote_managements l 
+ ON l.lsn_id = a.lsn_id 
+ WHERE a._type = :typ AND l._approval != :appr AND l._submission <= :dat 
+ AND l._submission >= :dat2 AND l.lsn_id IN ( SELECT id FROM lessonnotes WHERE tea_id = :tea AND term_id = :term  ) ) ",
+ 
+ [ "tea" => $tea, "dat" => $d, "dat2" => $d2, "typ" => $type , "appr" => "1970-10-10 00:00:00", "term" => $termid , "cls" => $v ]);
+
+    }
+    if (session('head.head_id') || session('supervisor.sup_id') || session('ministry.min_id') ){
+ /*$resultsclw = DB::select(" SELECT IFNULL(AVG(s._PERFORMANCE),0) as perf FROM score s WHERE s.pupil_id IN (SELECT pup_id FROM pupil WHERE class_id = :cls) AND s.exam_id IN ( SELECT EXAM_ID FROM exam e JOIN lessonnote l ON l.LSN_ID = e.LSN_ID WHERE e._TYPE = :typ AND l.school_sch_id = :sch AND l._APPROVAL != :appr AND l._SUBMISSION <= :dat AND l._SUBMISSION >= :dat2 ) ",
+ [ "cls" => $v, "sch" => session('general.school_id'), "dat" => $d, "dat2" => $d2, "typ" => $type , "appr" => "1970-10-10 00:00:00" ]);*/
+  
+    }
+  //
+   $results = DB::select(" SELECT title FROM class_streams WHERE id = :cls  " , [ "cls" => $v ] );    
+    
+     $nameofstu = "";//name of student
+     $perf = 0;
+     
+     foreach ($results as $r){ $nameofstu = $r->title; } 
+     foreach ($resultsclw as $r){ $perf = $r->perf; } 
+     
+       $mymsg = array(
+         '_perf'=> $perf,
+         '_name' => "Nil",
+         '_class' => $nameofstu,
+         '_datenow' => date('Y-m-d H:i:s')
+        
+     );
+     return $mymsg;
+}
+
+private function CgetTypeAttendanceS($v, $d, $d2, $tea, $termid , $type){
+  
+  $sub = array();  
+  $subnames = array();
+  $resultarray = array();
+ 
+      if ( $type === 'teacher' ){
+   //1st get subject of student by teacher attendance
+ //  $resultsubject = DB::select(" SELECT DISTINCT a.SUB_ID as subid FROM attendance a JOIN pupil p ON a.CLASS_ID = p.CLASS_ID WHERE a.TEA_ID = :tea AND p.CLASS_ID = :cls ",[ "tea" =>  session('teacher.teacher_id'), "cls" => $v ]);
+    
+   $resultsubject = DB::select(" SELECT DISTINCT a.sub_id as subid, a.class_id as clsid FROM subjectclasses a JOIN enrollments p ON a.class_id = p.class_id WHERE a.tea_id = :tea  AND p.term_id = :term" ,[ "tea" => $tea,  "term" => $termid ]);
+         
+  }
+      if (session('head.head_id') || session('supervisor.sup_id') || session('ministry.min_id') ){
+  // $resultsubject = DB::select(" SELECT DISTINCT a.SUB_ID as subid FROM attendance a JOIN pupil p ON a.CLASS_ID = p.CLASS_ID WHERE p.CLASS_ID = :cls ",[ "cls" => $v ]);
+          
+      }
+   foreach ($resultsubject as $r){ 
+       $subn = $r->subid;
+       $sub[] = $subn;
+       $subnames[$subn] = $this->getSubjectName($subn);
+   }  
+   
+ //load perfomance of student in Attendance per subject offered......
+  
+ foreach ($sub as $s) {
+     if ( $type === 'teacher' ){
+    
+   // $results = DB::select("SELECT COUNT(ATT_ID) AS present, ( SELECT _title FROM CLASS_ WHERE cls_id = :cls2 ) AS clsname FROM rowcall WHERE _STATUS = 1 AND ATT_ID IN ( SELECT ATT_ID FROM attendance WHERE _datetime <= :dat AND _datetime >= :dat2 AND class_id = :cls AND _desc LIKE :des AND sub_id = :sub AND tea_id = :tea ) " , [ "tea" => session('teacher.teacher_id') , "dat" => $d , "dat2" => $d2, "cls" => $v , "cls2" => $v, "sub" => $s, "des" => '%'.$t.'%'  ] );  
+      //total no. of times attendance was taken 
+   // $results2 = DB::select(" SELECT COUNT(ATT_ID) AS total, ( SELECT COUNT(pup_id) FROM pupil WHERE class_id = :cls2 ) AS totalpupil FROM attendance WHERE _datetime <= :dat AND _datetime >= :dat2 AND class_id = :cls AND _desc LIKE :des AND sub_id = :sub AND tea_id = :tea " , [ "tea" => session('teacher.teacher_id') , "cls" => $v ,"cls2" => $v , "dat" => $d ,"dat2" => $d2, "des" => '%'.$t.'%', "sub" => $s ] ); //get attendance 
+    
+     //no. of times present 
+     $results = DB::select(" SELECT IFNULL(COUNT(a.id),0) AS present, 
+     ( SELECT title FROM class_streams WHERE id = :cls2 ) AS clsname       
+     FROM rowcalls r      
+     WHERE r.status = 1 AND r.att_id IN ( SELECT id FROM attendances WHERE _date <= :dat AND _date >= :dat2 AND term = :term AND  
+     sub_class_id IN ( SELECT id FROM subjectclasses WHERE tea_id = :tea AND class_id = :cls AND sub_id = :sub ) ) " ,
+     [ "dat" => $dateofreq , "dat2" => $dateofreq2, "tea" => $tea , "term" => $termid , "cls" => $valofreq, "cls2" => $valofreq , "sub" => $s ] ); 
+     
+     //total no. of times attendance was taken 
+     $results2 = DB::select(" SELECT IFNULL(COUNT(a.id),0) AS total
+     ( SELECT COUNT(id) FROM enrollments WHERE class_id = :cls2 ) AS totalpupil
+     FROM attendances a  
+     WHERE a._date <= :dat 
+     AND a._date >= :dat2 
+     AND a.term = :term
+     AND a.sub_class_id IN ( SELECT id FROM subjectclasses WHERE tea_id = :tea AND class_id = :cls AND sub_id = :sub ) " ,
+    [ "dat" => $dateofreq, "dat2" => $dateofreq2, "tea" => $tea ,   "cls" => $valofreq, "cls2" => $valofreq, "term" => $termid, "sub" => $s  ] );  
+  
+  }
+     if (session('head.head_id') || session('supervisor.sup_id') || session('ministry.min_id') ) {
+   
+      /* $results = DB::select("SELECT COUNT(ATT_ID) AS present, ( SELECT _title FROM CLASS_ WHERE cls_id = :cls2 ) AS clsname FROM rowcall WHERE _STATUS = 1 AND ATT_ID IN ( SELECT ATT_ID FROM attendance WHERE _datetime <= :dat AND _datetime >= :dat2 AND class_id = :cls AND _desc LIKE :des AND sub_id = :sub AND school_sch_id = :tea ) " , [ "tea" => session('general.school_id') , "dat" => $d , "dat2" => $d2, "cls" => $v , "cls2" => $v, "sub" => $s, "des" => '%'.$t.'%'  ] );  
+      //total no. of times attendance was taken 
+    $results2 = DB::select(" SELECT COUNT(ATT_ID) AS total, ( SELECT COUNT(pup_id) FROM pupil WHERE class_id = :cls2 ) AS totalpupil FROM attendance WHERE _datetime <= :dat AND _datetime >= :dat2 AND class_id = :cls AND _desc LIKE :des AND sub_id = :sub AND school_sch_id = :tea " , [ "tea" => session('general.school_id') , "cls" => $v ,"cls2" => $v , "dat" => $d ,"dat2" => $d2, "des" => '%'.$t.'%', "sub" => $s ] ); //get attendance 
+     */
+
+     }
+ 
+     
+     $present = 0;//no. of times present
+     $nameofstu = "";//name of student
+     $total = 0;//total times attendance taken
+     $clsid = null;
+     $totalpupil = 0;
+     $perf = 0;
+         
+     foreach ($results as $r){ $present = $r->present; } 
+     foreach ($results2 as $r){ $total = $r->total; $totalpupil = $r->totalpupil; }
+     
+     $totalnew = $totalpupil * $total;
+       if ($present != 0 && $total != 0){
+     $perf = intval($present)/intval($totalnew) * 100;}
+    
+     $resultarray[$s] =  $perf;
+      
+ }
+     
+       $mymsg = array(
+         '_subid' => $sub,
+         '_arrayperf'=> $resultarray,
+         '_subjects' => $subnames,
+         '_datenow' => date('Y-m-d H:i:s')
+       );
+     
+  return $mymsg;
+} 
+
+private function CgetTypeAssessmentS($type, $v, $d, $d2, $tea, $termid , $typeofuser ){
+  
+  $sub = array();  
+  $subnames = array();
+  $resultarray = array();
+  
+  $nameofstu = "";//name of student
+  $clsid = null;
+ 
+   //1st get subject of student by teacher attendance
+    if (  $typeofuser === 'teacher' ){
+      //  $resultsubject = DB::select(" SELECT DISTINCT a.SUB_ID as subid FROM attendance a JOIN pupil p ON a.CLASS_ID = p.CLASS_ID WHERE a.TEA_ID = :tea AND p.CLASS_ID = :cls ",[ "tea" => $tea, "cls" => $v ]);
+    
+        $resultsubject = DB::select(" SELECT DISTINCT a.sub_id as subid, a.class_id as clsid FROM subjectclasses a JOIN enrollments p ON a.class_id = p.class_id WHERE a.tea_id = :tea  AND p.term_id = :term" ,[ "tea" => $tea,  "term" => $termid ]);
+ 
+    }
+    
+    if ( session('head.head_id') || session('supervisor.sup_id') || session('ministry.min_id') ){
+        //$resultsubject = DB::select(" SELECT DISTINCT a.SUB_ID as subid FROM attendance a JOIN pupil p ON a.CLASS_ID = p.CLASS_ID WHERE p.CLASS_ID = :cls ",[ "cls" => $v ]);
+    }
+   foreach ($resultsubject as $r){ 
+       $subn = $r->subid;
+       $sub[] = $subn;
+       $subnames[$subn] = $this->getSubjectName($subn);
+   }  
+   
+  // $results = DB::select(" SELECT _title FROM CLASS_ WHERE cls_id = :cls  " , [ "cls" => $v ] ); 
+   $results = DB::select(" SELECT title FROM class_streams WHERE id = :cls  " , [ "cls" => $v ] );
+   
+   foreach ($results as $r){ $nameofstu = $r->title;  }  
+   
+  //load perfomance of student per subject offered......
+ foreach ($sub as $s) {
+      
+     if (  $typeofuser === 'teacher'  ){
+
+       /* $resultarray[$s] =  DB::select(" SELECT IFNULL(AVG(s._PERFORMANCE),0) as perf FROM score s 
+        WHERE s.pupil_id IN (SELECT pup_id FROM pupil WHERE class_id = :cls) 
+        AND s.exam_id IN ( SELECT EXAM_ID FROM exam e JOIN lessonnote l 
+        ON l.LSN_ID = e.LSN_ID WHERE e._TYPE = :typ AND l._APPROVAL != :appr AND l._SUBMISSION <= :dat AND l._SUBMISSION >= :dat2 AND l.SUB_ID = :sub AND l.TEA_ID = :tea )  ",
+        
+        [ "cls" => $v, "tea" => $tea, "dat" => $d, "dat2" => $d2, "typ" => $type, "appr" => "1970-10-10 00:00:00" , "sub" => $s ]);*/
+
+        $resultarray[$s] = DB::select(" SELECT IFNULL(AVG(s.perf),0) as perf FROM scores s 
+        WHERE s.enrol_id IN ( SELECT id FROM enrollments WHERE class_id = :cls ) 
+        AND s.ass_id IN ( SELECT id FROM assessments a JOIN lessonnote_managements l 
+        ON l.lsn_id = a.lsn_id 
+        WHERE a._type = :typ AND l._approval != :appr AND l._submission <= :dat 
+        AND l._submission >= :dat2 AND l.lsn_id IN ( SELECT id FROM lessonnotes WHERE tea_id = :tea AND term_id = :term AND sub_id = :sub  ) ) ",
+        
+        [ "tea" => $tea, "dat" => $d, "dat2" => $d2, "typ" => $type , "appr" => "1970-10-10 00:00:00", "term" => $termid , "cls" => $v, "sub" => $s ]);
+
+      }
+     
+     if (session('head.head_id') || session('supervisor.sup_id') || session('ministry.min_id') ){
+       /*$resultarray[$s] =  DB::select(" SELECT IFNULL(AVG(s._PERFORMANCE),0) as perf FROM score s WHERE s.pupil_id IN (SELECT pup_id FROM pupil WHERE class_id = :cls) AND s.exam_id IN ( SELECT EXAM_ID FROM exam e JOIN lessonnote l ON l.LSN_ID = e.LSN_ID WHERE e._TYPE = :typ AND l._APPROVAL != :appr AND l._SUBMISSION <= :dat AND l._SUBMISSION >= :dat2 AND l.SUB_ID = :sub AND l.school_sch_id = :tea)  ",
+     [ "cls" => $v, "tea" => session('general.school_id'), "dat" => $d, "dat2" => $d2, "typ" => $type, "appr" => "1970-10-10 00:00:00" , "sub" => $s ]);*/
+       
+     } 
+      
+  }
+     //AVG(s._PERFORMANCE) as perf
+       $mymsg = array(
+         '_subid' => $sub,
+         '_arrayperf'=> $resultarray,
+         '_subjects' => $subnames,
+         '_name' => "Nil",
+         '_class' => $nameofstu,
+         '_datenow' => date('Y-m-d H:i:s')
+       );
+     
+  return $mymsg;
+}  
+
+
       ///////////////Privat emEthods
 
         private function getschoolId($tea){

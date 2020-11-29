@@ -190,7 +190,7 @@
 
 @include  ('modals/student')
 @include  ('modals/teacher')
-
+@include  ('modals/class')
 
 @section('myscript')
     <script>
@@ -466,7 +466,7 @@
                        var enddate = document.getElementById("thedate2").value;
                        var theterm = document.getElementById("theterm").value;
                        var classx  =  $('.mymneselectclass').val();
-                      
+                       let tea = {{ Auth::user()->teacher_id }};
                        
                        console.log("Console ID"+ idofevent);
                        
@@ -493,7 +493,7 @@
                                           url: "mneapiclassgen",//laravel controller method inside web.php
                                           dataType: "json", //expect html to be returned  
                                           data: {
-                                              sdate: thedate, edate: enddate, term: theterm , cla: classx
+                                              sdate: thedate, edate: enddate, term: theterm , cla: classx ,tea: Number(tea), _type:'teacher' 
                                           },
                                           success: function(data) { 
                                            

@@ -1,6 +1,6 @@
 <!-- View MNE Student page -->
 <div class="modal fade" id="getmneteacher" tabindex="2" role="dialog" style="font-family: 'Trebuchet MS'; ">
-        <div class="modal-dialog modal-xl">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-success">
                     <h4 class="modal-title" id=""> MNE Teacher Result Page <i class="fa"></i></h4>
