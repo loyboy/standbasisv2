@@ -872,7 +872,7 @@ public function loadteachermne_class_gen(Request $request){
           $results = DB::select(" SELECT IFNULL(COUNT(r.id),0) AS present, 
           ( SELECT title FROM class_streams WHERE id = :cls2 ) AS clsname       
           FROM rowcalls r      
-          WHERE r.status = 1 AND r.att_id IN ( SELECT id FROM attendances WHERE _date <= :dat AND _date >= :dat2 AND term = :term AND  
+          WHERE r._status = 1 AND r.att_id IN ( SELECT id FROM attendances WHERE _date <= :dat AND _date >= :dat2 AND term = :term AND  
           sub_class_id IN ( SELECT id FROM subjectclasses WHERE tea_id = :tea AND class_id = :cls ) ) " ,
           [ "dat" => $dateofreq , "dat2" => $dateofreq2, "tea" => $tea , "term" => $termid , "cls" => $valofreq, "cls2" => $valofreq  ] ); 
           
