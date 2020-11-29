@@ -837,8 +837,7 @@ private function TgetTypeAssessment(  $type , $tea, $d, $d2, $term){
        return $mymsg;
 }
 
-
-//////CLASS
+/////////////////////////////CLASS
 
 public function loadteachermne_class_gen(Request $request){
         
@@ -854,12 +853,14 @@ public function loadteachermne_class_gen(Request $request){
 
   $type =  $request->input('_type');
 
-  $term = $request->input('term');
+  //$term = $request->input('term');
    
   $term = explode(';', $request->input('term') ); //Term ID of the school
   $termval = array( 1 => "1ST TERM" , 2 => "2ND TERM", 3 => "3RD TERM");
   
-  $termid = intval( $term[0] );  $termname = intval( $term[1] );
+  $termid = intval( $term[0] );  
+  
+  $termname = intval( $term[1] );
   
     ////////////////////////////////////////////ATTENDANCE
     
@@ -950,36 +951,27 @@ public function loadteachermne_class_gen(Request $request){
   
 }
 
-
-  /////////////////////////////////////////////////////////////////CLASS FUNCTIONS
+/////////////////////////////////////////////////////////////////CLASS FUNCTIONS
     
   private function CgetTypeAssessment($type, $v, $d, $d2,  $tea, $termid , $typeofuser){
          
     if ( $type === 'teacher' ){
-  
-  /*$resultsclw = DB::select(" SELECT IFNULL(AVG(s._PERFORMANCE),0) as perf FROM score s 
-  WHERE s.pupil_id IN (SELECT pup_id FROM pupil WHERE class_id = :cls) 
-  AND s.exam_id 
-  IN ( SELECT EXAM_ID FROM exam e JOIN lessonnote l ON l.LSN_ID = e.LSN_ID WHERE e._TYPE = :typ AND l.TEA_ID = :tea AND l._APPROVAL != :appr AND l._SUBMISSION <= :dat AND l._SUBMISSION >= :dat2 ) ",
- [ "cls" => $v, "tea" => session('teacher.teacher_id'), "dat" => $d, "dat2" => $d2, "typ" => $type , "appr" => "1970-10-10 00:00:00" ]);*/
 
-
- $resultsclw = DB::select(" SELECT IFNULL(AVG(s.perf),0) as perf FROM scores s 
- WHERE s.enrol_id IN ( SELECT id FROM enrollments WHERE class_id = :cls ) 
- AND s.ass_id IN ( SELECT id FROM assessments a JOIN lessonnote_managements l 
- ON l.lsn_id = a.lsn_id 
- WHERE a._type = :typ AND l._approval != :appr AND l._submission <= :dat 
- AND l._submission >= :dat2 AND l.lsn_id IN ( SELECT id FROM lessonnotes WHERE tea_id = :tea AND term_id = :term  ) ) ",
- 
- [ "tea" => $tea, "dat" => $d, "dat2" => $d2, "typ" => $type , "appr" => "1970-10-10 00:00:00", "term" => $termid , "cls" => $v ]);
+        $resultsclw = DB::select(" SELECT IFNULL(AVG(s.perf),0) as perf FROM scores s 
+        WHERE s.enrol_id IN ( SELECT id FROM enrollments WHERE class_id = :cls ) 
+        AND s.ass_id IN ( SELECT id FROM assessments a JOIN lessonnote_managements l 
+        ON l.lsn_id = a.lsn_id 
+        WHERE a._type = :typ AND l._approval != :appr AND l._submission <= :dat 
+        AND l._submission >= :dat2 AND l.lsn_id IN ( SELECT id FROM lessonnotes WHERE tea_id = :tea AND term_id = :term  ) ) ",
+        
+        [ "tea" => $tea, "dat" => $d, "dat2" => $d2, "typ" => $type , "appr" => "1970-10-10 00:00:00", "term" => $termid , "cls" => $v ]);
 
     }
     if (session('head.head_id') || session('supervisor.sup_id') || session('ministry.min_id') ){
- /*$resultsclw = DB::select(" SELECT IFNULL(AVG(s._PERFORMANCE),0) as perf FROM score s WHERE s.pupil_id IN (SELECT pup_id FROM pupil WHERE class_id = :cls) AND s.exam_id IN ( SELECT EXAM_ID FROM exam e JOIN lessonnote l ON l.LSN_ID = e.LSN_ID WHERE e._TYPE = :typ AND l.school_sch_id = :sch AND l._APPROVAL != :appr AND l._SUBMISSION <= :dat AND l._SUBMISSION >= :dat2 ) ",
- [ "cls" => $v, "sch" => session('general.school_id'), "dat" => $d, "dat2" => $d2, "typ" => $type , "appr" => "1970-10-10 00:00:00" ]);*/
-  
+          /*$resultsclw = DB::select(" SELECT IFNULL(AVG(s._PERFORMANCE),0) as perf FROM score s WHERE s.pupil_id IN (SELECT pup_id FROM pupil WHERE class_id = :cls) AND s.exam_id IN ( SELECT EXAM_ID FROM exam e JOIN lessonnote l ON l.LSN_ID = e.LSN_ID WHERE e._TYPE = :typ AND l.school_sch_id = :sch AND l._APPROVAL != :appr AND l._SUBMISSION <= :dat AND l._SUBMISSION >= :dat2 ) ",
+          [ "cls" => $v, "sch" => session('general.school_id'), "dat" => $d, "dat2" => $d2, "typ" => $type , "appr" => "1970-10-10 00:00:00" ]);*/
     }
-  //
+  
    $results = DB::select(" SELECT title FROM class_streams WHERE id = :cls  " , [ "cls" => $v ] );    
     
      $nameofstu = "";//name of student
