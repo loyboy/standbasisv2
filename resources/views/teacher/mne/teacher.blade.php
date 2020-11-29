@@ -190,7 +190,7 @@
 
 @include  ('modals/student')
 @include  ('modals/teacher')
-@include  ('modals/classm')
+
 
 @section('myscript')
     <script>
