@@ -193,7 +193,7 @@ class PupilController extends Controller
             $term = Term::where('school_id',$tea->school_id)->where('_status',1)->first();
 
             //foreach ($subclass as $sc){ 
-                $enrol = DB::select("SELECT cs.title as title, su.class_id  FROM subjectclasses su 
+                $enrol = DB::select("SELECT cs.title as title, cs.ext as ext, su.class_id  FROM subjectclasses su 
                 INNER JOIN class_streams cs ON su.class_id = cs.id 
                 INNER JOIN subjects s ON s.id = su.sub_id
                 WHERE su.tea_id = :tea
@@ -202,7 +202,7 @@ class PupilController extends Controller
 
                 //$enrol = Enrollment::where('class_id',$sc->class_id)->where('term_id',$term->term)->groupBy('class_id')->get();
                 foreach ($enrol as $en){
-                    $datablock[] = array("ClassID" => $en->class_id , "ClassName" => $en->title );
+                    $datablock[] = array("ClassID" => $en->class_id , "ClassName" => $en->title . ' ' .  $en->ext  );
                 }
            // }
 

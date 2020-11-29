@@ -853,6 +853,8 @@ public function loadteachermne_class_gen(Request $request){
   $tea =  $request->input('tea');
 
   $type =  $request->input('_type');
+
+  $term = $request->input('term');
    
   $term = explode(';', $request->input('term') ); //Term ID of the school
   $termval = array( 1 => "1ST TERM" , 2 => "2ND TERM", 3 => "3RD TERM");
