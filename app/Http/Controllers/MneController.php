@@ -860,7 +860,7 @@ public function loadteachermne_class_gen(Request $request){
   $term = explode(';', $request->input('term') ); //Term ID of the school
   $termval = array( 1 => "1ST TERM" , 2 => "2ND TERM", 3 => "3RD TERM");
   
-  $termid = intval( isset($term[0]) ? $term[1] : '' );  $termname = intval( isset($term[1]) ? $term[1] : '' );
+  $termid = intval( isset($term[0]) ? $term[1] : '' );  //$termname = intval( isset($term[1]) ? $term[1] : '' );
   
     ////////////////////////////////////////////ATTENDANCE
     
