@@ -869,7 +869,7 @@ public function loadteachermne_class_gen(Request $request){
     // $results2 = DB::select(" SELECT COUNT(ATT_ID) AS total, ( SELECT COUNT(pup_id) FROM pupil WHERE class_id = :cls2 ) AS totalpupil FROM attendance WHERE _datetime <= :dat AND _datetime >= :dat2 AND class_id = :cls AND tea_id = :tea " , [ "tea" => session('teacher.teacher_id') , "cls" => $valofreq,"cls2" => $valofreq, "dat" => $dateofreq,"dat2" => $dateofreq2 ] ); //get attendance 
    
           //no. of times present 
-          $results = DB::select(" SELECT IFNULL(COUNT(a.id),0) AS present, 
+          $results = DB::select(" SELECT IFNULL(COUNT(r.id),0) AS present, 
           ( SELECT title FROM class_streams WHERE id = :cls2 ) AS clsname       
           FROM rowcalls r      
           WHERE r.status = 1 AND r.att_id IN ( SELECT id FROM attendances WHERE _date <= :dat AND _date >= :dat2 AND term = :term AND  
