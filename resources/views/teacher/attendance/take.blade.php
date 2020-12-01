@@ -132,7 +132,7 @@
         xhr.onload = function() {
             let responseObj = xhr.response;
             if (responseObj.status === "Failed"){
-                alert(responseObj.message + '\\n' + responseObj.variables );
+                alert(responseObj.message + '\n' + responseObj.variables );
                 document.getElementById('loading').style.display = 'none';
                 return;
             } 

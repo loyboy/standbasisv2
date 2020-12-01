@@ -167,6 +167,7 @@ class PupilController extends Controller
 
             $data['status'] = "Success";
             $data['message'] = "Pupil data is good xxx";
+            $data['variables'] = $teaid . " > ". $term->id . " > ". $tea->school_id ;
             $data['data'] =  $datablock;
 
             return response()->json($data);
