@@ -995,11 +995,10 @@ private function CgetTypeAttendanceS($v, $d, $d2, $tea, $termid , $type){
   $sub = array();  
   $subnames = array();
   $resultarray = array();
+  $resultsubject = null;
  
-      if ( $type === 'teacher' ){
-   //1st get subject of student by teacher attendance
- //  $resultsubject = DB::select(" SELECT DISTINCT a.SUB_ID as subid FROM attendance a JOIN pupil p ON a.CLASS_ID = p.CLASS_ID WHERE a.TEA_ID = :tea AND p.CLASS_ID = :cls ",[ "tea" =>  session('teacher.teacher_id'), "cls" => $v ]);
-    
+  if ( $type === 'teacher' ){
+   
    $resultsubject = DB::select(" SELECT DISTINCT a.sub_id as subid, a.class_id as clsid FROM subjectclasses a JOIN enrollments p ON a.class_id = p.class_id WHERE a.tea_id = :tea  AND p.term_id = :term" ,[ "tea" => $tea,  "term" => $termid ]);
          
   }
