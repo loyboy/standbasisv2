@@ -146,8 +146,8 @@
                 var headyear = document.querySelector('#theterm');
                 console.log("The head year: " + headyear);
                 headyear.value = responseObj.data.term;*/
-                
-                console.log(  " Variables " + responseObj.variables );
+
+               
                 var selectinput3 = document.querySelector('#theterm');
                 var termval =  { '1' : "1ST TERM" , '2' : "2ND TERM", '3' : "3RD TERM" };
                 for ( let datarow of responseObj.data ){ 
@@ -162,6 +162,7 @@
                     document.getElementById('loading').style.display = 'none';
                     return;
                 }
+                console.log(  " Variables " + responseObj.variables );
                 var selectinput = document.querySelector('.mymneselectstudent');
                
                 for ( let datarow of responseObj.data ){ 
