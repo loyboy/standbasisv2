@@ -159,7 +159,7 @@ class PupilController extends Controller
             $term = Term::where('school_id',$tea->school_id)->where('_status',1)->first();
 
             foreach ($subclass as $sc){ 
-                $enrol = Enrollment::where('class_id',$sc->class_id)->where('term_id',$term->term)->get();
+                $enrol = Enrollment::where('class_id',$sc->class_id)->where('term_id',$term->id)->get();
                 foreach ($enrol as $en){
                     $datablock[] = array("PupilName" => $en->pupil->fname." ".$en->pupil->lname, "PupilId" => $en->pupil->id, "Enrolid" => $en->id, "ClassID" => $en->classtream->id , "ClassName" => $en->classtream->title );
                 }
