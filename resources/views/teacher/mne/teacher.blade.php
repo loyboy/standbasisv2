@@ -135,7 +135,7 @@
         xhr.onload = function() {
                 let responseObj = xhr.response;
                 if (responseObj.status === "Failed"){
-                    alert(responseObj.message + '\n' + responseObj.variables );
+                    alert(responseObj.message);
                     document.getElementById('loading').style.display = 'none';
                     return;
                 }
@@ -146,6 +146,8 @@
                 var headyear = document.querySelector('#theterm');
                 console.log("The head year: " + headyear);
                 headyear.value = responseObj.data.term;*/
+                
+                console.log(  " Variables " + responseObj.variables );
                 var selectinput3 = document.querySelector('#theterm');
                 var termval =  { '1' : "1ST TERM" , '2' : "2ND TERM", '3' : "3RD TERM" };
                 for ( let datarow of responseObj.data ){ 
