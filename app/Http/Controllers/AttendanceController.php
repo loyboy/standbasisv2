@@ -228,6 +228,7 @@ class AttendanceController extends Controller
          
           //Get the subjects this teacher teaches
             $tea_subjects = $this->getTeacherSubject($user->teacher_id, $theclassid, $theday, $thetimeid );
+            
             if (!empty($tea_subjects)){
                 foreach($tea_subjects as $ts){ 
                         $timeobj = Timetable::findOrFail($ts->TIME_ID);                   
@@ -273,7 +274,9 @@ class AttendanceController extends Controller
             }
             else{
                 $data['status'] = "Failed";
-                $data['message'] = "This teacher has no subject classes TODAY.";
+                $data['message'] = " This teacher has no subject classes TODAY " ;
+                $data['variables'] = $user->teacher_id . " > ".  $theclassid . " > " . $theday . " > " . $thetimeid;
+                 
                 return response()->json($data);
             }
 
