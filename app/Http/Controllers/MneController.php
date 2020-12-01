@@ -959,7 +959,7 @@ public function loadteachermne_class_gen(Request $request){
 
         $resultsclw = DB::select(" SELECT IFNULL(AVG(s.perf),0) as perf FROM scores s 
         WHERE s.enrol_id IN ( SELECT id FROM enrollments WHERE class_id = :cls ) 
-        AND s.ass_id IN ( SELECT id FROM assessments a JOIN lessonnote_managements l 
+        AND s.ass_id IN ( SELECT a.id FROM assessments a JOIN lessonnote_managements l 
         ON l.lsn_id = a.lsn_id 
         WHERE a._type = :typ AND l._approval != :appr AND l._submission <= :dat 
         AND l._submission >= :dat2 AND l.lsn_id IN ( SELECT id FROM lessonnotes WHERE tea_id = :tea AND term_id = :term  ) ) ",
