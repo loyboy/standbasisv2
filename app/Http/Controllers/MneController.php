@@ -877,7 +877,7 @@ public function loadteachermne_class_gen(Request $request){
           [ "dat" => $dateofreq , "dat2" => $dateofreq2, "tea" => $tea , "term" => $termid , "cls" => $valofreq, "cls2" => $valofreq  ] ); 
           
           //total no. of times attendance was taken 
-          $results2 = DB::select(" SELECT IFNULL(COUNT(a.id),0) AS total
+          $results2 = DB::select(" SELECT IFNULL(COUNT(a.id),0) AS total ,
           ( SELECT COUNT(id) FROM enrollments WHERE class_id = :cls2 ) AS totalpupil
           FROM attendances a  
           WHERE a._date <= :dat 
