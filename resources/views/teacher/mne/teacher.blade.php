@@ -142,12 +142,6 @@
                 console.log("First comment Data: " + responseObj.data);
                 document.getElementById('loading').style.display = 'none';
                 
-               /* document.getElementById('thedate').value = responseObj.data.date;
-                var headyear = document.querySelector('#theterm');
-                console.log("The head year: " + headyear);
-                headyear.value = responseObj.data.term;*/
-
-               
                 var selectinput3 = document.querySelector('#theterm');
                 var termval =  { '1' : "1ST TERM" , '2' : "2ND TERM", '3' : "3RD TERM" };
                 for ( let datarow of responseObj.data ){ 
@@ -193,7 +187,7 @@
 
 @include  ('modals/student')
 @include  ('modals/teacher')
-
+@include  ('modals/classm')
 
 @section('myscript')
     <script>
