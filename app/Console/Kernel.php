@@ -35,7 +35,7 @@ class Kernel extends ConsoleKernel
           
             //POPULATE ATTENDANCE BY DEFAULT....................................................
             
-            //get all the schools that are ready and SRI certid=fied
+            //get all the schools that are ready and SRI certified
             $allschools = School::where('sri', 1)->get();
            
             foreach($allschools as $sch){
@@ -56,7 +56,6 @@ class Kernel extends ConsoleKernel
                  $todaydate = date("Y-m-d");
                  
                  //teachers in the school
-                  //$teachers = DB::select(" SELECT * FROM teacher t WHERE t.school_sch_id = :sch AND t._status = :st " , [ "sch" => $sch->sch_id, "st" => 1 ] );  
                   $teachers = Teacher::where('school_id', $sch->id)->where('_status', 1)->where('_type', 0)->get();
 
                   $time = DB::select('SELECT term , resumedate , ( week(curdate()) - week(resumedate) + 1 ) AS weeksout FROM terms WHERE _status = 1 AND school_id = :sch;', [ "sch" => $sch->id ]);
@@ -105,7 +104,7 @@ class Kernel extends ConsoleKernel
                       
                       echo "Subject now teaching is...".$rt->TEA_ID."\r\n";
                       $done = 0; $delegated = null;
-                      $checkifattexists = DB::select("SELECT * FROM attendances WHERE sub_class_id = :id AND time_id = :timex AND term = :term AND _date LIKE :dat " , ['id' => $rt->subclass, 'term' => $school_time->term , "dat" => '%'.$todaydate.'%', "timex" => $rt->time_id  ] ); 
+                      $checkifattexists = DB::select("SELECT * FROM attendances WHERE sub_class_id = :id AND time_id = :timex AND term = :term AND _date LIKE :dat " , ['id' => $rt->subclass, 'term' => $school_time->id , "dat" => '%'.$todaydate.'%', "timex" => $rt->time_id  ] ); 
   
                           if (empty($checkifattexists)){ 
                             $td = date("Y-m-d H:i");
