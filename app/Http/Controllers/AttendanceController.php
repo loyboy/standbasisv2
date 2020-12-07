@@ -275,7 +275,7 @@ class AttendanceController extends Controller
             else{
                 $data['status'] = "Failed";
                 $data['message'] = " This teacher has no subject classes TODAY " ;
-                $data['variables'] = $user->teacher_id . " > ".  $theclassid . " > " . $theday . " > " . $thetimeid;
+              //  $data['variables'] = $user->teacher_id . " > ".  $theclassid . " > " . $theday . " > " . $thetimeid;
                  
                 return response()->json($data);
             }

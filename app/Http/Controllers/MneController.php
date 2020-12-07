@@ -1096,6 +1096,7 @@ private function CgetTypeAssessmentS($type, $v, $d, $d2, $tea, $termid , $typeof
     if ( session('head.head_id') || session('supervisor.sup_id') || session('ministry.min_id') ){
         //$resultsubject = DB::select(" SELECT DISTINCT a.SUB_ID as subid FROM attendance a JOIN pupil p ON a.CLASS_ID = p.CLASS_ID WHERE p.CLASS_ID = :cls ",[ "cls" => $v ]);
     }
+    
    foreach ($resultsubject as $r){ 
        $subn = $r->subid;
        $sub[] = $subn;
