@@ -58,11 +58,11 @@ class Kernel extends ConsoleKernel
                  //teachers in the school
                   $teachers = Teacher::where('school_id', $sch->id)->where('_status', 1)->where('_type', 0)->get();
 
-                  $time = DB::select('SELECT term , resumedate , ( week(curdate()) - week(resumedate) + 1 ) AS weeksout FROM terms WHERE _status = 1 AND school_id = :sch;', [ "sch" => $sch->id ]);
+                  $time = DB::select('SELECT id , resumedate , ( week(curdate()) - week(resumedate) + 1 ) AS weeksout FROM terms WHERE _status = 1 AND school_id = :sch;', [ "sch" => $sch->id ]);
                     
                     foreach ($time as $t){
                           $weeksout = $t->weeksout;
-                          $term = $t->term;
+                          $term = $t->id;
                     }
 
                     $period2 = array('1'=>"1ST TERM",'2'=>"2ND TERM",'3'=>"3RD TERM");
