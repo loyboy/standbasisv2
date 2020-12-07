@@ -962,7 +962,7 @@ public function loadteachermne_class_gen(Request $request){
         AND s.ass_id IN ( SELECT a.id FROM assessments a JOIN lessonnote_managements l 
         ON l.lsn_id = a.lsn_id 
         WHERE a._type = :typ AND l._approval != :appr AND l._submission <= :dat 
-        AND l._submission >= :dat2 AND l.lsn_id IN ( SELECT id FROM lessonnotes WHERE tea_id = :tea AND term_id = :term  ) ) ",
+        AND l._submission >= :dat2 AND l.lsn_id IN ( SELECT id FROM lessonnote WHERE tea_id = :tea AND term_id = :term  ) ) ",
         
         [ "tea" => $tea, "dat" => $d, "dat2" => $d2, "typ" => $type , "appr" => "1970-10-10 00:00:00", "term" => $termid , "cls" => $v ]);
 
@@ -1096,7 +1096,7 @@ private function CgetTypeAssessmentS($type, $v, $d, $d2, $tea, $termid , $typeof
     if ( session('head.head_id') || session('supervisor.sup_id') || session('ministry.min_id') ){
         //$resultsubject = DB::select(" SELECT DISTINCT a.SUB_ID as subid FROM attendance a JOIN pupil p ON a.CLASS_ID = p.CLASS_ID WHERE p.CLASS_ID = :cls ",[ "cls" => $v ]);
     }
-    
+
    foreach ($resultsubject as $r){ 
        $subn = $r->subid;
        $sub[] = $subn;
