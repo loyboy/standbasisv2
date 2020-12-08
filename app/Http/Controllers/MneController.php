@@ -1029,7 +1029,7 @@ private function CgetTypeAttendanceS($v, $d, $d2, $tea, $termid , $type){
      [ "dat" => $d , "dat2" => $d2, "tea" => $tea , "term" => $termid , "cls" => $v, "cls2" => $v , "sub" => $s ] ); 
      
      //total no. of times attendance was taken 
-     $results2 = DB::select(" SELECT IFNULL(COUNT(a.id),0) AS total
+     $results2 = DB::select(" SELECT IFNULL(COUNT(a.id),0) AS total ,
      ( SELECT COUNT(id) FROM enrollments WHERE class_id = :cls2 ) AS totalpupil
      FROM attendances a  
      WHERE a._date <= :dat 
