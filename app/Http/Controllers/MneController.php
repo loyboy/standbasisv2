@@ -1022,9 +1022,10 @@ private function CgetTypeAttendanceS($v, $d, $d2, $tea, $termid , $type){
      //no. of times present 
      $results = DB::select(" SELECT IFNULL(COUNT(a.id),0) AS present, 
      ( SELECT title FROM class_streams WHERE id = :cls2 ) AS clsname       
-     FROM rowcalls r      
-     WHERE r.status = 1 AND r.att_id IN ( SELECT id FROM attendances WHERE _date <= :dat AND _date >= :dat2 AND term = :term AND  
-     sub_class_id IN ( SELECT id FROM subjectclasses WHERE tea_id = :tea AND class_id = :cls AND sub_id = :sub ) ) " ,
+     FROM rowcalls r JOIN attendances a
+     ON r.att_id = a.id  
+     WHERE r.status = 1 AND  a._date <= :dat AND a._date >= :dat2 AND a.term = :term AND a._done = 1 AND  
+     a.sub_class_id IN ( SELECT id FROM subjectclasses WHERE tea_id = :tea AND class_id = :cls AND sub_id = :sub ) " ,
      [ "dat" => $d , "dat2" => $d2, "tea" => $tea , "term" => $termid , "cls" => $v, "cls2" => $v , "sub" => $s ] ); 
      
      //total no. of times attendance was taken 
